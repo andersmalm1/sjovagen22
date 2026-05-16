@@ -1,0 +1,36 @@
+name: Uppdatera pelletsdata
+
+on:
+  push:
+    paths:
+      - 'pellets_data.json'   # Kör bara när datafilen ändras
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checka ut repo
+        uses: actions/checkout@v4
+
+      - name: Sätt upp Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Kör pelletsscript
+        run: python scripts/update_pellets.py
+
+      - name: Committa och pusha om data ändrats
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pellets.html
+          git diff --cached --quiet || git commit -m "Auto: uppdatera pelletsdiagram $(date +'%Y-%m-%d')"
+          git push
+
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
