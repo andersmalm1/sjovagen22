@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pellets — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);
+  --text:#1a1a18;--muted:#6b6b62;
+  --accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;
+  --font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent3);margin-bottom:6px;}
+h1{font-size:clamp(24px,4vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.back-link{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.2);border-radius:4px;padding:6px 12px;transition:background .15s;}
+.back-link:hover{background:rgba(37,99,235,0.06);}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:40px;}
+.stat-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:18px 20px;}
+.stat-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.stat-value{font-size:26px;font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1;}
+.stat-unit{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* SECTION */
+section{margin-bottom:52px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+
+/* CHART CARD */
+.chart-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;position:relative;overflow:hidden;}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent3),var(--accent),var(--accent2));opacity:1;}
+.chart-canvas-wrap{position:relative;width:100%;height:280px;}
+.chart-footnote{margin-top:12px;font-family:var(--font-mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;}
+
+/* FORM CARD */
+.form-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;}
+.form-card::before{content:'';display:block;position:absolute;} /* no bar */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.05em;}
+input,select{background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:10px 12px;font-family:var(--font-mono);font-size:13px;color:var(--text);outline:none;transition:border-color .15s;}
+input:focus,select:focus{border-color:rgba(37,99,235,0.4);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{font-family:var(--font-mono);font-size:12px;padding:10px 20px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--accent3);color:#fff;}
+.btn-primary:hover{background:#c2410c;}
+.btn-secondary{background:var(--surface2);color:var(--muted);border:1px solid var(--border2);}
+.btn-secondary:hover{background:var(--border2);}
+.form-note{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:12px;padding:12px 14px;background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.15);border-radius:6px;line-height:1.7;}
+.form-note strong{color:var(--accent2);font-weight:400;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;}
+thead tr{border-bottom:2px solid var(--border2);}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+tbody tr:hover{background:var(--surface2);}
+th{padding:10px 12px;text-align:left;color:var(--muted);font-weight:400;font-size:10px;letter-spacing:.12em;text-transform:uppercase;}
+td{padding:11px 12px;color:var(--text);}
+td.muted{color:var(--muted);}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:0 4px;transition:color .15s;}
+.del-btn:hover{color:#dc2626;}
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted);font-family:var(--font-mono);font-size:13px;}
+.empty-icon{font-size:32px;margin-bottom:12px;}
+
+/* JSON EXPORT */
+.export-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:22px 24px;}
+.export-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+pre{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:16px;font-family:var(--font-mono);font-size:11px;color:var(--muted);overflow-x:auto;max-height:220px;line-height:1.6;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--text);color:var(--bg);font-family:var(--font-mono);font-size:12px;padding:12px 18px;border-radius:8px;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;z-index:999;}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,.stats-row,section{animation:fadeUp .4s ease both;}
+.stats-row{animation-delay:.05s;}
+section:nth-child(3){animation-delay:.1s;}
+section:nth-child(4){animation-delay:.15s;}
+section:nth-child(5){animation-delay:.2s;}
+section:nth-child(6){animation-delay:.25s;}
+
+@media(max-width:600px){
+  .chart-canvas-wrap{height:200px;}
+  .form-card{padding:18px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="address-label">Pelletslogg</div>
+      <h1>Pellets <span>/ Sjövägen 22</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Bulklager i källaren</span>
+        <span class="chip">Påfyllning via tankbil</span>
+        <span class="chip">6 mm / 8 mm</span>
+      </div>
+    </div>
+    <a href="sjovagen22.html" class="back-link">← Fastighetssidan</a>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="stat-label">Totalt inköpt</div>
+    <div class="stat-value" id="statTon">—</div>
+    <div class="stat-unit">ton</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total kostnad</div>
+    <div class="stat-value" id="statKr">—</div>
+    <div class="stat-unit">kr</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Snittpris</div>
+    <div class="stat-value" id="statSnitt">—</div>
+    <div class="stat-unit">kr/ton</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Antal leveranser</div>
+    <div class="stat-value" id="statAntal">—</div>
+    <div class="stat-unit">st</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Senaste leverans</div>
+    <div class="stat-value" id="statSenaste" style="font-size:18px;">—</div>
+    <div class="stat-unit" id="statSenasteKg"></div>
+  </div>
+</div>
+
+<!-- DIAGRAM: TON PER MÅNAD -->
+<section>
+  <div class="section-header"><span class="section-label">01 / Förbrukning</span><div class="section-line"></div></div>
+  <h2>Inköpt pellets per månad</h2>
+  <p class="section-sub">Ton per leveransmånad · stapeldiagram</p>
+  <div class="chart-card">
+    <div class="chart-canvas-wrap">
+      <canvas id="tonChart" role="img" aria-label="Inköpt pellets ton per månad"></canvas>
+    </div>
+    <div class="chart-footnote">Varje stapel = total inköpt mängd (ton) den månaden. Flera leveranser samma månad summeras.</div>
+  </div>
+</section>
+
+<!-- DIAGRAM: PRIS PER TON -->
+<section>
+  <div class="section-header"><span class="section-label">02 / Prisutveckling</span><div class="section-line"></div></div>
+  <h2>Pris per ton</h2>
+  <p class="section-sub">kr/ton per leverans · linjediagram</p>
+  <div class="chart-card">
+    <div class="chart-canvas-wrap">
+      <canvas id="prisChart" role="img" aria-label="Pelletspris per ton per leverans"></canvas>
+    </div>
+    <div class="chart-footnote">Viktat medelpris per månad om flera leveranser skett samma månad.</div>
+  </div>
+</section>
+
+<!-- FORMULÄR -->
+<section>
+  <div class="section-header"><span class="section-label">03 / Logga leverans</span><div class="section-line"></div></div>
+  <h2>Ny leverans</h2>
+  <p class="section-sub">Fyll i uppgifterna från leveranssedeln</p>
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="field">
+        <label>Datum</label>
+        <input type="date" id="fDatum">
+      </div>
+      <div class="field">
+        <label>Mängd (ton)</label>
+        <input type="number" id="fTon" step="0.1" min="0.1" placeholder="t.ex. 3.5">
+      </div>
+      <div class="field">
+        <label>Pris (kr/ton, inkl. moms)</label>
+        <input type="number" id="fPris" step="1" min="1" placeholder="t.ex. 4200">
+      </div>
+      <div class="field">
+        <label>Leverantör (valfritt)</label>
+        <input type="text" id="fLev" placeholder="t.ex. Scandbio">
+      </div>
+      <div class="field">
+        <label>Storlek</label>
+        <select id="fMm">
+          <option value="6mm">6 mm</option>
+          <option value="8mm">8 mm</option>
+          <option value="okänd">Okänd</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Anteckning (valfritt)</label>
+        <input type="text" id="fNote" placeholder="t.ex. vårpris, bra kvalitet">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="laggTillLeverans()">＋ Lägg till leverans</button>
+      <button class="btn btn-secondary" onclick="rensaFormular()">Rensa</button>
+    </div>
+    <div class="form-note">
+      <strong>Så här synkar du till GitHub:</strong> Klicka "Exportera JSON" nedan → kopiera innehållet → klistra in i <code>pellets_data.json</code> i ditt repo och committa. GitHub Actions uppdaterar sedan diagrammen automatiskt.
+    </div>
+  </div>
+</section>
+
+<!-- LOGG-TABELL -->
+<section>
+  <div class="section-header"><span class="section-label">04 / Leveranslogg</span><div class="section-line"></div></div>
+  <h2>Alla leveranser</h2>
+  <p class="section-sub">Senaste leveranser visas överst</p>
+  <div class="chart-card" style="padding:0;overflow:hidden;">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Ton</th>
+            <th>kr/ton</th>
+            <th>Total kr</th>
+            <th>Leverantör</th>
+            <th>Storlek</th>
+            <th>Anteckning</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="leveransTabell">
+          <tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🛢</div>Inga leveranser loggade ännu.<br>Fyll i formuläret ovan för att börja.</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- JSON EXPORT -->
+<section>
+  <div class="section-header"><span class="section-label">05 / Export</span><div class="section-line"></div></div>
+  <h2>Exportera till GitHub</h2>
+  <p class="section-sub">Kopiera JSON-innehållet och klistra in i pellets_data.json i repot</p>
+  <div class="export-card">
+    <div class="export-top">
+      <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">pellets_data.json</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="kopieraJSON()">Kopiera JSON</button>
+        <button class="btn btn-primary" onclick="laddaNetJSON()">Ladda ned JSON</button>
+      </div>
+    </div>
+    <pre id="jsonPreview">{
+  "leveranser": []
+}</pre>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · Pelletslogg · <a href="sjovagen22.html" style="color:var(--accent2);text-decoration:none;">← Fastighetssidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Injicerat av GitHub Actions (update_pellets.py) ───────────
+// Vid första körning är detta tomt. Actions fyller i det.
+const CHART_DATA = {};
+
+// ── State: laddas från localStorage ──────────────────────────
+const STORAGE_KEY = 'pellets_leveranser_v1';
+
+function laddaLeveranser() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  } catch { return []; }
+}
+
+function sparaLeveranser(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+// ── Datum & utils ─────────────────────────────────────────────
+const now = new Date();
+const months = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function fmtNum(n) {
+  return Math.round(n).toLocaleString('sv-SE');
+}
+
+document.getElementById('footerDate').textContent =
+  `${now.getDate()} ${['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'][now.getMonth()]} ${now.getFullYear()}`;
+
+// Sätt dagens datum som default i formuläret
+document.getElementById('fDatum').value = now.toISOString().slice(0, 10);
+
+// ── Toast ─────────────────────────────────────────────────────
+function visaToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Formulär ──────────────────────────────────────────────────
+function laggTillLeverans() {
+  const datum   = document.getElementById('fDatum').value;
+  const ton     = parseFloat(document.getElementById('fTon').value);
+  const pris    = parseFloat(document.getElementById('fPris').value);
+  const lev     = document.getElementById('fLev').value.trim();
+  const mm      = document.getElementById('fMm').value;
+  const note    = document.getElementById('fNote').value.trim();
+
+  if (!datum || isNaN(ton) || ton <= 0 || isNaN(pris) || pris <= 0) {
+    visaToast('⚠ Fyll i datum, mängd och pris.');
+    return;
+  }
+
+  const leveranser = laddaLeveranser();
+  leveranser.push({
+    id: Date.now().toString(),
+    datum,
+    ton,
+    kr_per_ton: pris,
+    leverantor: lev || null,
+    storlek: mm,
+    notering: note || null
+  });
+  leveranser.sort((a,b) => a.datum.localeCompare(b.datum));
+  sparaLeveranser(leveranser);
+
+  rensaFormular();
+  renderAllt();
+  visaToast('✓ Leverans tillagd');
+}
+
+function rensaFormular() {
+  document.getElementById('fDatum').value = now.toISOString().slice(0, 10);
+  document.getElementById('fTon').value = '';
+  document.getElementById('fPris').value = '';
+  document.getElementById('fLev').value = '';
+  document.getElementById('fNote').value = '';
+}
+
+function taBortLeverans(id) {
+  const leveranser = laddaLeveranser().filter(l => l.id !== id);
+  sparaLeveranser(leveranser);
+  renderAllt();
+  visaToast('Leverans borttagen');
+}
+
+// ── Render all ────────────────────────────────────────────────
+function renderAllt() {
+  const leveranser = laddaLeveranser();
+  renderStats(leveranser);
+  renderTabell(leveranser);
+  renderDiagram(leveranser);
+  renderJSON(leveranser);
+}
+
+function renderStats(leveranser) {
+  if (!leveranser.length) {
+    ['statTon','statKr','statSnitt','statAntal','statSenaste'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+    document.getElementById('statSenasteKg').textContent = '';
+    return;
+  }
+
+  const totTon = leveranser.reduce((s,l) => s + l.ton, 0);
+  const totKr  = leveranser.reduce((s,l) => s + l.ton * l.kr_per_ton, 0);
+  const snitt  = totKr / totTon;
+  const senast = leveranser[leveranser.length - 1];
+
+  document.getElementById('statTon').textContent    = totTon.toFixed(1);
+  document.getElementById('statKr').textContent     = fmtNum(totKr);
+  document.getElementById('statSnitt').textContent  = fmtNum(snitt);
+  document.getElementById('statAntal').textContent  = leveranser.length;
+  document.getElementById('statSenaste').textContent = fmtDate(senast.datum);
+  document.getElementById('statSenasteKg').textContent = `${senast.ton} ton · ${fmtNum(senast.kr_per_ton)} kr/ton`;
+}
+
+function renderTabell(leveranser) {
+  const tbody = document.getElementById('leveransTabell');
+  if (!leveranser.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🛢</div>Inga leveranser loggade ännu.<br>Fyll i formuläret ovan för att börja.</div></td></tr>`;
+    return;
+  }
+
+  const sorted = [...leveranser].reverse();
+  tbody.innerHTML = sorted.map(l => `
+    <tr>
+      <td>${fmtDate(l.datum)}</td>
+      <td>${l.ton} ton</td>
+      <td>${fmtNum(l.kr_per_ton)} kr</td>
+      <td>${fmtNum(l.ton * l.kr_per_ton)} kr</td>
+      <td class="muted">${l.leverantor || '—'}</td>
+      <td class="muted">${l.storlek || '—'}</td>
+      <td class="muted">${l.notering || '—'}</td>
+      <td><button class="del-btn" onclick="taBortLeverans('${l.id}')" title="Ta bort">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+// ── Diagram ───────────────────────────────────────────────────
+let tonChartInst = null, prisChartInst = null;
+
+function renderDiagram(leveranser) {
+  // Bygg månadsaggregat
+  const byMonth = {};
+  leveranser.forEach(l => {
+    const d = new Date(l.datum);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    if (!byMonth[key]) byMonth[key] = { ton: 0, kr: 0 };
+    byMonth[key].ton += l.ton;
+    byMonth[key].kr  += l.ton * l.kr_per_ton;
+  });
+
+  const keys   = Object.keys(byMonth).sort();
+  const labels = keys.map(k => {
+    const [y, m] = k.split('-');
+    return `${months[parseInt(m)-1]} ${y}`;
+  });
+  const tonData  = keys.map(k => +byMonth[k].ton.toFixed(2));
+  const prisData = keys.map(k => Math.round(byMonth[k].kr / byMonth[k].ton));
+
+  const gridColor = 'rgba(0,0,0,0.05)';
+  const tickColor = '#9a9a8e';
+
+  // Ton-diagram
+  if (tonChartInst) tonChartInst.destroy();
+  tonChartInst = new Chart(document.getElementById('tonChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Ton pellets',
+        data: tonData,
+        backgroundColor: 'rgba(234,88,12,0.75)',
+        borderColor: '#ea580c',
+        borderWidth: 1,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#fff',
+          borderColor: 'rgba(0,0,0,0.12)',
+          borderWidth: 1,
+          titleColor: '#6b6b62',
+          bodyColor: '#1a1a18',
+          titleFont: { family: 'DM Mono', size: 11 },
+          bodyFont: { family: 'DM Mono', size: 12 },
+          callbacks: { label: c => `  ${c.raw} ton` }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 } } },
+        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 }, callback: v => v + ' t' }, min: 0 }
+      }
+    }
+  });
+
+  // Pris-diagram
+  if (prisChartInst) prisChartInst.destroy();
+  prisChartInst = new Chart(document.getElementById('prisChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'kr/ton',
+        data: prisData,
+        borderColor: '#2563eb',
+        borderWidth: 2,
+        backgroundColor: 'rgba(37,99,235,0.06)',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#2563eb',
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#fff',
+          borderColor: 'rgba(0,0,0,0.12)',
+          borderWidth: 1,
+          titleColor: '#6b6b62',
+          bodyColor: '#1a1a18',
+          titleFont: { family: 'DM Mono', size: 11 },
+          bodyFont: { family: 'DM Mono', size: 12 },
+          callbacks: { label: c => `  ${fmtNum(c.raw)} kr/ton` }
+        }
+      },
+      scales: {
+        x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 } } },
+        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 }, callback: v => fmtNum(v) + ' kr' }, min: 0 }
+      }
+    }
+  });
+}
+
+// ── JSON export ───────────────────────────────────────────────
+function renderJSON(leveranser) {
+  const obj = { leveranser: leveranser.map(l => ({
+    datum: l.datum,
+    ton: l.ton,
+    kr_per_ton: l.kr_per_ton,
+    leverantor: l.leverantor || null,
+    storlek: l.storlek,
+    notering: l.notering || null
+  })) };
+  document.getElementById('jsonPreview').textContent = JSON.stringify(obj, null, 2);
+}
+
+function kopieraJSON() {
+  const txt = document.getElementById('jsonPreview').textContent;
+  navigator.clipboard.writeText(txt).then(() => visaToast('✓ JSON kopierat'));
+}
+
+function laddaNetJSON() {
+  const txt = document.getElementById('jsonPreview').textContent;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], { type: 'application/json' }));
+  a.download = 'pellets_data.json';
+  a.click();
+}
+
+// ── Init ──────────────────────────────────────────────────────
+renderAllt();
+</script>
+</body>
+</html>
