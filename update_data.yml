@@ -14,7 +14,8 @@ jobs:
     steps:
       - name: Checka ut repo
         uses: actions/checkout@v4
-
+          with:
+            persist-credentials: true
       - name: Sätt upp Python
         uses: actions/setup-python@v5
         with:
