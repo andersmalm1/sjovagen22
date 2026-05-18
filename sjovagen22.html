@@ -240,11 +240,27 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
   </div>
 
   <div class="info-box">
-    <strong>Tre möjliga vägar för datauttag — beroende på din styrboxmodell:</strong><br><br>
-    <strong>Janfire (vanlig pelletsbrännare i Sverige):</strong> Äldre modeller har RS232-port + mjukvaran "System Evolution". Nyare Janfire Flex-a har separat databox med USB-export och loggning. Kolla märkskylten på styrboxen.<br><br>
-    <strong>Separat shunt/rumsreglering (Regin, Uponor, Danfoss, ESBE):</strong> Vanligen RS485/Modbus — kan kopplas till Raspberry Pi eller Home Assistant för kontinuerlig loggning direkt till denna dashboard.<br><br>
-    <strong>Utan kommunikationsgränssnitt (äldsta styrenheter):</strong> Enklaste lösningen är externa 1-wire-temperatursensorer (DS18B20) på fram/returledning och ackumulatortank, kopplade till en Raspberry Pi Zero (~200 kr). Data loggas automatiskt och kan visas här.<br><br>
-    <strong>Nästa steg:</strong> Ange fabrikat och modell på pelletspannan och ev. shuntregulator — så specificeras exakt datauttagsmetod och hur den kopplas till denna sida.
+    <strong>Identifierade styrenheter:</strong><br><br>
+    <strong>Danfoss ECL Comfort 110, App. 130 (v1.08):</strong> Styr värmekretsen (väderkompenserad framledning). Kommunicerar via <strong>Modbus RTU</strong> — öppet protokoll, fullt dokumenterat för just App. 130/116. Ansluts till Raspberry Pi via USB–RS485-adapter.<br><br>
+    <strong>Watts Solar Controller LCD+ (P-3481):</strong> Styr solfångarkretsen. Loggar driftdata (temp, effekt, kWh) till <strong>SD-kort</strong> (max 2 GB FAT32, fullstorlek). SD-kortet läses av Raspberry Pi.<br><br>
+    <strong>Värmebaronen Pellmax UB / Viking Bio (2005):</strong> Pelletspanna. Ingen inbyggd kommunikationsport. Övervakas via <strong>DS18B20-temperatursensorer</strong> på fram/returledning och ackumulatortank.
+  </div>
+
+  <div class="info-box" style="margin-top:14px;border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.04);">
+    <strong style="color:var(--accent3);">🛒 Inköpslista — datainfrastruktur</strong><br><br>
+    <strong>Raspberry Pi (central hub)</strong><br>
+    · Raspberry Pi 4 eller 5, 2–4 GB RAM &nbsp;~500–700 kr<br>
+    · SD-kort 16–32 GB till Pi:n &nbsp;~100 kr<br>
+    · Strömadapter USB-C &nbsp;~100 kr<br>
+    · Plasthölje &nbsp;~100 kr<br><br>
+    <strong>Danfoss ECL Comfort 110 → Modbus RTU</strong><br>
+    · USB till RS485-adapter (t.ex. FTDI-baserad) &nbsp;~100–150 kr<br><br>
+    <strong>Watts LCD+ → SD-kort</strong><br>
+    · SD-kort max 2 GB, FAT32, fullstorlek (ej SDHC) &nbsp;~50–100 kr (eBay/Blocket)<br><br>
+    <strong>Pelletspanna → temperatursensorer</strong><br>
+    · DS18B20 sensorer × 4–5 st &nbsp;~150–200 kr<br>
+    · 1-wire kabel &nbsp;~50 kr<br><br>
+    <strong style="color:var(--accent3);">Totalt ca 1 150–1 400 kr</strong>
   </div>
 </section>
 
