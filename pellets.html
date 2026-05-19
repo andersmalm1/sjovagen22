@@ -125,6 +125,7 @@ section:nth-child(6){animation-delay:.25s;}
         <span class="chip">6 mm / 8 mm</span>
       </div>
     </div>
+    <a href="index.html" class="back-link">← Startsidan</a>
     <a href="sjovagen22.html" class="back-link">← Fastighetssidan</a>
   </div>
 </header>
@@ -490,9 +491,36 @@ function renderDiagram(leveranser) {
       },
       scales: {
         x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 } } },
-        y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 }, callback: v => v + ' t' }, min: 0 }
+        y: {
+          grid: { color: gridColor },
+          ticks: { color: tickColor, font: { family: 'DM Mono', size: 10 }, callback: v => v + ' t' },
+          min: 0,
+          afterFit: axis => { axis.width = 52; }
+        }
       }
-    }
+    },
+    plugins: [{
+      id: 'lagerkapacitet',
+      afterDraw(chart) {
+        const { ctx, chartArea: { left, right, top }, scales: { y } } = chart;
+        const yPos = y.getPixelForValue(3.6);
+        if (yPos < top || yPos > chart.chartArea.bottom) return;
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(left, yPos);
+        ctx.lineTo(right, yPos);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#16a34a';
+        ctx.font = "10px 'DM Mono', monospace";
+        ctx.textAlign = 'right';
+        ctx.fillText('Max 3,6 ton (fullt lager)', right - 6, yPos - 5);
+        ctx.restore();
+      }
+    }]
   });
 
   // Pris-diagram
