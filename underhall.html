@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drift & Underhåll — Pelletsanläggningen — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);
+  --text:#1a1a18;--muted:#6b6b62;
+  --accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;--accent4:#dc2626;
+  --font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent3);margin-bottom:6px;}
+h1{font-size:clamp(22px,4vw,34px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.back-link{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.2);border-radius:4px;padding:6px 12px;}
+.back-link:hover{background:rgba(37,99,235,0.06);}
+
+/* SECTION */
+section{margin-bottom:52px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+
+/* ROUTINE CARDS */
+.routine-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
+.routine-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:22px 20px;position:relative;overflow:hidden;}
+.routine-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.routine-card.weekly::before{background:var(--accent3);}
+.routine-card.biweekly::before{background:var(--accent2);}
+.routine-card.seasonal::before{background:var(--accent);}
+.routine-card.warning::before{background:var(--accent4);}
+.rc-freq{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.rc-freq.weekly{color:var(--accent3);}
+.rc-freq.biweekly{color:var(--accent2);}
+.rc-freq.seasonal{color:var(--accent);}
+.rc-freq.warning{color:var(--accent4);}
+.rc-title{font-size:14px;font-weight:500;color:var(--text);margin-bottom:10px;}
+.rc-steps{display:flex;flex-direction:column;gap:6px;}
+.rc-step{display:flex;gap:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.5;}
+.rc-step-num{color:var(--text);font-weight:500;flex-shrink:0;width:16px;}
+
+/* EQUIPMENT TABLE */
+.equip-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:24px 28px;}
+.equip-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;}
+.equip-table tr{border-bottom:1px solid var(--border);}
+.equip-table tr:last-child{border-bottom:none;}
+.equip-table td{padding:10px 8px;color:var(--muted);vertical-align:top;}
+.equip-table td:last-child{color:var(--text);text-align:right;}
+.equip-table .gh td{color:var(--accent2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding-top:18px;}
+
+/* INFO / WARNING BOX */
+.info-box{background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.18);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.info-box strong{color:var(--accent2);font-weight:400;}
+.warn-box{background:rgba(220,38,38,0.05);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.warn-box strong{color:var(--accent4);font-weight:400;}
+.ok-box{background:rgba(22,163,74,0.05);border:1px solid rgba(22,163,74,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.ok-box strong{color:var(--accent);font-weight:400;}
+
+/* RESOURCE LINKS */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+.link-card{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:6px;text-decoration:none;}
+.link-card:hover{border-color:var(--accent2);background:rgba(37,99,235,0.03);}
+.lc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.lc-title{font-size:13px;font-weight:500;color:var(--text);}
+.lc-url{font-family:var(--font-mono);font-size:10px;color:var(--accent2);}
+
+/* SCREW / MATNING SECTION */
+.tip-list{display:flex;flex-direction:column;gap:10px;}
+.tip-item{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;}
+.tip-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.tip-body{}
+.tip-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px;}
+.tip-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.contact-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:20px;}
+.cc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.cc-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.cc-detail{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.8;}
+.cc-detail a{color:var(--accent2);text-decoration:none;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,section{animation:fadeUp .45s ease both;}
+section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
+section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
+section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:.36s;}
+@media(max-width:600px){.equip-card{padding:16px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="address-label">Drift &amp; Underhåll</div>
+      <h1>Pelletsanläggningen <span>/ Sjövägen 22</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Värmebaronen Pellmax UB · 2014</span>
+        <span class="chip">Viking Bio · 2005</span>
+        <span class="chip">20 kW</span>
+        <span class="chip">Bulklager 3,6 ton</span>
+      </div>
+    </div>
+    <a href="index.html" class="back-link">← Startsidan</a>
+    <a href="sjovagen22.html" class="back-link">← Fastighetssidan</a>
+  </div>
+</header>
+
+<!-- 01 RUTINER -->
+<section>
+  <div class="section-header"><span class="section-label">01 / Rutiner</span><div class="section-line"></div></div>
+  <h2>Regelbundet underhåll</h2>
+  <p class="section-sub">Värmebaronen Pellmax UB med Viking Bio-brännare · frekvenser baserade på tillverkarens anvisningar</p>
+
+  <div class="routine-grid">
+    <div class="routine-card weekly">
+      <div class="rc-freq weekly">Var 1–2 vecka</div>
+      <div class="rc-title">🔥 Brännare — löpande rengöring</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Stäng av brännaren och vänta tills den svalnat (~30 min)</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Töm brännarkoppens askskåpa med askrakan</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Rengör det inre brännarröret från aska och slagg</span></div>
+        <div class="rc-step"><span class="rc-step-num">4.</span><span>Kontrollera att rosten sitter rätt — felplacerat rost förlänger tändtiden</span></div>
+        <div class="rc-step"><span class="rc-step-num">5.</span><span>Kontrollera att pelletsmatningen flödar fritt i fallröret</span></div>
+        <div class="rc-step"><span class="rc-step-num">6.</span><span>Starta om och verifiera normal drift</span></div>
+      </div>
+    </div>
+
+    <div class="routine-card biweekly">
+      <div class="rc-freq biweekly">Varannan vecka</div>
+      <div class="rc-title">🛢 Panna — askbehållare</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Töm pannans askbehållare</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Förvara askan i plåthink med tätt lock på obrännbart underlag</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Låt askan svalna minst 24 h innan den töms i sopkärl</span></div>
+      </div>
+    </div>
+
+    <div class="routine-card seasonal">
+      <div class="rc-freq seasonal">1 gång per säsong</div>
+      <div class="rc-title">🔧 Panna — säsongsservice</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Sota pannans värmeytor och rökgångar med sotviska</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Rengör rökgasväxlaren (turbulatorerna)</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Kontrollera tätningar och luckor</span></div>
+        <div class="rc-step"><span class="rc-step-num">4.</span><span>Kontrollera tändelementet — byt vid behov</span></div>
+        <div class="rc-step"><span class="rc-step-num">5.</span><span>Kontrollera flamvakten — rengör vid behov</span></div>
+        <div class="rc-step"><span class="rc-step-num">6.</span><span>Justera förbränningsvärden (luft/bränsle) om rökgastempen ökat</span></div>
+      </div>
+    </div>
+
+    <div class="routine-card warning">
+      <div class="rc-freq warning">Vid varje påfyllning</div>
+      <div class="rc-title">📋 Pelletslager — loggning</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Fotografera/spara leveranssedeln</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Logga leveransen: datum, ton, kr/ton, leverantör</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Exportera och uppdatera pellets_data.json i GitHub</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    <strong>Tips — när ska man sota?</strong> Rökgastemperaturen är det bästa måttet. Nota temperaturen efter en nysotad panna. När den stigit 40–50°C över detta värde är det dags att sota igen — oavsett intervall. En digital rökgastermometer med larm förenklar detta.
+  </div>
+
+  <div class="warn-box">
+    <strong>⚠ Viktigt:</strong> Bryt alltid spänningen och lossa kontakten på brännaren innan rengöring, service eller demontering. Låt brännaren svalna ordentligt — risk för brännskada.
+  </div>
+</section>
+
+<!-- 02 PELLETSMATNING -->
+<section>
+  <div class="section-header"><span class="section-label">02 / Pelletsmatning</span><div class="section-line"></div></div>
+  <h2>Matarskruv &amp; pelletsflöde</h2>
+  <p class="section-sub">Motordriven skruv i lagrets botten · slang från lager till brännare · vanliga problem och förebyggande åtgärder</p>
+
+  <div class="tip-list">
+    <div class="tip-item">
+      <div class="tip-icon">🔄</div>
+      <div class="tip-body">
+        <div class="tip-title">Fyll skruven inför säsongsstart</div>
+        <div class="tip-desc">Efter längre uppehåll (sommar) är matarskruven tom. Starta brännaren i manuellt testläge och låt skruven fylla sig innan normal drift startar — annars kan brännaren larmfela vid "misslyckad start".</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">🪵</div>
+      <div class="tip-body">
+        <div class="tip-title">Kontrollera fallröret regelbundet</div>
+        <div class="tip-desc">Fallröret (från skruven ner till brännaren) kan proppa igen med pelletsrester eller damm. Rensa det vid varje brännärrengöring. En propp syns som ojämn förbränning eller misslyckad start.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">📐</div>
+      <div class="tip-body">
+        <div class="tip-title">Kontrollera att innerröret sitter rätt</div>
+        <div class="tip-desc">Om det inre brännarröret hänger snett bildas en "hylla" i övergången mellan fallröret och brännarröret. Pellets fastnar och skapar ojämn matning. Kontrollera rörets läge vid varje rengöring.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">💨</div>
+      <div class="tip-body">
+        <div class="tip-title">Säkerställ god tilluft till pannrummet</div>
+        <div class="tip-desc">Brännaren och fläkten drar ganska mycket luft. Stängda ventiler i pannrummet ger dålig förbränning och snabbare sotbildning. Kontrollera att ventilationsgallret är öppet och fritt från damm.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">⚡</div>
+      <div class="tip-body">
+        <div class="tip-title">Kalibrera matarskruvens kapacitet</div>
+        <div class="tip-desc">Brännaren har en inbyggd kalibreringsfunktion för bränslemängd. Välj effektläge, starta test, samla upp och väg pelletarna som matas ut under 1 minut. Mata in vikten i brännaren för korrekt effektstyrning.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">🏷</div>
+      <div class="tip-body">
+        <div class="tip-title">Pelletskvalitet påverkar rengöringsintervallet</div>
+        <div class="tip-desc">Pellets av klass 1 (svensk standard) ger minst aska och slagg. Sämre kvalitet eller fel diameter (6 vs 8 mm — kontrollera inställningen i brännaren) ger snabbare sotbildning och tätare rengöring.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SKORSTEN OCH SOTNING -->
+<section>
+  <div class="section-header"><span class="section-label">03 / Skorsten</span><div class="section-line"></div></div>
+  <h2>Sotning &amp; brandskyddskontroll</h2>
+  <p class="section-sub">Kommunal skyldighet · anmäl ändrad bränsleanvändning innan pelletsdriften startas</p>
+
+  <div class="warn-box">
+    <strong>⚠ Viktigt innan pelletsdriften startas:</strong> Ändrad användning av eldstaden (byte till pellets) måste anmälas till skorstensfejaren så att rätt sotningsfrist fastställs. Starta inte pelletsdriften innan skorstenen är sotad och godkänd.
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="cc-label">Skorstensfejare — Österåker</div>
+      <div class="cc-name">Skorstensfejarna AB</div>
+      <div class="cc-detail">
+        Tel: <a href="tel:0104952160">010-495 21 60</a><br>
+        E-post: <a href="mailto:info@skorstensfejarna.se">info@skorstensfejarna.se</a><br>
+        Telefontider: 08:00–15:00 vardagar<br>
+        Bokning: <a href="https://www.skorstensfejarna.se/boka-tid" target="_blank">skorstensfejarna.se/boka-tid</a>
+      </div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-label">Vid servicebesök — be om</div>
+      <div class="cc-name">Checklista sotare</div>
+      <div class="cc-detail">
+        · Sota skorstenen<br>
+        · Brandskyddskontroll<br>
+        · Godkännande för pelletsdrift<br>
+        · Fastställ sotningsfrist för pelletspanna
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 UTRUSTNING -->
+<section>
+  <div class="section-header"><span class="section-label">04 / Utrustning</span><div class="section-line"></div></div>
+  <h2>Tekniska data</h2>
+  <p class="section-sub">Pannrum Sjövägen 22 · installerad utrustning</p>
+
+  <div class="equip-card">
+    <table class="equip-table">
+      <tr class="gh"><td colspan="2">Pelletspanna</td></tr>
+      <tr><td>Fabrikat / modell</td><td>Värmebaronen Pellmax UB</td></tr>
+      <tr><td>Tillv.nr / år</td><td>159913 / 2014</td></tr>
+      <tr><td>Effekt pellets</td><td>20 kW</td></tr>
+      <tr><td>Max temp (TS)</td><td>110°C</td></tr>
+      <tr><td>Mantelvolym</td><td>80 L</td></tr>
+      <tr><td>Maxtryck (PS/PT)</td><td>2,5 / 4,3 bar</td></tr>
+      <tr><td>Service / reservdelar</td><td>www.varmebaronen.se</td></tr>
+
+      <tr class="gh"><td colspan="2">Pelletsbrännare</td></tr>
+      <tr><td>Fabrikat / modell</td><td>Värmebaronen Viking Bio</td></tr>
+      <tr><td>Tillv.nr / år</td><td>052070295 / 2005</td></tr>
+      <tr><td>Effekt</td><td>15–20 kW</td></tr>
+      <tr><td>Spänning</td><td>230V ~, 50Hz, 2,8A</td></tr>
+      <tr><td>Certifierad</td><td>SP certifikat 31 23 04</td></tr>
+
+      <tr class="gh"><td colspan="2">Pelletslager</td></tr>
+      <tr><td>Placering</td><td>Källaren</td></tr>
+      <tr><td>Mått (b×h×l)</td><td>1,4 × 2,0 × 2,0 m</td></tr>
+      <tr><td>Volym</td><td>5,6 m³</td></tr>
+      <tr><td>Kapacitet (bulk)</td><td>ca 3,6 ton (650 kg/m³)</td></tr>
+      <tr><td>Påfyllning</td><td>Tankbil via yttervägg</td></tr>
+
+      <tr class="gh"><td colspan="2">Värmestyrning</td></tr>
+      <tr><td>Shuntregulator</td><td>Danfoss ECL Comfort 110, App. 130</td></tr>
+      <tr><td>Funktion</td><td>Väderkompenserad framledning</td></tr>
+      <tr><td>Kommunikation</td><td>Modbus RTU (RS485)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 05 RESURSER -->
+<section>
+  <div class="section-header"><span class="section-label">05 / Resurser</span><div class="section-line"></div></div>
+  <h2>Manualer &amp; filmer</h2>
+  <p class="section-sub">Tillverkarens dokumentation och instruktionsfilmer</p>
+
+  <div class="links-grid">
+    <a class="link-card" href="https://varmebaronen.se/content/uploads/24/10/vikingbio240226konv012se.pdf" target="_blank">
+      <div class="lc-label">PDF · Värmebaronen</div>
+      <div class="lc-title">Viking Bio — Installation, drift och skötsel</div>
+      <div class="lc-url">varmebaronen.se (aktuell utgåva 2024)</div>
+    </a>
+    <a class="link-card" href="https://www.youtube.com/watch?v=CZoY7RRtY3A" target="_blank">
+      <div class="lc-label">YouTube · Film</div>
+      <div class="lc-title">Sotning av pelletspanna och brännare (del 1)</div>
+      <div class="lc-url">youtube.com · praktisk genomgång</div>
+    </a>
+    <a class="link-card" href="https://pellets.info" target="_blank">
+      <div class="lc-label">Forum · pellets.info</div>
+      <div class="lc-title">Svenska pelletsforumet</div>
+      <div class="lc-url">pellets.info · erfarenheter från Viking Bio-ägare</div>
+    </a>
+    <a class="link-card" href="https://www.varmebaronen.se" target="_blank">
+      <div class="lc-label">Tillverkare · support</div>
+      <div class="lc-title">Värmebaronen AB</div>
+      <div class="lc-url">varmebaronen.se · reservdelar och service</div>
+    </a>
+  </div>
+
+  <div class="ok-box" style="margin-top:16px;">
+    <strong>Sök mer:</strong> Sök "Viking Bio rengöring" eller "Viking Bio sotning" på YouTube för nyare instruktionsfilmer. Forumet pellets.info har specifika trådar för Viking Bio med praktiska tips från erfarna användare.
+  </div>
+</section>
+
+<!-- 06 PELLETSLOGG -->
+<section>
+  <div class="section-header"><span class="section-label">06 / Logg</span><div class="section-line"></div></div>
+  <h2>Pelletslogg &amp; förbrukningsdata</h2>
+  <p class="section-sub">Logga varje leverans för att följa förbrukning och kostnad per säsong</p>
+  <div style="margin-top:6px;">
+    <a href="pellets.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent3);background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.25);border-radius:6px;padding:12px 20px;text-decoration:none;" onmouseover="this.style.background='rgba(234,88,12,0.12)'" onmouseout="this.style.background='rgba(234,88,12,0.06)'">
+      🛢 Öppna pelletslogg →
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · Drift &amp; Underhåll Pelletsanläggning · <a href="sjovagen22.html" style="color:var(--accent2);text-decoration:none;">← Fastighetssidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+
+<script>
+const now = new Date();
+const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+document.getElementById('footerDate').textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
