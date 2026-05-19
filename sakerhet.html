@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Säkerhet &amp; Larm — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);
+  --text:#1a1a18;--muted:#6b6b62;--subtle:#9a9a8e;
+  --accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;--accent4:#dc2626;
+  --font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent4);margin-bottom:6px;}
+h1{font-size:clamp(24px,4vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap;}
+.back-link{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.2);border-radius:4px;padding:6px 12px;}
+.back-link:hover{background:rgba(37,99,235,0.06);}
+
+section{margin-bottom:52px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+
+/* CONTACT CARDS */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px;}
+.contact-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:24px;position:relative;overflow:hidden;}
+.contact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.contact-card.red::before{background:var(--accent4);}
+.contact-card.blue::before{background:var(--accent2);}
+.contact-card.green::before{background:var(--accent);}
+.cc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.cc-name{font-size:15px;font-weight:500;color:var(--text);margin-bottom:10px;}
+.cc-detail{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.9;}
+.cc-detail a{color:var(--accent2);text-decoration:none;}
+.cc-detail a:hover{text-decoration:underline;}
+.cc-services{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.cc-service{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--border2);border-radius:3px;padding:2px 8px;background:var(--surface2);}
+
+/* STATUS CARDS */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.status-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:18px 20px;}
+.sc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.sc-value{font-size:15px;font-weight:400;color:var(--text);margin-bottom:4px;}
+.sc-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.sc-badge{display:inline-block;font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid;margin-top:6px;}
+.sc-badge.ok{color:var(--accent);border-color:rgba(22,163,74,0.3);background:rgba(22,163,74,0.07);}
+.sc-badge.unknown{color:var(--muted);border-color:var(--border2);background:transparent;}
+.sc-badge.alert{color:var(--accent4);border-color:rgba(220,38,38,0.25);background:rgba(220,38,38,0.06);}
+
+/* INFO BOXES */
+.info-box{background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.18);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.info-box strong{color:var(--accent2);font-weight:400;}
+.warn-box{background:rgba(220,38,38,0.05);border:1px solid rgba(220,38,38,0.18);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:14px;}
+.warn-box strong{color:var(--accent4);font-weight:400;}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:8px;}
+.check-item{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:14px;}
+.check-box{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.check-box.done{background:var(--accent);border-color:var(--accent);color:#fff;}
+.check-box.todo{background:transparent;}
+.check-text{font-family:var(--font-mono);font-size:12px;color:var(--muted);flex:1;}
+.check-text strong{color:var(--text);font-weight:400;}
+.check-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);}
+
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.footer-txt a{color:var(--accent2);text-decoration:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,section{animation:fadeUp .45s ease both;}
+section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
+section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="address-label">Säkerhet &amp; Larm</div>
+      <h1>Villalarm <span>/ Sjövägen 22</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Inbrottslarm</span>
+        <span class="chip">Larmcentral · Rapid Säkerhet</span>
+        <span class="chip">Österåkers Lås &amp; Larm</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="back-link">← Startsidan</a>
+    </div>
+  </div>
+</header>
+
+<!-- 01 SYSTEMSTATUS -->
+<section>
+  <div class="section-header"><span class="section-label">01 / Systemstatus</span><div class="section-line"></div></div>
+  <h2>Larmstatus</h2>
+  <p class="section-sub">Uppdateras manuellt · kontrollera regelbundet</p>
+
+  <div class="status-grid">
+    <div class="status-card">
+      <div class="sc-label">Inbrottslarm</div>
+      <div class="sc-value">Aktivt</div>
+      <div class="sc-sub">Österåkers Lås &amp; Larm</div>
+      <div class="sc-badge ok">● i drift</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-label">Larmcentral</div>
+      <div class="sc-value">Rapid Säkerhet</div>
+      <div class="sc-sub">Certifierad larmcentral</div>
+      <div class="sc-badge ok">● ansluten</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-label">Senaste systemtest</div>
+      <div class="sc-value">—</div>
+      <div class="sc-sub">Datum okänt</div>
+      <div class="sc-badge unknown">○ verifiera</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-label">Brandvarnare</div>
+      <div class="sc-value">—</div>
+      <div class="sc-sub">Antal och placering okänd</div>
+      <div class="sc-badge unknown">○ inventera</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-label">Kameraövervakning</div>
+      <div class="sc-value">—</div>
+      <div class="sc-sub">Status okänd</div>
+      <div class="sc-badge unknown">○ verifiera</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-label">Nästa service</div>
+      <div class="sc-value">—</div>
+      <div class="sc-sub">Ej bokad</div>
+      <div class="sc-badge unknown">○ boka</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 LEVERANTÖRER -->
+<section>
+  <div class="section-header"><span class="section-label">02 / Leverantörer</span><div class="section-line"></div></div>
+  <h2>Larmleverantörer</h2>
+  <p class="section-sub">Installation · service · larmcentral</p>
+
+  <div class="contact-grid">
+    <div class="contact-card red">
+      <div class="cc-label">Installation &amp; Service</div>
+      <div class="cc-name">Österåkers Lås &amp; Larm</div>
+      <div class="cc-detail">
+        Adress: Rallarvägen 8, 184 40 Åkersberga<br>
+        Tel: <a href="tel:0854066280">08-540 662 80</a><br>
+        E-post: <a href="mailto:info@laslarm.se">info@laslarm.se</a><br>
+        Öppet: Vardagar 08:00–17:00<br>
+        Webb: <a href="https://laslarm.se" target="_blank">laslarm.se</a><br>
+        Felanmälan: <a href="https://laslarm.se/felanmalan/" target="_blank">laslarm.se/felanmalan</a>
+      </div>
+      <div class="cc-services">
+        <span class="cc-service">Inbrottslarm</span>
+        <span class="cc-service">Kameraövervakning</span>
+        <span class="cc-service">Låssystem</span>
+        <span class="cc-service">Passersystem</span>
+        <span class="cc-service">Brandlarm</span>
+      </div>
+    </div>
+
+    <div class="contact-card blue">
+      <div class="cc-label">Larmcentral &amp; Bevakning</div>
+      <div class="cc-name">Rapid Säkerhet</div>
+      <div class="cc-detail">
+        Certifierad larmcentral<br>
+        Webb: <a href="https://rapidsakerhet.se" target="_blank">rapidsakerhet.se</a><br>
+        <br>
+        Vid larm: kontakta via larmpanelen<br>
+        eller det nummer som uppgetts vid avtal
+      </div>
+      <div class="cc-services">
+        <span class="cc-service">Larmcentral</span>
+        <span class="cc-service">Kamerabevakning</span>
+        <span class="cc-service">Bemannad bevakning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 UNDERHÅLLSCHECKLISTA -->
+<section>
+  <div class="section-header"><span class="section-label">03 / Underhåll</span><div class="section-line"></div></div>
+  <h2>Underhållschecklista</h2>
+  <p class="section-sub">Regelbundna kontroller för att hålla systemet i drift</p>
+
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Inventera brandvarnare</strong> — antal, placering och batteristatus</div>
+      <div class="check-date">att göra</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Testa alla larmsensorer</strong> — dörrar, fönster, rörelsedetektor</div>
+      <div class="check-date">att göra</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Verifiera kameraövervakning</strong> — bildkvalitet och inspelning</div>
+      <div class="check-date">att göra</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Kontrollera larmpanelens batteri</strong> — backup vid strömavbrott</div>
+      <div class="check-date">att göra</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Byt batterier i brandvarnare</strong> — rekommenderas 1 gång/år</div>
+      <div class="check-date">att göra</div>
+    </div>
+    <div class="check-item">
+      <div class="check-box todo"></div>
+      <div class="check-text"><strong>Uppdatera larmkoder och nycklar</strong> — vid byte av boende eller efter lång frånvaro</div>
+      <div class="check-date">att göra</div>
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    <strong>Tips:</strong> Boka en genomgång med Österåkers Lås &amp; Larm (08-540 662 80) för att verifiera systemets status, gå igenom koder och kontrollera att Rapid Säkerhets larmmottagning fungerar korrekt. Rekommenderas vid tillträde till ny fastighet.
+  </div>
+</section>
+
+<!-- 04 NÖDKONTAKTER -->
+<section>
+  <div class="section-header"><span class="section-label">04 / Nödkontakter</span><div class="section-line"></div></div>
+  <h2>Vid larm eller nödsituation</h2>
+  <p class="section-sub">Viktiga nummer att ha tillgängliga</p>
+
+  <div class="contact-grid">
+    <div class="contact-card red">
+      <div class="cc-label">Nödnummer</div>
+      <div class="cc-name">SOS Alarm</div>
+      <div class="cc-detail">
+        Polis / Brand / Ambulans: <a href="tel:112"><strong>112</strong></a><br>
+        Polisens icke-akuta linje: <a href="tel:11414">114 14</a>
+      </div>
+    </div>
+    <div class="contact-card blue">
+      <div class="cc-label">Larm &amp; Service</div>
+      <div class="cc-name">Österåkers Lås &amp; Larm</div>
+      <div class="cc-detail">
+        Tel: <a href="tel:0854066280">08-540 662 80</a><br>
+        Felanmälan: <a href="https://laslarm.se/felanmalan/" target="_blank">laslarm.se/felanmalan</a>
+      </div>
+    </div>
+    <div class="contact-card green">
+      <div class="cc-label">Larmcentral</div>
+      <div class="cc-name">Rapid Säkerhet</div>
+      <div class="cc-detail">
+        Webb: <a href="https://rapidsakerhet.se" target="_blank">rapidsakerhet.se</a><br>
+        Larmnummer: se avtalet
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · Säkerhet &amp; Larm · <a href="index.html">← Startsidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+
+<script>
+const now = new Date();
+const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+document.getElementById('footerDate').textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
