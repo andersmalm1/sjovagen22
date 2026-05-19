@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sjövägen 22 — Österskär</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4f0;
+  --surface:#ffffff;
+  --surface2:#f0eeea;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.12);
+  --text:#1a1a18;
+  --muted:#6b6b62;
+  --subtle:#9a9a8e;
+  --accent-green:#16a34a;
+  --accent-blue:#2563eb;
+  --accent-orange:#ea580c;
+  --accent-amber:#b45309;
+  --accent-red:#dc2626;
+  --accent-teal:#0d9488;
+  --accent-purple:#7c3aed;
+  --font-mono:'DM Mono',monospace;
+  --font-body:'DM Sans',sans-serif;
+  --font-display:'Fraunces',serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* Subtle grid */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
+
+/* ── HERO ─────────────────────────────────── */
+.hero{
+  padding:72px 0 56px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:60px;
+}
+
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:32px;
+}
+
+.hero-eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent-blue);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.hero-eyebrow::before{
+  content:'';
+  width:32px;
+  height:1px;
+  background:var(--accent-blue);
+  display:inline-block;
+}
+
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(48px,7vw,80px);
+  font-weight:200;
+  letter-spacing:-.03em;
+  line-height:.95;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+.hero-title em{
+  font-style:italic;
+  color:var(--muted);
+}
+
+.hero-sub{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--muted);
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+}
+
+.hero-sub span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.hero-sub span::before{
+  content:'·';
+  color:var(--subtle);
+}
+
+.hero-sub span:first-child::before{display:none;}
+
+.hero-meta{
+  text-align:right;
+}
+
+.hero-date{
+  font-family:var(--font-mono);
+  font-size:10px;
+  color:var(--subtle);
+  margin-bottom:4px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.hero-date-val{
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:300;
+  color:var(--muted);
+  letter-spacing:-.02em;
+}
+
+/* ── STATUS BAR ───────────────────────────── */
+.status-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:60px;
+}
+
+.status-pill{
+  font-family:var(--font-mono);
+  font-size:11px;
+  padding:5px 12px;
+  border-radius:100px;
+  border:1px solid;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.status-pill.ok{color:var(--accent-green);border-color:rgba(22,163,74,0.25);background:rgba(22,163,74,0.07);}
+.status-pill.warn{color:var(--accent-orange);border-color:rgba(234,88,12,0.25);background:rgba(234,88,12,0.07);}
+.status-pill.alert{color:var(--accent-red);border-color:rgba(220,38,38,0.25);background:rgba(220,38,38,0.07);}
+.status-pill.idle{color:var(--subtle);border-color:var(--border2);background:transparent;}
+
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ok .status-dot{background:var(--accent-green);}
+.warn .status-dot{background:var(--accent-orange);}
+.alert .status-dot{background:var(--accent-red);}
+.idle .status-dot{background:var(--subtle);}
+
+/* ── SECTION LABEL ────────────────────────── */
+.section-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:24px;
+}
+
+.section-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  white-space:nowrap;
+}
+
+.section-line{flex:1;height:1px;background:var(--border);}
+
+/* ── CARD GRID ────────────────────────────── */
+.card-grid{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  gap:14px;
+  margin-bottom:60px;
+}
+
+/* Card sizes */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:12px;
+  padding:26px 24px;
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+
+.card:hover{
+  border-color:rgba(0,0,0,0.22);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  border-radius:12px 12px 0 0;
+  opacity:0;
+  transition:opacity .2s;
+}
+
+.card:hover::before{opacity:1;}
+
+/* Accent colors per card */
+.card.c-green::before{background:var(--accent-green);}
+.card.c-blue::before{background:var(--accent-blue);}
+.card.c-orange::before{background:var(--accent-orange);}
+.card.c-amber::before{background:var(--accent-amber);}
+.card.c-red::before{background:var(--accent-red);}
+.card.c-teal::before{background:var(--accent-teal);}
+.card.c-purple::before{background:var(--accent-purple);}
+.card.c-muted::before{background:var(--subtle);}
+
+/* Grid column spans */
+.span-4{grid-column:span 4;}
+.span-3{grid-column:span 3;}
+.span-6{grid-column:span 6;}
+.span-8{grid-column:span 8;}
+.span-12{grid-column:span 12;}
+
+.card-icon{font-size:22px;line-height:1;margin-bottom:2px;}
+.card-category{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:2px;}
+.card-title{font-size:15px;font-weight:500;color:var(--text);letter-spacing:-.01em;}
+.card-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.6;flex:1;}
+
+.card-status{
+  font-family:var(--font-mono);
+  font-size:10px;
+  padding:3px 8px;
+  border-radius:3px;
+  border:1px solid;
+  width:fit-content;
+  margin-top:auto;
+}
+
+.card-status.live{color:var(--accent-green);border-color:rgba(22,163,74,0.25);background:rgba(22,163,74,0.06);}
+.card-status.partial{color:var(--accent-blue);border-color:rgba(37,99,235,0.2);background:rgba(37,99,235,0.05);}
+.card-status.soon{color:var(--accent-orange);border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.05);}
+.card-status.planned{color:var(--subtle);border-color:var(--border2);background:transparent;}
+.card-status.alert{color:var(--accent-red);border-color:rgba(220,38,38,0.2);background:rgba(220,38,38,0.05);}
+
+/* Disabled cards (not yet built) */
+.card.disabled{
+  opacity:.5;
+  pointer-events:none;
+  cursor:default;
+}
+
+.card.disabled:hover{
+  transform:none;
+  box-shadow:none;
+  border-color:var(--border2);
+}
+
+/* ── FOOTER ───────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 0 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:20px;
+}
+
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+.footer-txt a{color:var(--accent-blue);text-decoration:none;}
+
+/* ── ANIMATIONS ───────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.hero{animation:fadeUp .5s ease both;}
+.status-bar{animation:fadeUp .5s ease both .08s;}
+.card-grid{animation:fadeUp .5s ease both .14s;}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media(max-width:900px){
+  .span-4{grid-column:span 6;}
+  .span-3{grid-column:span 6;}
+  .span-6{grid-column:span 12;}
+  .span-8{grid-column:span 12;}
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-meta{text-align:left;}
+}
+
+@media(max-width:600px){
+  .wrap{padding:0 16px;}
+  .span-4,.span-3,.span-6{grid-column:span 12;}
+  .hero-title{font-size:40px;}
+  .hero{padding:48px 0 36px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fastighetsdashboard · Tuna 7:139</div>
+      <h1 class="hero-title">Sjövägen 22<br><em>Österskär</em></h1>
+      <div class="hero-sub">
+        <span>Byggd 1968</span>
+        <span>Myresjöhus typ 11</span>
+        <span>Vattenburen värme · Pellets · Solfångare</span>
+        <span>SVEF 110 vindandelar</span>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-date">Idag</div>
+      <div class="hero-date-val" id="heroDate">—</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── STATUS ─────────────────────────────────────────── -->
+<div class="status-bar">
+  <div class="status-pill alert"><div class="status-dot"></div>Pelletslager — nästan tomt</div>
+  <div class="status-pill alert"><div class="status-dot"></div>Solfångare — Alarm Flöde</div>
+  <div class="status-pill warn"><div class="status-dot"></div>Pellets — beställning pågår</div>
+  <div class="status-pill warn"><div class="status-dot"></div>VVS-service — ej bokad</div>
+  <div class="status-pill ok"><div class="status-dot"></div>Webbplats live</div>
+  <div class="status-pill ok"><div class="status-dot"></div>Elpriser uppdateras dagligen</div>
+</div>
+
+<!-- ── ENERGI & DRIFT ─────────────────────────────────── -->
+<div class="section-row">
+  <span class="section-label">Energi &amp; Drift</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="card-grid">
+
+  <a href="sjovagen22.html" class="card span-4 c-blue">
+    <div class="card-icon">⚡</div>
+    <div class="card-category">Energi</div>
+    <div class="card-title">Elförbrukningsoptimering</div>
+    <div class="card-desc">Historisk prisjämförelse el SE3, SVEF vindandelar och pellets bulk · öre/kWh · 2005–idag</div>
+    <div class="card-status live">● live · uppdateras dagligen</div>
+  </a>
+
+  <a href="pellets.html" class="card span-4 c-orange">
+    <div class="card-icon">🛢</div>
+    <div class="card-category">Pellets</div>
+    <div class="card-title">Pelletslogg</div>
+    <div class="card-desc">Logga leveranser · förbrukning per säsong · prisutveckling · lagerkapacitet 3,6 ton</div>
+    <div class="card-status partial">● inmatning aktiv</div>
+  </a>
+
+  <a href="underhall.html" class="card span-4 c-amber">
+    <div class="card-icon">🔧</div>
+    <div class="card-category">Underhåll</div>
+    <div class="card-title">Drift &amp; Underhåll Pellets</div>
+    <div class="card-desc">Rengöringsrutiner · pelletsmatning · skorstensservice · tekniska data · manualer</div>
+    <div class="card-status live">● live</div>
+  </a>
+
+  <a href="solfangare.html" class="card span-4 c-teal disabled">
+    <div class="card-icon">☀️</div>
+    <div class="card-category">Solfångare</div>
+    <div class="card-title">Solfångarstatistik</div>
+    <div class="card-desc">Watts LCD+ · insamlad energi kWh · kollektortemperatur · drifttimmar · väntar på SD-kort</div>
+    <div class="card-status soon">○ väntar på SD-kort</div>
+  </a>
+
+  <a href="varmesystem.html" class="card span-4 c-red disabled">
+    <div class="card-icon">🌡</div>
+    <div class="card-category">Värmesystem</div>
+    <div class="card-title">Ackumulatortank &amp; Värmekrets</div>
+    <div class="card-desc">Danfoss ECL Comfort 110 · Modbus RTU · fram/returtemperatur · väntar på Raspberry Pi</div>
+    <div class="card-status planned">○ väntar på Raspberry Pi</div>
+  </a>
+
+  <a href="vader.html" class="card span-4 c-purple disabled">
+    <div class="card-icon">🌤</div>
+    <div class="card-category">Väder &amp; Klimat</div>
+    <div class="card-title">Lokal väderstation</div>
+    <div class="card-desc">Temperatur · vindriktning · vindstyrka · luftfuktighet · barometer · historik</div>
+    <div class="card-status planned">○ märke/modell ej bekräftat</div>
+  </a>
+
+</div>
+
+<!-- ── FASTIGHET ───────────────────────────────────────── -->
+<div class="section-row">
+  <span class="section-label">Fastighet</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="card-grid">
+
+  <a href="sjovagen22.html#fastighet" class="card span-4 c-blue">
+    <div class="card-icon">🏠</div>
+    <div class="card-category">Fastighetsdata</div>
+    <div class="card-title">Taxering &amp; Avgifter</div>
+    <div class="card-desc">Tuna 7:139 · taxeringsvärde 7 316 000 kr (2023) · fastighetsavgift 10 074 kr/år</div>
+    <div class="card-status live">● live</div>
+  </a>
+
+  <a href="underhallsplan.html" class="card span-4 c-green disabled">
+    <div class="card-icon">📋</div>
+    <div class="card-category">Planering</div>
+    <div class="card-title">Underhållsplan</div>
+    <div class="card-desc">Planerat och genomfört underhåll · kostnadsspårning · 10-årsplan</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+  <a href="dokument.html" class="card span-4 c-muted disabled">
+    <div class="card-icon">📁</div>
+    <div class="card-category">Administration</div>
+    <div class="card-title">Dokument</div>
+    <div class="card-desc">Försäkringsbrev · besiktningsprotokoll · servicekvitton · garantihandlingar</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+  <a href="ritningar.html" class="card span-3 c-muted disabled">
+    <div class="card-icon">📐</div>
+    <div class="card-category">Ritningar</div>
+    <div class="card-title">Planritningar &amp; Kartor</div>
+    <div class="card-desc">Planritningar · tomtkarta · VA-karta · el-schema</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+  <a href="sakerhet.html" class="card span-3 c-red disabled">
+    <div class="card-icon">🔒</div>
+    <div class="card-category">Säkerhet</div>
+    <div class="card-title">Larm &amp; Brandskydd</div>
+    <div class="card-desc">Brandvarnare · inbrottslarm · senaste test och kontroll</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+  <a href="kontakter.html" class="card span-3 c-muted disabled">
+    <div class="card-icon">📞</div>
+    <div class="card-category">Kontakter</div>
+    <div class="card-title">Leverantörer &amp; Service</div>
+    <div class="card-desc">VVS · elektriker · sotare · försäkring · grannkontakter</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+  <a href="tomt.html" class="card span-3 c-green disabled">
+    <div class="card-icon">🌿</div>
+    <div class="card-category">Tomt &amp; Utemiljö</div>
+    <div class="card-title">Tomt &amp; Lantbruksandel</div>
+    <div class="card-desc">Tuna 7:135 (1/7 lantbruksenhet) · brygga/sjörätt · trädgård</div>
+    <div class="card-status planned">○ planerad</div>
+  </a>
+
+</div>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · Tuna 7:139 · Fastighetsdashboard v2.0</div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+
+</div>
+
+<script>
+const now = new Date();
+const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortMonths = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+
+document.getElementById('heroDate').textContent =
+  `${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
+
+document.getElementById('footerDate').textContent =
+  `Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
