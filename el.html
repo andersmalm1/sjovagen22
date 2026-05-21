@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elförbrukning — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1a18;--muted:#6b6b62;--subtle:#9a9a8e;--accent-green:#16a34a;--accent-blue:#2563eb;--accent-orange:#ea580c;--accent-amber:#b45309;--accent-red:#dc2626;--accent-teal:#0d9488;--accent-purple:#7c3aed;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;--font-display:'Fraunces',serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;animation:fadeUp .5s ease both;}
+.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-amber);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--accent-amber);display:inline-block;}
+.hero-title{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:200;letter-spacing:-.03em;line-height:1;color:var(--text);}
+.hero-title em{font-style:italic;color:var(--muted);}
+.hero-nav{font-family:var(--font-mono);font-size:11px;color:var(--accent-blue);text-decoration:none;margin-top:16px;display:inline-flex;align-items:center;gap:6px;}
+.hero-nav:hover{text-decoration:underline;}
+.hero-meta{text-align:right;}
+.hero-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase;}
+.hero-date-val{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--muted);letter-spacing:-.02em;}
+.section-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:40px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+.block{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:32px;margin-bottom:16px;position:relative;overflow:hidden;animation:fadeUp .4s ease both .1s;}
+.block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.block.c-amber::before{background:var(--accent-amber);}
+.block.c-blue::before{background:var(--accent-blue);}
+.block-header{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+.block-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--subtle);text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
+.block-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}
+.tbl th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border2);}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--surface2);}
+.tbl td.mono{font-family:var(--font-mono);font-size:12px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:4px;}
+.kpi{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;}
+.kpi-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px;}
+.kpi-val{font-family:var(--font-display);font-size:26px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
+.kpi-unit{font-size:13px;color:var(--muted);margin-left:3px;}
+.chart-wrap{margin-top:20px;}
+canvas{max-width:100%;display:block;}
+/* Import-knapp */
+.import-area{margin-top:4px;}
+.import-label{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent-amber);border:1px solid rgba(180,83,9,0.3);background:rgba(180,83,9,0.06);padding:7px 14px;border-radius:6px;cursor:pointer;transition:background .15s,border-color .15s;}
+.import-label:hover{background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,0.45);}
+.import-hint{margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);line-height:1.7;}
+.import-hint a{color:var(--accent-blue);text-decoration:none;}
+.import-hint code{background:var(--surface2);padding:1px 5px;border-radius:3px;}
+footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:40px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+.footer-txt a{color:var(--accent-blue);text-decoration:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-meta{text-align:left;}}
+@media(max-width:600px){.wrap{padding:0 16px;}.hero-title{font-size:32px;}.hero{padding:40px 0 32px;}.block{padding:20px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fastighetsdashboard · El</div>
+      <h1 class="hero-title">Elförbrukning<br><em>Gislaved Energi</em></h1>
+      <a href="index.html" class="hero-nav">← Startsidan</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-date">Idag</div>
+      <div class="hero-date-val" id="heroDate">—</div>
+    </div>
+  </div>
+</header>
+
+<!-- KPI-rutor (fylls dynamiskt) -->
+<div class="kpi-grid" id="elKPIs">
+  <div class="kpi"><div class="kpi-label">Total period</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">Snitt/dag</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">Senaste månad</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">SVEF-kvot</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Importera data</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-amber">
+  <div class="block-header">
+    <span class="block-num">01</span>
+    <span class="block-title">CSV-import</span>
+  </div>
+  <div class="block-sub">Exportera förbrukningsdata från Mina sidor och ladda upp här</div>
+  <div class="import-area">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <label for="elCsvInput" class="import-label">↑ Importera CSV från Gislaved Energi</label>
+      <input type="file" id="elCsvInput" accept=".csv,.txt" style="display:none;">
+      <span id="elImportStatus" style="font-family:var(--font-mono);font-size:11px;color:var(--subtle);">Ingen fil inläst</span>
+    </div>
+    <div class="import-hint">
+      Logga in på <a href="https://minasidor.gislavedenergi.se" target="_blank">minasidor.gislavedenergi.se</a> och exportera din förbrukningshistorik som CSV.
+      Kolumner som stöds: <code>Datum</code> <code>Förbrukning (kWh)</code>
+    </div>
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Förbrukning per månad</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-amber">
+  <div class="block-header">
+    <span class="block-num">02</span>
+    <span class="block-title">Månadsförbrukning</span>
+  </div>
+  <div class="block-sub">kWh per månad · vintermånader (okt–mars) mörkare · SVEF-andel 11 000 kWh/år</div>
+  <div class="chart-wrap">
+    <canvas id="elManadChart" width="700" height="220"></canvas>
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Rullande snitt</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">03</span>
+    <span class="block-title">Rullande 30-dagarssnitt</span>
+  </div>
+  <div class="block-sub">Genomsnittlig dagsförbrukning kWh/dag — jämnar ut säsongsvariationer</div>
+  <div class="chart-wrap">
+    <canvas id="elSnittChart" width="700" height="180"></canvas>
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Senaste avläsningar</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue" id="elTblBlock">
+  <div class="block-header">
+    <span class="block-num">04</span>
+    <span class="block-title">Avläsningslogg</span>
+  </div>
+  <div class="block-sub">De 10 senaste inlästa raderna</div>
+  <table class="tbl">
+    <thead><tr><th>Datum</th><th>Förbrukning (kWh)</th></tr></thead>
+    <tbody id="elTblBody"><tr><td colspan="2" style="font-family:var(--font-mono);font-size:12px;color:var(--subtle);padding:16px 12px;">Ladda upp CSV för att visa logg</td></tr></tbody>
+  </table>
+</div>
+
+<div class="section-row">
+  <span class="section-label">SVEF-andelar</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-amber">
+  <div class="block-header">
+    <span class="block-num">05</span>
+    <span class="block-title">SVEF Vindkraft — Elavtal</span>
+  </div>
+  <div class="block-sub">Elhandel avtal 726684 · Vind medelspotpris · start 1 jul 2023 · SE3 · E.ON Energidistribution AB</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Avtalstyp</td><td class="mono">Vind medelspotpris</td></tr>
+      <tr><td>Avtalsnummer</td><td class="mono">726684</td></tr>
+      <tr><td>Startdatum</td><td class="mono">2023-07-01</td></tr>
+      <tr><td>Elområde</td><td class="mono">SE3</td></tr>
+      <tr><td>Nätägare</td><td class="mono">E.ON Energidistribution AB</td></tr>
+      <tr><td>Mätarnummer</td><td class="mono">006438105622331318</td></tr>
+      <tr><td>Anl-id</td><td class="mono">735 999 114 009 319 615</td></tr>
+      <tr><td style="border-top:1px solid var(--border2);padding-top:12px;font-weight:500;" colspan="2">SVEF-andelar</td></tr>
+      <tr><td>Antal andelar</td><td class="mono">110 st × 100 kWh = 11 000 kWh/år</td></tr>
+      <tr><td>Fördelning per månad</td><td class="mono">Jan 20% · Feb 13% · Mar 12% · Apr 8% · Maj 6% · Jun 5% · Jul 4% · Aug 5% · Sep 6% · Okt 7% · Nov 6% · Dec 8%</td></tr>
+      <tr><td>Kvot nollställs</td><td class="mono">Vid varje årsskifte</td></tr>
+      <tr><td style="border-top:1px solid var(--border2);padding-top:12px;font-weight:500;" colspan="2">Priskomponenter (Vind andel)</td></tr>
+      <tr><td>Vind andel 2025 (jul–dec)</td><td class="mono">37,00 öre/kWh (maj–jun) · 40,00 öre/kWh (aug–dec)</td></tr>
+      <tr><td>Vind andel 2026 (jan–)</td><td class="mono">40,00 öre/kWh (jan) · 44,00 öre/kWh (feb–)</td></tr>
+      <tr><td style="border-top:1px solid var(--border2);padding-top:12px;font-weight:500;" colspan="2">Priskomponenter (spot-del)</td></tr>
+      <tr><td>Medelspotpris SE3</td><td class="mono">Rörligt månadsmedel</td></tr>
+      <tr><td>Rörliga kostnader</td><td class="mono">Varierar (6–15 öre/kWh)</td></tr>
+      <tr><td>Fasta påslag</td><td class="mono">1,20 öre/kWh</td></tr>
+      <tr><td>Fast avgift</td><td class="mono">11,67 kr/mån</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Fakturahistorik</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">06</span>
+    <span class="block-title">Fakturerade månader</span>
+  </div>
+  <div class="block-sub">Elhandelsfakturor från Gislaved Energi · maj 2025 – apr 2026 · exkl. nätavgift</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Period</th>
+        <th style="text-align:right">Förb. kWh</th>
+        <th style="text-align:right">Spot SE3 öre/kWh</th>
+        <th style="text-align:right">Spot-kWh</th>
+        <th style="text-align:right">Vind kWh</th>
+        <th style="text-align:right">Vind öre/kWh</th>
+        <th style="text-align:right">Faktura inkl moms</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">maj 2025</td><td class="mono" style="text-align:right">2 087</td><td class="mono" style="text-align:right">42,94</td><td class="mono" style="text-align:right">1 427</td><td class="mono" style="text-align:right">660</td><td class="mono" style="text-align:right">37,00</td><td class="mono" style="text-align:right">1 279 kr</td></tr>
+      <tr><td class="mono">jun 2025</td><td class="mono" style="text-align:right">993</td><td class="mono" style="text-align:right">22,78</td><td class="mono" style="text-align:right">443</td><td class="mono" style="text-align:right">550</td><td class="mono" style="text-align:right">37,00</td><td class="mono" style="text-align:right">446 kr</td></tr>
+      <tr><td class="mono">jul 2025</td><td class="mono" style="text-align:right">606</td><td class="mono" style="text-align:right">37,01</td><td class="mono" style="text-align:right">166</td><td class="mono" style="text-align:right">440</td><td class="mono" style="text-align:right">37,00</td><td class="mono" style="text-align:right">316 kr</td></tr>
+      <tr><td class="mono">aug 2025</td><td class="mono" style="text-align:right">1 003</td><td class="mono" style="text-align:right">48,56</td><td class="mono" style="text-align:right">453</td><td class="mono" style="text-align:right">550</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">625 kr</td></tr>
+      <tr><td class="mono">sep 2025</td><td class="mono" style="text-align:right">1 357</td><td class="mono" style="text-align:right">52,33</td><td class="mono" style="text-align:right">697</td><td class="mono" style="text-align:right">660</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">907 kr</td></tr>
+      <tr><td class="mono">okt 2025</td><td class="mono" style="text-align:right">2 890</td><td class="mono" style="text-align:right">62,81</td><td class="mono" style="text-align:right">2 120</td><td class="mono" style="text-align:right">770</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">2 330 kr</td></tr>
+      <tr><td class="mono">nov 2025</td><td class="mono" style="text-align:right">3 666</td><td class="mono" style="text-align:right">69,64</td><td class="mono" style="text-align:right">3 006</td><td class="mono" style="text-align:right">660</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">3 564 kr</td></tr>
+      <tr><td class="mono">dec 2025</td><td class="mono" style="text-align:right">3 940</td><td class="mono" style="text-align:right">51,68</td><td class="mono" style="text-align:right">3 060</td><td class="mono" style="text-align:right">880</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">2 761 kr</td></tr>
+      <tr><td class="mono">jan 2026</td><td class="mono" style="text-align:right">4 956</td><td class="mono" style="text-align:right">108,45</td><td class="mono" style="text-align:right">2 756</td><td class="mono" style="text-align:right">2 200</td><td class="mono" style="text-align:right">40,00</td><td class="mono" style="text-align:right">5 171 kr</td></tr>
+      <tr><td class="mono">feb 2026</td><td class="mono" style="text-align:right">4 723</td><td class="mono" style="text-align:right">110,23</td><td class="mono" style="text-align:right">3 293</td><td class="mono" style="text-align:right">1 430</td><td class="mono" style="text-align:right">44,00</td><td class="mono" style="text-align:right">5 743 kr</td></tr>
+      <tr><td class="mono">mar 2026</td><td class="mono" style="text-align:right">3 081</td><td class="mono" style="text-align:right">58,66</td><td class="mono" style="text-align:right">1 761</td><td class="mono" style="text-align:right">1 320</td><td class="mono" style="text-align:right">44,00</td><td class="mono" style="text-align:right">2 217 kr</td></tr>
+      <tr><td class="mono">apr 2026</td><td class="mono" style="text-align:right">2 063</td><td class="mono" style="text-align:right">56,08</td><td class="mono" style="text-align:right">1 183</td><td class="mono" style="text-align:right">880</td><td class="mono" style="text-align:right">44,00</td><td class="mono" style="text-align:right">1 440 kr</td></tr>
+    </tbody>
+    <tfoot>
+      <tr style="border-top:2px solid var(--border2);">
+        <td style="font-family:var(--font-mono);font-size:11px;color:var(--subtle);">Summa 12 mån</td>
+        <td class="mono" style="text-align:right;font-weight:500;">31 365</td>
+        <td class="mono" style="text-align:right;color:var(--subtle);">—</td>
+        <td class="mono" style="text-align:right;font-weight:500;">20 365</td>
+        <td class="mono" style="text-align:right;font-weight:500;">10 340</td>
+        <td class="mono" style="text-align:right;color:var(--subtle);">—</td>
+        <td class="mono" style="text-align:right;font-weight:500;">26 799 kr</td>
+      </tr>
+    </tfoot>
+  </table>
+  <div style="margin-top:14px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);line-height:1.8;">
+    <strong>Not:</strong> Fakturorna avser elhandel (Gislaved Energi AB) · exkl. nätavgift (E.ON Energidistribution AB) · moms ingår.<br>
+    Vind andel-priset ändrades: 37 öre/kWh (maj–jul 2025) → 40 öre/kWh (aug 2025–jan 2026) → 44 öre/kWh (feb 2026–).<br>
+    Nya avtalsvillkor gäller fr.o.m. 2026-01-01. Vindandelskvoten nollställs vid varje årsskifte (jan 2026: 0 kWh carry-in).
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Mätarställningar</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">07</span>
+    <span class="block-title">Mätarhistorik</span>
+  </div>
+  <div class="block-sub">Avlästa mätarställningar från fakturorna · mätarnr 006438105622331318</div>
+  <table class="tbl">
+    <thead><tr><th>Datum</th><th style="text-align:right">Mätarställning (kWh)</th><th style="text-align:right">Förbrukning perioden</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">2025-05-01</td><td class="mono" style="text-align:right">64 737</td><td class="mono" style="text-align:right">—</td></tr>
+      <tr><td class="mono">2025-06-01</td><td class="mono" style="text-align:right">66 824</td><td class="mono" style="text-align:right">2 087 kWh</td></tr>
+      <tr><td class="mono">2025-07-01</td><td class="mono" style="text-align:right">67 817</td><td class="mono" style="text-align:right">993 kWh</td></tr>
+      <tr><td class="mono">2025-08-01</td><td class="mono" style="text-align:right">68 423</td><td class="mono" style="text-align:right">606 kWh</td></tr>
+      <tr><td class="mono">2025-09-01</td><td class="mono" style="text-align:right">69 426</td><td class="mono" style="text-align:right">1 003 kWh</td></tr>
+      <tr><td class="mono">2025-10-01</td><td class="mono" style="text-align:right">70 783</td><td class="mono" style="text-align:right">1 357 kWh</td></tr>
+      <tr><td class="mono">2025-11-01</td><td class="mono" style="text-align:right">73 673</td><td class="mono" style="text-align:right">2 890 kWh</td></tr>
+      <tr><td class="mono">2025-12-01</td><td class="mono" style="text-align:right">77 339</td><td class="mono" style="text-align:right">3 666 kWh</td></tr>
+      <tr><td class="mono">2026-01-01</td><td class="mono" style="text-align:right">81 279</td><td class="mono" style="text-align:right">3 940 kWh</td></tr>
+      <tr><td class="mono">2026-02-01</td><td class="mono" style="text-align:right">86 235</td><td class="mono" style="text-align:right">4 956 kWh</td></tr>
+      <tr><td class="mono">2026-03-01</td><td class="mono" style="text-align:right">90 958</td><td class="mono" style="text-align:right">4 723 kWh</td></tr>
+      <tr><td class="mono">2026-04-01</td><td class="mono" style="text-align:right">94 039</td><td class="mono" style="text-align:right">3 081 kWh</td></tr>
+      <tr><td class="mono">2026-05-01</td><td class="mono" style="text-align:right">96 102</td><td class="mono" style="text-align:right">2 063 kWh</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · <a href="index.html">← Startsidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+
+<script>
+const now=new Date();
+const months=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortMonths=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const days=['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+document.getElementById('heroDate').textContent=`${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
+document.getElementById('footerDate').textContent=`Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+// ── CSV-parsning ──────────────────────────────────────────
+function parseCSV(text){
+  var rows=text.trim().split(/\r?\n/);var result=[];
+  var headerIdx=0;
+  for(var i=0;i<Math.min(rows.length,5);i++){if(/datum|date|tid|period/i.test(rows[i])){headerIdx=i;break;}}
+  var headers=rows[headerIdx].split(/[;,\t]/).map(function(h){return h.trim().toLowerCase().replace(/"/g,'');});
+  var datCol=-1,kwhCol=-1;
+  headers.forEach(function(h,i){if(/datum|date|tid|period/i.test(h))datCol=i;if(/kwh|förbrukning|consumption|energi|energy/i.test(h))kwhCol=i;});
+  if(datCol===-1)datCol=0;if(kwhCol===-1)kwhCol=1;
+  for(var r=headerIdx+1;r<rows.length;r++){
+    var cols=rows[r].split(/[;,\t]/).map(function(c){return c.trim().replace(/"/g,'');});
+    if(cols.length<2)continue;
+    var rawDate=cols[datCol],rawKwh=cols[kwhCol].replace(',','.');
+    var dateStr=rawDate.slice(0,10);
+    if(/^\d{2}[\/\-]\d{2}[\/\-]\d{4}/.test(rawDate)){var p=rawDate.split(/[\/\-]/);dateStr=p[2]+'-'+p[1]+'-'+p[0];}
+    var kwh=parseFloat(rawKwh);
+    if(dateStr&&!isNaN(kwh))result.push({datum:dateStr,kwh:kwh});
+  }
+  return result.sort(function(a,b){return a.datum<b.datum?-1:1;});
+}
+
+function byMonth(data){
+  // Data är redan per månad (YYYY-MM-01) — aggregera om flera rader per månad finns
+  var map={};
+  data.forEach(function(d){var m=d.datum.slice(0,7);map[m]=(map[m]||0)+d.kwh;});
+  return Object.keys(map).sort().map(function(m){return{manad:m,kwh:Math.round(map[m]*10)/10};});
+}
+
+function clearCanvas(canvas){var ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#f5f4f0';ctx.fillRect(0,0,canvas.width,canvas.height);return ctx;}
+
+function ritaManad(manadData){
+  var canvas=document.getElementById('elManadChart');var ctx=clearCanvas(canvas);
+  var w=canvas.width,h=canvas.height;var pad={top:28,right:20,bottom:52,left:60};
+  if(!manadData.length)return;
+  var vals=manadData.map(function(m){return m.kwh;});var maxV=Math.ceil(Math.max.apply(null,vals)*1.15/100)*100||100;
+  var n=manadData.length;var plotW=w-pad.left-pad.right;var plotH=h-pad.top-pad.bottom;var barW=Math.max(4,plotW/n-4);
+  function xBar(i){return pad.left+(i+0.5)*plotW/n-barW/2;}
+  function yVal(v){return pad.top+(1-v/maxV)*plotH;}
+  var gridStep=maxV<=500?100:maxV<=1000?200:500;
+  ctx.font='11px "DM Mono",monospace';
+  for(var v=0;v<=maxV;v+=gridStep){var y=yVal(v);ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(w-pad.right,y);ctx.stroke();ctx.fillStyle='#9a9a8e';ctx.textAlign='right';ctx.fillText(v,pad.left-6,y+4);}
+  manadData.forEach(function(m,i){
+    var x=xBar(i),y=yVal(m.kwh),bh=plotH-(y-pad.top);
+    var mn=parseInt(m.manad.slice(5));var isWinter=mn>=10||mn<=3;
+    ctx.fillStyle=isWinter?'rgba(180,83,9,0.75)':'rgba(180,83,9,0.38)';
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,barW,bh,[3,3,0,0]);else ctx.rect(x,y,barW,bh);ctx.fill();
+    if(n<=18||i%3===0){ctx.fillStyle='#9a9a8e';ctx.textAlign='center';ctx.font='10px "DM Mono",monospace';ctx.save();ctx.translate(x+barW/2,h-pad.bottom+8);ctx.rotate(-Math.PI/4);ctx.fillText(m.manad.slice(0,7),0,0);ctx.restore();}
+    if(barW>20){ctx.fillStyle='#6b6b62';ctx.textAlign='center';ctx.font='10px "DM Mono",monospace';ctx.fillText(m.kwh,x+barW/2,y-4);}
+  });
+  ctx.fillStyle='#9a9a8e';ctx.font='10px "DM Mono",monospace';ctx.textAlign='left';ctx.fillText('ELFÖRBRUKNING PER MÅNAD (KWH)',pad.left,16);
+}
+
+function ritaSnitt(data){
+  // Rita månadsförbrukning omräknat till kWh/dag (kwh ÷ dagar i månaden)
+  var canvas=document.getElementById('elSnittChart');var ctx=clearCanvas(canvas);
+  var w=canvas.width,h=canvas.height;var pad={top:28,right:20,bottom:52,left:60};
+  var manadData=byMonth(data);
+  if(manadData.length<2)return;
+  // Räkna dagar per månad
+  var snitt=manadData.map(function(m){
+    var yr=parseInt(m.manad.slice(0,4)),mo=parseInt(m.manad.slice(5,7));
+    var dagar=new Date(yr,mo,0).getDate();
+    return{datum:m.manad,snitt:Math.round(m.kwh/dagar*10)/10};
+  });
+  var vals=snitt.map(function(s){return s.snitt;});
+  var maxV=Math.ceil(Math.max.apply(null,vals)*1.2/10)*10||10;
+  var n=snitt.length;
+  function xPos(i){return pad.left+i/(n-1)*(w-pad.left-pad.right);}
+  function yPos(v){return pad.top+(1-v/maxV)*(h-pad.top-pad.bottom);}
+  var gridStep=maxV<=20?5:maxV<=50?10:20;
+  ctx.font='11px "DM Mono",monospace';
+  for(var v=0;v<=maxV;v+=gridStep){
+    var y=yPos(v);
+    ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(pad.left,y);ctx.lineTo(w-pad.right,y);ctx.stroke();
+    ctx.fillStyle='#9a9a8e';ctx.textAlign='right';ctx.fillText(v+' kWh',pad.left-6,y+4);
+  }
+  var grad=ctx.createLinearGradient(0,pad.top,0,h-pad.bottom);
+  grad.addColorStop(0,'rgba(180,83,9,0.15)');grad.addColorStop(1,'rgba(180,83,9,0)');
+  ctx.beginPath();
+  snitt.forEach(function(s,i){i===0?ctx.moveTo(xPos(i),yPos(s.snitt)):ctx.lineTo(xPos(i),yPos(s.snitt));});
+  ctx.lineTo(xPos(n-1),h-pad.bottom);ctx.lineTo(xPos(0),h-pad.bottom);ctx.closePath();
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.strokeStyle='#b45309';ctx.lineWidth=2;
+  ctx.beginPath();
+  snitt.forEach(function(s,i){i===0?ctx.moveTo(xPos(i),yPos(s.snitt)):ctx.lineTo(xPos(i),yPos(s.snitt));});
+  ctx.stroke();
+  // X-etiketter
+  snitt.forEach(function(s,i){
+    if(n<=18||i%3===0){
+      ctx.fillStyle='#9a9a8e';ctx.textAlign='center';ctx.font='10px "DM Mono",monospace';
+      ctx.save();ctx.translate(xPos(i),h-pad.bottom+8);ctx.rotate(-Math.PI/4);
+      ctx.fillText(s.datum,0,0);ctx.restore();
+    }
+  });
+  ctx.fillStyle='#9a9a8e';ctx.font='10px "DM Mono",monospace';ctx.textAlign='left';
+  ctx.fillText('DAGSFÖRBRUKNING KWH/DAG (PER MÅNAD)',pad.left,16);
+}
+
+function visaKPI(data,manadData){
+  var total=manadData.reduce(function(s,m){return s+m.kwh;},0);
+  var antalManader=manadData.length;
+  var snittManad=antalManader?Math.round(total/antalManader):0;
+  var snittDag=Math.round(snittManad/30*10)/10;
+  var senaste=manadData.length?manadData[manadData.length-1]:null;
+  // Helårsförbrukning: räkna senaste 12 månader om tillräckligt med data finns
+  var arsForb=0;
+  if(manadData.length>=12){
+    arsForb=Math.round(manadData.slice(-12).reduce(function(s,m){return s+m.kwh;},0));
+  }
+  function kpi(label,val,unit,color){return'<div class="kpi"><div class="kpi-label">'+label+'</div><div class="kpi-val" style="color:'+(color||'var(--text)')+'">'+val+'<span class="kpi-unit">'+unit+'</span></div></div>';}
+  var html='';
+  html+=kpi('Total period',Math.round(total).toLocaleString('sv-SE'),'kWh');
+  if(arsForb)html+=kpi('Senaste 12 mån',arsForb.toLocaleString('sv-SE'),'kWh');
+  if(senaste)html+=kpi('Senaste mån',senaste.kwh.toLocaleString('sv-SE'),'kWh');
+  html+=kpi('Snitt/dag',snittDag,'kWh/dag');
+  document.getElementById('elKPIs').innerHTML=html;
+}
+
+function visaTabell(data){
+  var tbody=document.getElementById('elTblBody');
+  tbody.innerHTML=data.slice(-10).reverse().map(function(d){return'<tr><td class="mono">'+d.datum+'</td><td class="mono">'+d.kwh+' kWh</td></tr>';}).join('');
+}
+
+function rendera(data){
+  if(!data.length)return;
+  var manadData=byMonth(data);
+  visaKPI(data,manadData);
+  ritaManad(manadData);
+  ritaSnitt(data);
+  visaTabell(data);
+}
+
+document.getElementById('elCsvInput').addEventListener('change',function(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    var data=parseGislavedCSV(ev.target.result);
+    var status=document.getElementById('elImportStatus');
+    if(!data.length){status.textContent='⚠ Kunde inte tolka filen — kontrollera format';status.style.color='var(--accent-red)';return;}
+    status.textContent='✓ '+data.length+' månader inlästa ('+data[0].datum+' → '+data[data.length-1].datum+')';
+    status.style.color='var(--accent-green)';
+    rendera(data);
+  };
+  reader.readAsText(file,'UTF-8');
+});
+
+// ── Parser för Gislaved Energis månadsformat ───────────────────
+// Hanterar "jul-2023", "1 272,00" (svenska siffror med mellanslag och komma)
+function parseGislavedCSV(text){
+  var manadMap={jan:'01',feb:'02',mar:'03',apr:'04',maj:'05',jun:'06',
+                jul:'07',aug:'08',sep:'09',okt:'10',nov:'11',dec:'12'};
+  var rows=text.trim().split(/\r?\n/);
+  var result=[];
+  rows.forEach(function(row){
+    var cols=row.split(',');
+    if(cols.length<2)return;
+    var rawDat=cols[0].trim().replace(/"/g,'').toLowerCase();
+    var rawKwh=cols.slice(1).join(',').trim().replace(/"/g,'').replace(/\s/g,'').replace(',','.');
+    // Förväntat format: "jul-2023"
+    var m=rawDat.match(/^([a-zåäö]{2,3})-(\d{4})$/);
+    if(!m)return;
+    var mon=manadMap[m[1]];if(!mon)return;
+    var isoDate=m[2]+'-'+mon+'-01';
+    var kwh=parseFloat(rawKwh);
+    if(!isNaN(kwh)&&kwh>=0)result.push({datum:isoDate,kwh:kwh});
+  });
+  return result.sort(function(a,b){return a.datum<b.datum?-1:1;});
+}
+
+// ── Inbyggd startdata (Gislaved Energi export 2026-05-21) ─────
+// Sjövägen 22 · elmätare monterad jul 2023 · period jul-2023 – apr-2026
+var STARTDATA = [
+  {datum:'2023-07-01',kwh:698},
+  {datum:'2023-08-01',kwh:889},
+  {datum:'2023-09-01',kwh:1272},
+  {datum:'2023-10-01',kwh:3581},
+  {datum:'2023-11-01',kwh:4355},
+  {datum:'2023-12-01',kwh:5116},
+  {datum:'2024-01-01',kwh:5484},
+  {datum:'2024-02-01',kwh:4501},
+  {datum:'2024-03-01',kwh:3909},
+  {datum:'2024-04-01',kwh:3320},
+  {datum:'2024-05-01',kwh:1213},
+  {datum:'2024-06-01',kwh:786},
+  {datum:'2024-07-01',kwh:598},
+  {datum:'2024-08-01',kwh:639},
+  {datum:'2024-09-01',kwh:1593},
+  {datum:'2024-10-01',kwh:2729},
+  {datum:'2024-11-01',kwh:3810},
+  {datum:'2024-12-01',kwh:4411},
+  {datum:'2025-01-01',kwh:4673},
+  {datum:'2025-02-01',kwh:4281},
+  {datum:'2025-03-01',kwh:3559},
+  {datum:'2025-04-01',kwh:2659},
+  {datum:'2025-05-01',kwh:2087},
+  {datum:'2025-06-01',kwh:993},
+  {datum:'2025-07-01',kwh:606},
+  {datum:'2025-08-01',kwh:1003},
+  {datum:'2025-09-01',kwh:1357},
+  {datum:'2025-10-01',kwh:2890},
+  {datum:'2025-11-01',kwh:3666},
+  {datum:'2025-12-01',kwh:3940},
+  {datum:'2026-01-01',kwh:4956},
+  {datum:'2026-02-01',kwh:4723},
+  {datum:'2026-03-01',kwh:3081},
+  {datum:'2026-04-01',kwh:2063}
+];
+
+// Uppdatera importstatus och rita direkt
+document.getElementById('elImportStatus').textContent =
+  '✓ 34 månader · jul 2023 – apr 2026 · Gislaved Energi export 2026-05-21 · 12 fakturor inlästa (maj 2025–apr 2026)';
+document.getElementById('elImportStatus').style.color = 'var(--accent-green)';
+rendera(STARTDATA);
+</script>
+</body>
+</html>
