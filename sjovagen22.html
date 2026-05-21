@@ -4,97 +4,719 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sjövägen 22 — Fastighetsdrift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4f0;
+  --surface:#ffffff;
+  --surface2:#f0eeea;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.12);
+  --text:#1a1a18;
+  --muted:#6b6b62;
+  --subtle:#9a9a8e;
+  --accent-green:#16a34a;
+  --accent-blue:#2563eb;
+  --accent-orange:#ea580c;
+  --accent-amber:#b45309;
+  --accent-red:#dc2626;
+  --accent-teal:#0d9488;
+  --accent-purple:#7c3aed;
+  --font-mono:'DM Mono',monospace;
+  --font-body:'DM Sans',sans-serif;
+  --font-display:'Fraunces',serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
+
+/* ── HERO ─────────────────────────────────── */
+.hero{
+  padding:72px 0 56px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:60px;
+  animation:fadeUp .5s ease both;
+}
+
+.hero-inner{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:end;
+  gap:32px;
+}
+
+.hero-eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent-blue);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.hero-eyebrow::before{
+  content:'';
+  width:32px;
+  height:1px;
+  background:var(--accent-blue);
+  display:inline-block;
+}
+
+.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(48px,7vw,80px);
+  font-weight:200;
+  letter-spacing:-.03em;
+  line-height:.95;
+  color:var(--text);
+  margin-bottom:6px;
+}
+
+.hero-title em{
+  font-style:italic;
+  color:var(--muted);
+}
+
+.hero-sub{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--muted);
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+}
+
+.hero-sub span{display:flex;align-items:center;gap:6px;}
+.hero-sub span::before{content:'·';color:var(--subtle);}
+.hero-sub span:first-child::before{display:none;}
+
+.hero-nav{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--accent-blue);
+  text-decoration:none;
+  margin-top:20px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.hero-nav:hover{text-decoration:underline;}
+
+.hero-meta{text-align:right;}
+.hero-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase;}
+.hero-date-val{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--muted);letter-spacing:-.02em;}
+
+/* ── SECTION LABEL ────────────────────────── */
+.section-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:24px;
+}
+
+.section-label{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  white-space:nowrap;
+}
+
+.section-line{flex:1;height:1px;background:var(--border);}
+
+/* ── CONTENT BLOCKS ───────────────────────── */
+.block{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:12px;
+  padding:32px;
+  margin-bottom:16px;
+  position:relative;
+  overflow:hidden;
+}
+
+.block::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  border-radius:12px 12px 0 0;
+}
+
+.block.c-blue::before{background:var(--accent-blue);}
+.block.c-green::before{background:var(--accent-green);}
+.block.c-orange::before{background:var(--accent-orange);}
+.block.c-amber::before{background:var(--accent-amber);}
+.block.c-teal::before{background:var(--accent-teal);}
+.block.c-red::before{background:var(--accent-red);}
+
+.block-header{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:8px;
+}
+
+.block-num{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.15em;
+  color:var(--subtle);
+  text-transform:uppercase;
+}
+
+.block-title{
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:300;
+  letter-spacing:-.02em;
+  color:var(--text);
+}
+
+.block-sub{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:20px;
+  line-height:1.6;
+}
+
+/* ── TABLES ───────────────────────────────── */
+.tbl{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  margin-top:12px;
+}
+
+.tbl th{
+  font-family:var(--font-mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--subtle);
+  text-align:left;
+  padding:8px 12px;
+  border-bottom:1px solid var(--border2);
+}
+
+.tbl td{
+  padding:9px 12px;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+  vertical-align:top;
+}
+
+.tbl tr:last-child td{border-bottom:none;}
+
+.tbl tr:hover td{background:var(--surface2);}
+
+.tbl td.mono{font-family:var(--font-mono);font-size:12px;}
+.tbl td.muted{color:var(--muted);font-family:var(--font-mono);font-size:12px;}
+.tbl .tbl-head td{font-weight:500;background:var(--surface2);color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;}
+
+/* ── NEXT STEP ────────────────────────────── */
+.next-step{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  background:rgba(37,99,235,0.05);
+  border:1px solid rgba(37,99,235,0.15);
+  border-radius:8px;
+  padding:12px 16px;
+  margin-top:16px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--accent-blue);
+  line-height:1.5;
+}
+
+.next-step::before{content:'→';flex-shrink:0;}
+
+/* ── LINKS ────────────────────────────────── */
+.page-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--accent-blue);
+  text-decoration:none;
+  padding:6px 12px;
+  border:1px solid rgba(37,99,235,0.2);
+  border-radius:6px;
+  margin-top:12px;
+  margin-right:8px;
+  background:rgba(37,99,235,0.04);
+  transition:background .15s, border-color .15s;
+}
+.page-link:hover{background:rgba(37,99,235,0.09);border-color:rgba(37,99,235,0.35);}
+
+/* ── CHART ────────────────────────────────── */
+.chart-wrap{margin-top:20px;}
+canvas{max-width:100%;display:block;}
+
+/* ── FOOTER ───────────────────────────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:24px 0 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:40px;
+}
+
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+.footer-txt a{color:var(--accent-blue);text-decoration:none;}
+
+/* ── ANIMATIONS ───────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.section-row{animation:fadeUp .4s ease both .1s;}
+.block{animation:fadeUp .4s ease both .15s;}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-meta{text-align:left;}
+}
+
+@media(max-width:600px){
+  .wrap{padding:0 16px;}
+  .hero-title{font-size:40px;}
+  .hero{padding:48px 0 36px;}
+  .block{padding:20px;}
+}
+</style>
 </head>
 <body>
-<!-- Källkod hämtad från https://andersmalm1.github.io/sjovagen22/sjovagen22.html 2026-05-21 -->
-<!-- OBS sektion 04 är uppdaterad med reviderade mätpunkter och inköpslista enligt session 2026-05-21 -->
+<div class="wrap">
 
-<h1>Sjövägen 22 / Österskär</h1>
-<p>Tuna 7:139 · Byggd 1968 · Myresjöhus typ 11 · Vattenburen värme · Pellets · Solfångare</p>
-<p><a href="index.html">← Startsidan</a></p>
+<!-- ── HERO ──────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fastighetsdashboard · Tuna 7:139</div>
+      <h1 class="hero-title">Sjövägen 22<br><em>Fastighetsdrift</em></h1>
+      <div class="hero-sub">
+        <span>Byggd 1968</span>
+        <span>Myresjöhus typ 11</span>
+        <span>Vattenburen värme · Pellets · Solfångare</span>
+      </div>
+      <a href="index.html" class="hero-nav">← Startsidan</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-date">Idag</div>
+      <div class="hero-date-val" id="heroDate">—</div>
+    </div>
+  </div>
+</header>
 
-<h2>01 / Energioptimering</h2>
-<h3>Elförbrukningsoptimering</h3>
-<p>Historisk prisjämförelse · el SE3 rörligt · SVEF vindandel · pellets bulk · öre/kWh · 2015–idag</p>
-<p>El SE3: spotpris × 1,25 + nätavgift + energiskatt + påslag (≈135 öre/kWh fast del) · SVEF SE3: fast handel 55 öre/kWh inkl. moms + nät + skatt · Pellets: bulk kr/ton ÷ 4 800 kWh/ton ÷ 0,87 verkningsgrad · 110 andelar = 11 000 kWh/år till SVEF-pris · Källor: Nord Pool · PelletsFörbundet · SVEF · SCB</p>
+<!-- ── 01 ENERGIOPTIMERING ───────────────────────────── -->
+<div class="section-row">
+  <span class="section-label">01 · Energioptimering</span>
+  <div class="section-line"></div>
+</div>
 
-<h2>02 / Solfångare</h2>
-<h3>Solfångare — driftstatistik</h3>
-<p>Takmonterad · data exporteras från styrsystem · laddning av ackumulatortank</p>
-<p><strong>Nästa steg:</strong> Exportera driftlogg ur styrsystemet (Watts Solar Controller LCD+, SD-kort max 2 GB FAT32) och ladda upp. Parser förbereds för Watts-format.</p>
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">01</span>
+    <span class="block-title">Elförbrukningsoptimering</span>
+  </div>
+  <div class="block-sub">Historisk prisjämförelse · el SE3 rörligt · SVEF vindandel · pellets bulk · öre/kWh · 2015–idag</div>
+  <p style="font-size:13px;color:var(--muted);line-height:1.7;">
+    El SE3: spotpris × 1,25 + nätavgift + energiskatt + påslag (≈135 öre/kWh fast del) · SVEF SE3: fast handel 55 öre/kWh inkl. moms + nät + skatt · Pellets: bulk kr/ton ÷ 4 800 kWh/ton ÷ 0,87 verkningsgrad · 110 andelar = 11 000 kWh/år till SVEF-pris
+  </p>
+  <div style="margin-top:10px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);">Källor: Nord Pool · PelletsFörbundet · SVEF · SCB</div>
+</div>
 
-<h2>03 / Pelletsförbrukning</h2>
-<h3>Pellets — förbrukning &amp; påfyllning</h3>
-<p>Bulklager i källaren · påfyllning från tankbil via yttervägg · manuell eller automatisk loggning</p>
-<p><a href="pellets.html">🛢 Öppna pelletslogg →</a> &nbsp; <a href="underhall.html">🔧 Drift &amp; underhåll →</a></p>
+<!-- ── 02 SOLFÅNGARE ─────────────────────────────────── -->
+<div class="section-row" style="margin-top:40px;">
+  <span class="section-label">02 · Solfångare</span>
+  <div class="section-line"></div>
+</div>
 
-<h2>04 / Värmestyrcentral</h2>
-<h3>Värmestyrcentral — datauttag</h3>
-<p>Pelletspanna · ackumulatortank · elpatroner · vattenburen värme · solfångarkrets</p>
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">02</span>
+    <span class="block-title">Solfångare — driftstatistik</span>
+  </div>
+  <div class="block-sub">Takmonterad · data exporteras från styrsystem · laddning av ackumulatortank</div>
+  <div class="next-step">Exportera driftlogg ur styrsystemet (Watts Solar Controller LCD+, SD-kort max 2 GB FAT32) och ladda upp. Parser förbereds för Watts-format.</div>
+</div>
 
-<h4>Mätpunkter — DS18B20 temperatursensorer (8 st, 1-Wire-buss)</h4>
-<table border="1" cellpadding="6" cellspacing="0">
-  <thead><tr><th>#</th><th>Position</th><th>Delsystem</th><th>Syfte</th></tr></thead>
-  <tbody>
-    <tr><td>1</td><td>Framledning panna</td><td>Pelletspanna</td><td>Pannans avgiven effekt</td></tr>
-    <tr><td>2</td><td>Retur in i pannan</td><td>Pelletspanna</td><td>Δt över panna, verkningsgrad</td></tr>
-    <tr><td>3</td><td>Ackumulatortank — topp</td><td>Ackumulatortank</td><td>Maxladdning, tappvarmvatten</td></tr>
-    <tr><td>4</td><td>Ackumulatortank — övre mitt</td><td>Ackumulatortank</td><td>Laddningsprofil</td></tr>
-    <tr><td>5</td><td>Ackumulatortank — nedre mitt</td><td>Ackumulatortank</td><td>Laddningsprofil</td></tr>
-    <tr><td>6</td><td>Ackumulatortank — botten</td><td>Ackumulatortank</td><td>Returtemp solfångare/krets</td></tr>
-    <tr><td>7</td><td>Retur källarkrets</td><td>Värmekrets (ettrör)</td><td>Värmeavgivning källarplan</td></tr>
-    <tr><td>8</td><td>Retur övervåningskrets</td><td>Värmekrets (ettrör)</td><td>Värmeavgivning övervåning</td></tr>
-  </tbody>
-</table>
+<!-- ── 03 PELLETSFÖRBRUKNING ─────────────────────────── -->
+<div class="section-row" style="margin-top:40px;">
+  <span class="section-label">03 · Pelletsförbrukning</span>
+  <div class="section-line"></div>
+</div>
 
-<h4>Övriga datakällor</h4>
-<ul>
-  <li><strong>Danfoss ECL Comfort 110, App. 130 (v1.08):</strong> Värmekrets, väderkompenserad framledning. Modbus RTU via USB–RS485-adapter → Raspberry Pi.</li>
-  <li><strong>Watts Solar Controller LCD+ (P-3481):</strong> Solfångarkrets. SD-kort max 2 GB FAT32 → Raspberry Pi.</li>
-  <li><strong>Värmebaronen Pellmax UB (tillv.nr 159913, 2014, 20 kW):</strong> Ingen kommunikationsport — övervakas via DS18B20.</li>
-</ul>
+<div class="block c-orange">
+  <div class="block-header">
+    <span class="block-num">03</span>
+    <span class="block-title">Pellets — förbrukning &amp; påfyllning</span>
+  </div>
+  <div class="block-sub">Bulklager i källaren · påfyllning från tankbil via yttervägg · manuell eller automatisk loggning</div>
+  <div>
+    <a href="pellets.html" class="page-link">🛢 Pelletslogg →</a>
+    <a href="underhall.html" class="page-link">🔧 Drift &amp; underhåll →</a>
+  </div>
+</div>
 
-<h4>🛒 Inköpslista — datainfrastruktur (reviderad 2026-05-21)</h4>
-<table border="1" cellpadding="6" cellspacing="0">
-  <thead><tr><th>Post</th><th>Kostnad</th></tr></thead>
-  <tbody>
-    <tr><td>Raspberry Pi 4 eller 5, 2–4 GB RAM</td><td>~500–700 kr</td></tr>
-    <tr><td>SD-kort 16–32 GB till Pi:n</td><td>~100 kr</td></tr>
-    <tr><td>Strömadapter USB-C</td><td>~100 kr</td></tr>
-    <tr><td>Plasthölje</td><td>~100 kr</td></tr>
-    <tr><td>USB till RS485-adapter (FTDI-baserad, Danfoss Modbus)</td><td>~100–150 kr</td></tr>
-    <tr><td>SD-kort max 2 GB FAT32 fullstorlek (Watts LCD+)</td><td>~50–100 kr</td></tr>
-    <tr><td>DS18B20 sensorer × 8 st + 4,7 kΩ pull-up-resistor</td><td>~260–310 kr</td></tr>
-    <tr><td>Kabel (1-Wire)</td><td>finns hemma</td></tr>
-    <tr><td><strong>Totalt</strong></td><td><strong>~1 200–1 450 kr</strong></td></tr>
-  </tbody>
-</table>
+<!-- ── 04 VÄRMESTYRCENTRAL ───────────────────────────── -->
+<div class="section-row" style="margin-top:40px;">
+  <span class="section-label">04 · Värmestyrcentral</span>
+  <div class="section-line"></div>
+</div>
 
-<h2>05 / Elanvändning</h2>
-<h3>Elförbrukning &amp; SVEF-andelar</h3>
-<p>110 andelar × 100 kWh = 11 000 kWh/år till fast pris · Gislaved Energi kompletteringsavtal</p>
+<div class="block c-red">
+  <div class="block-header">
+    <span class="block-num">04</span>
+    <span class="block-title">Värmestyrcentral — datauttag</span>
+  </div>
+  <div class="block-sub">Pelletspanna · ackumulatortank · elpatroner · vattenburen värme · solfångarkrets</div>
 
-<h2 id="fastighet">06 / Fastighet</h2>
-<h3>Fastighetsinformation</h3>
-<table border="1" cellpadding="6" cellspacing="0">
-  <tr><th colspan="2">Tuna 7:139 — Småhusenhet bebyggd</th></tr>
-  <tr><td>Adress</td><td>Sjövägen 22, 18452 Österskär</td></tr>
-  <tr><td>Ägarandel</td><td>1/1</td></tr>
-  <tr><td>Byggår · Typ</td><td>1968 · Myresjöhus typ 11</td></tr>
-  <tr><th colspan="2">Tuna 7:135 — Lantbruksenhet</th></tr>
-  <tr><td>Ägarandel</td><td>1/7</td></tr>
-  <tr><td>Belägen vid</td><td>Sättravägen, Österskär</td></tr>
-  <tr><td>Ingår</td><td>Strandäng · vattenrätt · flytbrygga</td></tr>
-  <tr><td>Förvaltning</td><td>Föreningen Sjösättra</td></tr>
-  <tr><th colspan="2">Taxeringsvärde 2023 — Tuna 7:139</th></tr>
-  <tr><td>Tomt</td><td>4 792 000 kr</td></tr>
-  <tr><td>Byggnad</td><td>2 524 000 kr</td></tr>
-  <tr><td>Totalt</td><td>7 316 000 kr</td></tr>
-  <tr><th colspan="2">Löpande avgifter</th></tr>
-  <tr><td>Fastighetsavgift 2025</td><td>10 074 kr/år</td></tr>
-  <tr><td>Fastighetsavgift 2026</td><td>10 425 kr/år</td></tr>
-</table>
+  <h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin:20px 0 8px;">Mätpunkter — DS18B20 temperatursensorer (8 st, 1-Wire-buss)</h4>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>Position</th><th>Delsystem</th><th>Syfte</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td>Framledning panna</td><td class="muted">Pelletspanna</td><td>Pannans avgiven effekt</td></tr>
+      <tr><td class="mono">2</td><td>Retur in i pannan</td><td class="muted">Pelletspanna</td><td>Δt över panna, verkningsgrad</td></tr>
+      <tr><td class="mono">3</td><td>Ackumulatortank — topp</td><td class="muted">Ackumulatortank</td><td>Maxladdning, tappvarmvatten</td></tr>
+      <tr><td class="mono">4</td><td>Ackumulatortank — övre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
+      <tr><td class="mono">5</td><td>Ackumulatortank — nedre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
+      <tr><td class="mono">6</td><td>Ackumulatortank — botten</td><td class="muted">Ackumulatortank</td><td>Returtemp solfångare/krets</td></tr>
+      <tr><td class="mono">7</td><td>Retur källarkrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning källarplan</td></tr>
+      <tr><td class="mono">8</td><td>Retur övervåningskrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning övervåning</td></tr>
+    </tbody>
+  </table>
 
-<p><small>Sjövägen 22 · 18452 Österskär · Fastighetsdashboard v1.1 (sektion 04 uppdaterad 2026-05-21)</small></p>
+  <h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin:28px 0 8px;">Övriga datakällor</h4>
+  <table class="tbl">
+    <tbody>
+      <tr><td style="font-weight:500;">Danfoss ECL Comfort 110, App. 130 (v1.08)</td><td class="muted">Värmekrets, väderkompenserad framledning. Modbus RTU via USB–RS485-adapter → Raspberry Pi.</td></tr>
+      <tr><td style="font-weight:500;">Watts Solar Controller LCD+ (P-3481)</td><td class="muted">Solfångarkrets. SD-kort max 2 GB FAT32 → Raspberry Pi.</td></tr>
+      <tr><td style="font-weight:500;">Värmebaronen Pellmax UB (tillv.nr 159913, 2014, 20 kW)</td><td class="muted">Ingen kommunikationsport — övervakas via DS18B20.</td></tr>
+    </tbody>
+  </table>
+
+  <h4 style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin:28px 0 8px;">🛒 Inköpslista — datainfrastruktur (reviderad 2026-05-21)</h4>
+  <table class="tbl">
+    <thead><tr><th>Post</th><th>Kostnad</th></tr></thead>
+    <tbody>
+      <tr><td>Raspberry Pi 4 eller 5, 2–4 GB RAM</td><td class="mono">~500–700 kr</td></tr>
+      <tr><td>SD-kort 16–32 GB till Pi:n</td><td class="mono">~100 kr</td></tr>
+      <tr><td>Strömadapter USB-C</td><td class="mono">~100 kr</td></tr>
+      <tr><td>Plasthölje</td><td class="mono">~100 kr</td></tr>
+      <tr><td>USB till RS485-adapter (FTDI-baserad, Danfoss Modbus)</td><td class="mono">~100–150 kr</td></tr>
+      <tr><td>SD-kort max 2 GB FAT32 fullstorlek (Watts LCD+)</td><td class="mono">~50–100 kr</td></tr>
+      <tr><td>DS18B20 sensorer × 8 st + 4,7 kΩ pull-up-resistor</td><td class="mono">~260–310 kr</td></tr>
+      <tr><td>Kabel (1-Wire)</td><td class="mono">finns hemma</td></tr>
+      <tr><td><strong>Totalt</strong></td><td class="mono"><strong>~1 200–1 450 kr</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 05 ELANVÄNDNING ───────────────────────────────── -->
+<div class="section-row" style="margin-top:40px;">
+  <span class="section-label">05 · Elanvändning</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-amber">
+  <div class="block-header">
+    <span class="block-num">05</span>
+    <span class="block-title">Elförbrukning &amp; SVEF-andelar</span>
+  </div>
+  <div class="block-sub">110 andelar × 100 kWh = 11 000 kWh/år till fast pris · Gislaved Energi kompletteringsavtal</div>
+</div>
+
+<!-- ── 06 FASTIGHET ──────────────────────────────────── -->
+<div class="section-row" id="fastighet" style="margin-top:40px;">
+  <span class="section-label">06 · Fastighet</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">06</span>
+    <span class="block-title">Fastighetsinformation</span>
+  </div>
+  <div class="block-sub">Tuna 7:139 · Tuna 7:135 · taxeringsvärden och löpande avgifter</div>
+
+  <table class="tbl">
+    <tbody>
+      <tr class="tbl-head"><td colspan="2">Tuna 7:139 — Småhusenhet bebyggd</td></tr>
+      <tr><td>Adress</td><td>Sjövägen 22, 18452 Österskär</td></tr>
+      <tr><td>Ägarandel</td><td>1/1</td></tr>
+      <tr><td>Byggår · Typ</td><td>1968 · Myresjöhus typ 11</td></tr>
+      <tr class="tbl-head"><td colspan="2">Tuna 7:135 — Lantbruksenhet</td></tr>
+      <tr><td>Ägarandel</td><td>1/7</td></tr>
+      <tr><td>Belägen vid</td><td>Sättravägen, Österskär</td></tr>
+      <tr><td>Ingår</td><td>Strandäng · vattenrätt · flytbrygga</td></tr>
+      <tr><td>Förvaltning</td><td>Föreningen Sjösättra</td></tr>
+      <tr class="tbl-head"><td colspan="2">Taxeringsvärde 2023 — Tuna 7:139</td></tr>
+      <tr><td>Tomt</td><td class="mono">4 792 000 kr</td></tr>
+      <tr><td>Byggnad</td><td class="mono">2 524 000 kr</td></tr>
+      <tr><td>Totalt</td><td class="mono"><strong>7 316 000 kr</strong></td></tr>
+      <tr class="tbl-head"><td colspan="2">Löpande avgifter</td></tr>
+      <tr><td>Fastighetsavgift 2025</td><td class="mono">10 074 kr/år</td></tr>
+      <tr><td>Fastighetsavgift 2026</td><td class="mono">10 425 kr/år</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 07 VATTENFÖRBRUKNING ──────────────────────────── -->
+<div class="section-row" id="vatten" style="margin-top:40px;">
+  <span class="section-label">07 · Vattenförbrukning</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">07</span>
+    <span class="block-title">Kallvatten — mätaravläsningar</span>
+  </div>
+  <div class="block-sub">Roslagsvatten · Abonnentnr 14569 · Mätare: B·H, Qn 2,5 m³/h, PN16 · Serienr: 24 18 79 8</div>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>Datum</th><th>Mätarställning (m³)</th><th>Förbrukning</th><th>Dagar</th><th>Liter/dag</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">2026-03-15</td><td class="mono">466</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td></tr>
+      <tr><td class="mono">2026-04-26</td><td class="mono">484</td><td class="mono">+18 m³</td><td class="mono">42</td><td class="mono">~429 l/dag</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-wrap">
+    <canvas id="vattenChart" width="700" height="200"></canvas>
+  </div>
+
+  <div class="chart-wrap" style="margin-top:32px;">
+    <canvas id="dygnChart" width="700" height="200"></canvas>
+  </div>
+</div>
+
+<!-- ── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · Tuna 7:139 · Fastighetsdashboard v1.2</div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+
+</div><!-- /wrap -->
+
+<script>
+// Datum
+const now = new Date();
+const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortMonths = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+document.getElementById('heroDate').textContent =
+  `${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
+document.getElementById('footerDate').textContent =
+  `Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+// ── Hjälpfunktion: ISO-veckonummer ───────────────────────
+function isoWeek(dateStr) {
+  var d = new Date(dateStr);
+  var jan4 = new Date(d.getFullYear(), 0, 4);
+  var startOfWeek1 = new Date(jan4);
+  startOfWeek1.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7));
+  var diff = d - startOfWeek1;
+  return Math.floor(diff / 604800000) + 1;
+}
+
+// ── Avläsningsdata ───────────────────────────────────────
+var avlasningar = [
+  { datum: '2026-03-15', stall: 466 },
+  { datum: '2026-04-26', stall: 484 }
+];
+
+// ── Diagram 1: Mätarställning ────────────────────────────
+(function() {
+  var canvas = document.getElementById('vattenChart');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var pad = { top: 28, right: 40, bottom: 48, left: 64 };
+  var minV = 458, maxV = 492;
+
+  function xPos(i) { return pad.left + i * (w - pad.left - pad.right) / (avlasningar.length - 1); }
+  function yPos(v) { return pad.top + (1 - (v - minV) / (maxV - minV)) * (h - pad.top - pad.bottom); }
+
+  ctx.fillStyle = '#f5f4f0';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.font = '11px "DM Mono", monospace';
+  ctx.textAlign = 'right';
+  for (var v = 460; v <= 490; v += 10) {
+    var y = yPos(v);
+    ctx.strokeStyle = 'rgba(0,0,0,0.07)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+    ctx.fillStyle = '#9a9a8e';
+    ctx.fillText(v + ' m³', pad.left - 8, y + 4);
+  }
+
+  var grad = ctx.createLinearGradient(0, pad.top, 0, h - pad.bottom);
+  grad.addColorStop(0, 'rgba(13,148,136,0.18)');
+  grad.addColorStop(1, 'rgba(13,148,136,0)');
+  ctx.beginPath();
+  avlasningar.forEach(function(a, i) { i === 0 ? ctx.moveTo(xPos(i), yPos(a.stall)) : ctx.lineTo(xPos(i), yPos(a.stall)); });
+  ctx.lineTo(xPos(avlasningar.length - 1), h - pad.bottom);
+  ctx.lineTo(xPos(0), h - pad.bottom);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  ctx.strokeStyle = '#0d9488';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  avlasningar.forEach(function(a, i) { i === 0 ? ctx.moveTo(xPos(i), yPos(a.stall)) : ctx.lineTo(xPos(i), yPos(a.stall)); });
+  ctx.stroke();
+
+  avlasningar.forEach(function(a, i) {
+    var x = xPos(i), y = yPos(a.stall);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.fill();
+    ctx.strokeStyle = '#0d9488'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.stroke();
+    ctx.fillStyle = '#1a1a18'; ctx.textAlign = 'center';
+    ctx.font = '500 12px "DM Mono", monospace';
+    ctx.fillText(a.stall + ' m³', x, y - 14);
+    ctx.fillStyle = '#9a9a8e'; ctx.font = '11px "DM Mono", monospace';
+    ctx.fillText(a.datum, x, h - pad.bottom + 18);
+  });
+
+  ctx.fillStyle = '#9a9a8e'; ctx.font = '10px "DM Mono", monospace'; ctx.textAlign = 'left';
+  ctx.fillText('MÄTARSTÄLLNING (M³)', pad.left, 16);
+})();
+
+// ── Diagram 2: Dygnsförbrukning per vecka ────────────────
+(function() {
+  // Beräkna liter/dygn mellan på varandra följande avläsningar
+  var punkter = [];
+  for (var i = 1; i < avlasningar.length; i++) {
+    var prev = avlasningar[i - 1], curr = avlasningar[i];
+    var d1 = new Date(prev.datum), d2 = new Date(curr.datum);
+    var dagar = (d2 - d1) / 86400000;
+    var lPerDygn = ((curr.stall - prev.stall) * 1000) / dagar;
+    // Placera punkten vid mittpunktsveckan
+    var midMs = (d1.getTime() + d2.getTime()) / 2;
+    var midDate = new Date(midMs);
+    var midDateStr = midDate.toISOString().slice(0, 10);
+    punkter.push({ vecka: isoWeek(midDateStr), lPerDygn: Math.round(lPerDygn) });
+  }
+
+  var canvas = document.getElementById('dygnChart');
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height;
+  var pad = { top: 28, right: 40, bottom: 48, left: 64 };
+
+  var vals = punkter.map(function(p) { return p.lPerDygn; });
+  var minV = 0;
+  var maxV = Math.ceil(Math.max.apply(null, vals) * 1.3 / 100) * 100;
+  var veckor = punkter.map(function(p) { return p.vecka; });
+  var minW = Math.min.apply(null, veckor) - 1;
+  var maxW = Math.max.apply(null, veckor) + 1;
+
+  function xPos(v) { return pad.left + (v - minW) / (maxW - minW) * (w - pad.left - pad.right); }
+  function yPos(v) { return pad.top + (1 - (v - minV) / (maxV - minV)) * (h - pad.top - pad.bottom); }
+
+  ctx.fillStyle = '#f5f4f0';
+  ctx.fillRect(0, 0, w, h);
+
+  // Rutnät y
+  var step = maxV <= 600 ? 100 : 200;
+  ctx.font = '11px "DM Mono", monospace';
+  for (var v = 0; v <= maxV; v += step) {
+    var y = yPos(v);
+    ctx.strokeStyle = 'rgba(0,0,0,0.07)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(w - pad.right, y); ctx.stroke();
+    ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'right';
+    ctx.fillText(v + ' l', pad.left - 8, y + 4);
+  }
+
+  // x-axel veckonummer
+  ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'center';
+  ctx.font = '11px "DM Mono", monospace';
+  for (var wk = Math.ceil(minW); wk <= Math.floor(maxW); wk++) {
+    var x = xPos(wk);
+    ctx.strokeStyle = 'rgba(0,0,0,0.04)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, h - pad.bottom); ctx.stroke();
+    ctx.fillText('v' + wk, x, h - pad.bottom + 18);
+  }
+
+  // Gradient
+  if (punkter.length > 1) {
+    var grad = ctx.createLinearGradient(0, pad.top, 0, h - pad.bottom);
+    grad.addColorStop(0, 'rgba(37,99,235,0.15)');
+    grad.addColorStop(1, 'rgba(37,99,235,0)');
+    ctx.beginPath();
+    punkter.forEach(function(p, i) { i === 0 ? ctx.moveTo(xPos(p.vecka), yPos(p.lPerDygn)) : ctx.lineTo(xPos(p.vecka), yPos(p.lPerDygn)); });
+    ctx.lineTo(xPos(punkter[punkter.length - 1].vecka), h - pad.bottom);
+    ctx.lineTo(xPos(punkter[0].vecka), h - pad.bottom);
+    ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
+  }
+
+  // Linje (om fler punkter)
+  if (punkter.length > 1) {
+    ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2;
+    ctx.beginPath();
+    punkter.forEach(function(p, i) { i === 0 ? ctx.moveTo(xPos(p.vecka), yPos(p.lPerDygn)) : ctx.lineTo(xPos(p.vecka), yPos(p.lPerDygn)); });
+    ctx.stroke();
+  }
+
+  // Punkter & etiketter
+  punkter.forEach(function(p) {
+    var x = xPos(p.vecka), y = yPos(p.lPerDygn);
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.fill();
+    ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.stroke();
+    ctx.fillStyle = '#1a1a18'; ctx.textAlign = 'center';
+    ctx.font = '500 12px "DM Mono", monospace';
+    ctx.fillText(p.lPerDygn + ' l/dygn', x, y - 14);
+  });
+
+  ctx.fillStyle = '#9a9a8e'; ctx.font = '10px "DM Mono", monospace'; ctx.textAlign = 'left';
+  ctx.fillText('DYGNSFÖRBRUKNING (LITER/DYGN) PER VECKA', pad.left, 16);
+})();
+</script>
 </body>
 </html>
