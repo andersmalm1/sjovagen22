@@ -195,78 +195,151 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
 </section>
 
 <!-- 04 VÄRMESTYRCENTRAL -->
-<section>
-  <div class="section-header"><span class="section-label">04 / Värmestyrcentral</span><div class="section-line"></div></div>
-  <h2>Värmestyrcentral — datauttag</h2>
-  <p class="section-sub">Pelletspanna · ackumulatortank · elpatroner · vattenburen värme · solfångarkrets</p>
+<section id="04">
+  <h2>04 / Värmestyrcentral</h2>
 
-  <div class="heat-card">
-    <div class="chart-title-mono" style="margin-bottom:4px;">Systemöversikt</div>
-    <div class="chart-title">Värmesystem Sjövägen 22</div>
-    <div class="hd-grid">
-      <div class="hd-node">
-        <div class="hd-node-title">🪵 Pelletspanna</div>
-        <div class="hd-rows">
-          <div class="hd-row"><span class="hd-key">Fabrikat/modell</span><span class="hd-val">verifiera</span></div>
-          <div class="hd-row"><span class="hd-key">Styrboxport</span><span class="hd-val">RS232 / USB?</span></div>
-          <div class="hd-row"><span class="hd-key">Modbus</span><span class="hd-val">verifiera</span></div>
-          <div class="hd-row"><span class="hd-key">Drifttimmar</span><span class="hd-val">—</span></div>
-        </div>
-      </div>
-      <div class="hd-node">
-        <div class="hd-node-title">🌡 Ackumulatortank</div>
-        <div class="hd-rows">
-          <div class="hd-row"><span class="hd-key">Temp topp</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Temp botten</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Laddnivå</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Elpatron status</span><span class="hd-val">—</span></div>
-        </div>
-      </div>
-      <div class="hd-node">
-        <div class="hd-node-title">☀️ Solfångarkrets</div>
-        <div class="hd-rows">
-          <div class="hd-row"><span class="hd-key">Kollektortemp</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Flöde</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Pump</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">kWh / dag</span><span class="hd-val">—</span></div>
-        </div>
-      </div>
-      <div class="hd-node">
-        <div class="hd-node-title">🔥 Värmekrets</div>
-        <div class="hd-rows">
-          <div class="hd-row"><span class="hd-key">Framledning</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Returledning</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Inomhustemp</span><span class="hd-val">—</span></div>
-          <div class="hd-row"><span class="hd-key">Utetemp</span><span class="hd-val">—</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <h3>Värmestyrcentral — datauttag</h3>
+  <p>Pelletspanna · ackumulatortank · elpatroner · vattenburen värme · solfångarkrets</p>
 
-  <div class="info-box">
-    <strong>Identifierade styrenheter:</strong><br><br>
-    <strong>Danfoss ECL Comfort 110, App. 130 (v1.08):</strong> Styr värmekretsen (väderkompenserad framledning). Kommunicerar via <strong>Modbus RTU</strong> — öppet protokoll, fullt dokumenterat för just App. 130/116. Ansluts till Raspberry Pi via USB–RS485-adapter.<br><br>
-    <strong>Watts Solar Controller LCD+ (P-3481):</strong> Styr solfångarkretsen. Loggar driftdata (temp, effekt, kWh) till <strong>SD-kort</strong> (max 2 GB FAT32, fullstorlek). SD-kortet läses av Raspberry Pi.<br><br>
-    <strong>Värmebaronen Pellmax UB / Viking Bio (2005):</strong> Pelletspanna. Ingen inbyggd kommunikationsport. Övervakas via <strong>DS18B20-temperatursensorer</strong> på fram/returledning och ackumulatortank.
-  </div>
+  <h4>Systemöversikt</h4>
+  <p><strong>Värmesystem Sjövägen 22</strong></p>
 
-  <div class="info-box" style="margin-top:14px;border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.04);">
-    <strong style="color:var(--accent3);">🛒 Inköpslista — datainfrastruktur</strong><br><br>
-    <strong>Raspberry Pi (central hub)</strong><br>
-    · Raspberry Pi 4 eller 5, 2–4 GB RAM &nbsp;~500–700 kr<br>
-    · SD-kort 16–32 GB till Pi:n &nbsp;~100 kr<br>
-    · Strömadapter USB-C &nbsp;~100 kr<br>
-    · Plasthölje &nbsp;~100 kr<br><br>
-    <strong>Danfoss ECL Comfort 110 → Modbus RTU</strong><br>
-    · USB till RS485-adapter (t.ex. FTDI-baserad) &nbsp;~100–150 kr<br><br>
-    <strong>Watts LCD+ → SD-kort</strong><br>
-    · SD-kort max 2 GB, FAT32, fullstorlek (ej SDHC) &nbsp;~50–100 kr (eBay/Blocket)<br><br>
-    <strong>Pelletspanna → temperatursensorer</strong><br>
-    · DS18B20 sensorer × 4–5 st &nbsp;~150–200 kr<br>
-    · 1-wire kabel &nbsp;~50 kr<br><br>
-    <strong style="color:var(--accent3);">Totalt ca 1 150–1 400 kr</strong>
-  </div>
+  <table>
+    <thead><tr><th>Delsystem</th><th>Mätpunkt</th><th>Sensor</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr>
+        <td rowspan="2">🪵 Pelletspanna</td>
+        <td>Framledning panna</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Retur in i pannan</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td rowspan="5">🌡 Ackumulatortank</td>
+        <td>Temp topp</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Temp övre mitt</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Temp nedre mitt</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Temp botten</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Elpatron status</td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td rowspan="4">☀️ Solfångarkrets</td>
+        <td>Kollektortemp</td>
+        <td>Watts LCD+</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Flöde</td>
+        <td>Watts LCD+</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Pump</td>
+        <td>Watts LCD+</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>kWh / dag</td>
+        <td>Watts LCD+</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td rowspan="4">🔥 Värmekretsar (ettrör)</td>
+        <td>Framledning (gemensam)</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Retur källarkrets</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Retur övervåningskrets</td>
+        <td>DS18B20</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Utetemp (kompensering)</td>
+        <td>Danfoss ECL</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Totalt DS18B20-sensorer: 8 st</strong> — alla på gemensam 1-Wire-buss, en GPIO-pin på Raspberry Pi.</p>
+
+  <p><strong>Identifierade styrenheter:</strong></p>
+  <p>
+    <strong>Danfoss ECL Comfort 110, App. 130 (v1.08):</strong> Styr värmekretsen (väderkompenserad framledning). Kommunicerar via <strong>Modbus RTU</strong> — öppet protokoll, fullt dokumenterat för just App. 130/116. Ansluts till Raspberry Pi via USB–RS485-adapter.
+  </p>
+  <p>
+    <strong>Watts Solar Controller LCD+ (P-3481):</strong> Styr solfångarkretsen. Loggar driftdata (temp, effekt, kWh) till <strong>SD-kort</strong> (max 2 GB FAT32, fullstorlek). SD-kortet läses av Raspberry Pi.
+  </p>
+  <p>
+    <strong>Värmebaronen Pellmax UB (2014):</strong> Pelletspanna 20 kW. Ingen inbyggd kommunikationsport. Övervakas via <strong>DS18B20-temperatursensorer</strong> på fram/returledning och ackumulatortank.
+  </p>
+
+  <h4>🛒 Inköpslista — datainfrastruktur</h4>
+
+  <p><strong>Raspberry Pi (central hub)</strong><br>
+  · Raspberry Pi 4 eller 5, 2–4 GB RAM ~500–700 kr<br>
+  · SD-kort 16–32 GB till Pi:n ~100 kr<br>
+  · Strömadapter USB-C ~100 kr<br>
+  · Plasthölje ~100 kr</p>
+
+  <p><strong>Danfoss ECL Comfort 110 → Modbus RTU</strong><br>
+  · USB till RS485-adapter (t.ex. FTDI-baserad) ~100–150 kr</p>
+
+  <p><strong>Watts LCD+ → SD-kort</strong><br>
+  · SD-kort max 2 GB, FAT32, fullstorlek (ej SDHC) ~50–100 kr (eBay/Blocket)</p>
+
+  <p><strong>Temperatursensorer — 1-Wire (DS18B20)</strong><br>
+  · DS18B20 sensorer × 8 st (se mätpunkter ovan) ~250–300 kr<br>
+  · 4,7 kΩ pull-up-resistor (ingår ofta i sensorpaket) ~10 kr<br>
+  · Kabel: finns hemma</p>
+
+  <p><strong>Totalt ca 1 200–1 450 kr</strong></p>
+
+  <h4>Mätpunkter DS18B20 — specifikation</h4>
+  <table>
+    <thead><tr><th>#</th><th>Position</th><th>Syfte</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Framledning panna</td><td>Pannans avgiven effekt</td></tr>
+      <tr><td>2</td><td>Retur in i pannan</td><td>Δt över panna, verkningsgrad</td></tr>
+      <tr><td>3</td><td>Ackumulatortank — topp</td><td>Maxladdning, tappvarmvatten</td></tr>
+      <tr><td>4</td><td>Ackumulatortank — övre mitt</td><td>Laddningsprofil</td></tr>
+      <tr><td>5</td><td>Ackumulatortank — nedre mitt</td><td>Laddningsprofil</td></tr>
+      <tr><td>6</td><td>Ackumulatortank — botten</td><td>Returtemp solfångare/krets</td></tr>
+      <tr><td>7</td><td>Retur källarkrets</td><td>Värmeavgivning källarplan</td></tr>
+      <tr><td>8</td><td>Retur övervåningskrets</td><td>Värmeavgivning övervåning</td></tr>
+    </tbody>
+  </table>
+
 </section>
+
 
 <!-- 05 ELANVÄNDNING -->
 <section>
