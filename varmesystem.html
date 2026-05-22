@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Värmesystem — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1a18;--muted:#6b6b62;--subtle:#9a9a8e;--accent-green:#16a34a;--accent-blue:#2563eb;--accent-orange:#ea580c;--accent-amber:#b45309;--accent-red:#dc2626;--accent-teal:#0d9488;--accent-purple:#7c3aed;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;--font-display:'Fraunces',serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;animation:fadeUp .5s ease both;}
+.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-red);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--accent-red);display:inline-block;}
+.hero-title{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:200;letter-spacing:-.03em;line-height:1;color:var(--text);}
+.hero-title em{font-style:italic;color:var(--muted);}
+.hero-nav{font-family:var(--font-mono);font-size:11px;color:var(--accent-blue);text-decoration:none;margin-top:16px;display:inline-flex;align-items:center;gap:6px;}
+.hero-nav:hover{text-decoration:underline;}
+.hero-meta{text-align:right;}
+.hero-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase;}
+.hero-date-val{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--muted);letter-spacing:-.02em;}
+.section-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:40px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+.block{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:32px;margin-bottom:16px;position:relative;overflow:hidden;animation:fadeUp .4s ease both .1s;}
+.block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.block.c-red::before{background:var(--accent-red);}
+.block.c-teal::before{background:var(--accent-teal);}
+.block.c-amber::before{background:var(--accent-amber);}
+.block.c-orange::before{background:var(--accent-orange);}
+.block.c-blue::before{background:var(--accent-blue);}
+.block-header{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+.block-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--subtle);text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
+.block-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}
+.tbl th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border2);}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--surface2);}
+.tbl td.mono{font-family:var(--font-mono);font-size:12px;}
+.tbl td.muted{color:var(--muted);font-family:var(--font-mono);font-size:12px;}
+.tbl .tbl-head td{font-weight:500;background:var(--surface2);color:var(--muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;}
+.next-step{display:flex;align-items:flex-start;gap:10px;background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.15);border-radius:8px;padding:12px 16px;margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--accent-blue);line-height:1.5;}
+.next-step::before{content:'→';flex-shrink:0;}
+footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:40px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+.footer-txt a{color:var(--accent-blue);text-decoration:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-meta{text-align:left;}}
+@media(max-width:600px){.wrap{padding:0 16px;}.hero-title{font-size:32px;}.hero{padding:40px 0 32px;}.block{padding:20px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fastighetsdashboard · Värmesystem</div>
+      <h1 class="hero-title">Värmesystem<br><em>Ackumulatortank &amp; Värmekrets</em></h1>
+      <a href="index.html" class="hero-nav">← Startsidan</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-date">Idag</div>
+      <div class="hero-date-val" id="heroDate">—</div>
+    </div>
+  </div>
+</header>
+
+<div class="section-row" style="margin-top:0;">
+  <span class="section-label">Värmekällor</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-orange">
+  <div class="block-header">
+    <span class="block-num">01</span>
+    <span class="block-title">Värmekällor</span>
+  </div>
+  <div class="block-sub">Fyra värmekällor laddar ackumulatortanken</div>
+  <table class="tbl">
+    <thead><tr><th>Källa</th><th>Specifikation</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Pelletspanna</td><td class="mono">Värmebaronen Pellmax UB · 20 kW · 2014</td><td class="muted">Primär värmekälla</td></tr>
+      <tr><td>Solfångare</td><td class="mono">Takmonterad · Watts Solar Controller LCD+</td><td class="muted">⚠ Alarm Flöde</td></tr>
+      <tr><td>Elpatron övre</td><td class="mono">Finnemannen VB 9003 FL · 9 kW (2×4,5 kW) · 400 V</td><td class="muted">Backup</td></tr>
+      <tr><td>Elpatron nedre</td><td class="mono">Okänd · Relak-termostat · ~55°C</td><td class="muted">Backup</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Komponenter</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-red">
+  <div class="block-header">
+    <span class="block-num">02</span>
+    <span class="block-title">Identifierade komponenter</span>
+  </div>
+  <div class="block-sub">Kartlagda komponenter per 2026-05-21</div>
+  <table class="tbl">
+    <tbody>
+      <tr class="tbl-head"><td colspan="3">Värmereglering</td></tr>
+      <tr><td>Shuntventilens ställdon</td><td class="mono">Danfoss AMB 162 (082H0213)</td><td class="muted">24 VAC · 5 Nm · 3-punkt · reglerar framledningstemperatur</td></tr>
+      <tr><td>Shuntregulator</td><td class="mono">Danfoss ECL Comfort 110, App. 130 (v1.08, 2012)</td><td class="muted">Väderkompenserad · Modbus RTU via USB–RS485</td></tr>
+      <tr class="tbl-head"><td colspan="3">Laddomat — brännarstyring &amp; laddningsstyrning</td></tr>
+      <tr><td>Brännarstyrenhet</td><td class="mono">Laddomat 33P® (813043)</td><td class="muted">Brännarstyring för ackumulering · tillv. 04/02/07 · vred: Manuell / Avstängd / Auto · aktuellt läge: <strong>Avstängd (0)</strong></td></tr>
+      <tr><td>Kapillärtermostat — topp</td><td class="mono">Laddomat® (RSK 686 18 21, 833004)</td><td class="muted">Maxbegränsning ackumulatortank topp · inställning 60°C · 30–90°C, kapillär 2,5 m · tillv. 16/05/07 · sitter i pannrumstaket</td></tr>
+      <tr><td>Kapillärtermostat — botten</td><td class="mono">Laddomat® (RSK 686 18 21, 833004)</td><td class="muted">Maxbegränsning ackumulatortank botten · inställning 60°C · 30–90°C, kapillär 2,5 m · tillv. 16/05/07 · sitter i pannrumstaket</td></tr>
+      <tr class="tbl-head"><td colspan="3">Pumpar</td></tr>
+      <tr><td>Cirkulationspump, värmekrets</td><td class="mono">Smedegaard EV 2-65-26</td><td class="muted">230 V · 3 hastigheter (55–85 W) · TF 110°C</td></tr>
+      <tr class="tbl-head"><td colspan="3">Solfångare</td></tr>
+      <tr><td>Styrenhet solfångare</td><td class="mono">Watts Solar Controller LCD+ (P-3481, OF: 272813)</td><td class="muted">⚠ Alarm Flöde · ingen SD-kort eller seriell dataexport — ren reglercental</td></tr>
+      <tr><td>Cirkulationspump solvärme</td><td class="mono">Perfecta aPump 25-6U/130 (art.nr 6302150, batch 1548)</td><td class="muted">1×230V 50Hz · 0,3A · 4–23W · EEI&lt;0,23 · PN10 · +2°C–+95°C · inställning: nära MAX</td></tr>
+      <tr><td>Expansionstank solvärme</td><td class="mono">Röd membrantank</td><td class="muted">Förtryck (gas): 0,56 bar · Systemtryck: 2,56 bar</td></tr>
+      <tr><td>Avläsning solvärmecentral</td><td class="mono">2026-05-22 23:00</td><td class="muted">Drifttid: 13 281 h · Energi: 75 912 kWh · T3: 34°C</td></tr>
+      <tr class="tbl-head"><td colspan="3">Expansionskärl</td></tr>
+      <tr><td>Expansionskärl värmesystem</td><td class="mono">Flamco Contra-Flex 18/0,5 (art.nr 26171)</td><td class="muted">18 L · förtryck 0,5 bar · max arbetstryck 3,0 bar · provtryck 4,3 bar · max temp membran 70°C · tillv. 13-02-19</td></tr>
+      <tr class="tbl-head"><td colspan="3">Skorsten</td></tr>
+      <tr><td>Plåtskorsten</td><td class="mono">EXO Plåtskorsten · Exoverken AB Kalmar · 1968</td><td class="muted">Tillv.nr 310208 · BABS 1960 · godkänd av Statens Provningsanstalt</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Reglercentral</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">02b</span>
+    <span class="block-title">Danfoss ECL Comfort 110</span>
+  </div>
+  <div class="block-sub">Väderkompenserad reglering av tilloppstemperatur · Applikation 130 · dokumenterad 2026-05-23</div>
+  <table class="tbl">
+    <tbody>
+      <tr class="tbl-head"><td colspan="3">Identifiering</td></tr>
+      <tr><td>Modell</td><td class="mono">ECL Comfort 110</td><td class="muted">Danfoss</td></tr>
+      <tr><td>Applikation</td><td class="mono">A130</td><td class="muted">Väderkompenserad tilloppsreglering, fjärrvärme/panncentral</td></tr>
+      <tr><td>Mjukvaruversion</td><td class="mono">v1.08 eller senare</td><td class="muted">Gäller instruktion VI.KT.G4.07 (Danfoss 06/2012)</td></tr>
+      <tr><td>Serienummer</td><td class="mono">B108001720</td><td class="muted">—</td></tr>
+      <tr><td>Artikelnummer</td><td class="mono">087B1652</td><td class="muted">—</td></tr>
+      <tr><td>Matningsspänning</td><td class="mono">24V~ 50Hz · 3 VA</td><td class="muted">Motor: 24V~/15VA · Pump: 230V~ 4(2)A</td></tr>
+
+      <tr class="tbl-head"><td colspan="3">Vänster plintblock — gröna plintar S1 (1–12) + MODBUS</td></tr>
+      <tr><td>Plint 1–2</td><td class="mono">S1 — Utegivare</td><td class="muted">Typ: ESMT · ansluten</td></tr>
+      <tr><td>Plint 3–4</td><td class="mono">S3 — Tilloppsgivare</td><td class="muted">Typ: ESM-11 / ESMC / ESMU · ansluten</td></tr>
+      <tr><td>Plint 5–6</td><td class="mono">S4 — Returgivare</td><td class="muted">Typ: ESM-11 / ESMC / ESMU · <strong>ej ansluten</strong></td></tr>
+      <tr><td>Plint 7–8</td><td class="mono">S2 — Rumsgivare</td><td class="muted">Typ: ESM-10 · anslutning okänd</td></tr>
+      <tr><td>Plint 8–9</td><td class="mono">ECL BUS</td><td class="muted">Rumspanel / fjärrkontroll: ECA 60/62 eller ECA 61/63</td></tr>
+      <tr><td>Plint 10</td><td class="mono">Används ej</td><td class="muted">—</td></tr>
+      <tr><td>Plint 11–12</td><td class="mono">Extern överstyrning</td><td class="muted">—</td></tr>
+      <tr><td>MODBUS-port</td><td class="mono">MODBUS RTU</td><td class="muted">Sitter i vänster block · USB–RS485-adapter · Raspberry Pi planerad</td></tr>
+
+      <tr class="tbl-head"><td colspan="3">Höger plintblock — svart 24V a.c. (20–30) + CARD</td></tr>
+      <tr><td>Plint 20–21</td><td class="mono">Matningsspänning 24V a.c.</td><td class="muted">A1 / A2</td></tr>
+      <tr><td>Plint 22–23</td><td class="mono">Säkerhetstermostat</td><td class="muted">Möjlighet för inkoppling</td></tr>
+      <tr><td>Plint 24–26</td><td class="mono">Motor M1</td><td class="muted">Öppna (alt. termomotor ABV) / Stänga / A1 · max 15 VA</td></tr>
+      <tr><td>Plint 29–30</td><td class="mono">Cirkulationspump P1</td><td class="muted">Fas (relä R2) / Relä R2 · max 4(2) A</td></tr>
+      <tr><td>CARD-slot</td><td class="mono">Applikationskort A130</td><td class="muted">Sitter i höger block · monterat i enheten</td></tr>
+    </tbody>
+  </table>
+  <div class="next-step">Kabelarea givare: 0,4–0,75 mm² · Max kabellängd 125 m (alla givare inkl. ECL BUS) — längre kabel kan orsaka EMC-störningar.</div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Datainfrastruktur</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">03</span>
+    <span class="block-title">Mätpunkter — DS18B20 (8 st)</span>
+  </div>
+  <div class="block-sub">1-Wire-buss · Raspberry Pi · planerade positioner</div>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>Position</th><th>Delsystem</th><th>Syfte</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td>Framledning panna</td><td class="muted">Pelletspanna</td><td>Pannans avgiven effekt</td></tr>
+      <tr><td class="mono">2</td><td>Retur in i pannan</td><td class="muted">Pelletspanna</td><td>Δt över panna, verkningsgrad</td></tr>
+      <tr><td class="mono">3</td><td>Ackumulatortank — topp</td><td class="muted">Ackumulatortank</td><td>Maxladdning, tappvarmvatten</td></tr>
+      <tr><td class="mono">4</td><td>Ackumulatortank — övre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
+      <tr><td class="mono">5</td><td>Ackumulatortank — nedre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
+      <tr><td class="mono">6</td><td>Ackumulatortank — botten</td><td class="muted">Ackumulatortank</td><td>Returtemp solfångare/krets</td></tr>
+      <tr><td class="mono">7</td><td>Retur källarkrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning källarplan</td></tr>
+      <tr><td class="mono">8</td><td>Retur övervåningskrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning övervåning</td></tr>
+    </tbody>
+  </table>
+  <div class="next-step">Raspberry Pi inkoppling pågår — Modbus RTU via USB–RS485 mot Danfoss ECL Comfort 110, SD-kort från Watts LCD+ för solfångardata.</div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Inköpslista</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">04</span>
+    <span class="block-title">Datainfrastruktur — inköpslista</span>
+  </div>
+  <div class="block-sub">Reviderad 2026-05-21</div>
+  <table class="tbl">
+    <thead><tr><th>Post</th><th>Kostnad</th></tr></thead>
+    <tbody>
+      <tr><td>Raspberry Pi 4 eller 5, 2–4 GB RAM</td><td class="mono">~500–700 kr</td></tr>
+      <tr><td>SD-kort 16–32 GB till Pi:n</td><td class="mono">~100 kr</td></tr>
+      <tr><td>Strömadapter USB-C</td><td class="mono">~100 kr</td></tr>
+      <tr><td>Plasthölje</td><td class="mono">~100 kr</td></tr>
+      <tr><td>USB till RS485-adapter (FTDI-baserad, Danfoss Modbus)</td><td class="mono">~100–150 kr</td></tr>
+      <tr><td>SD-kort max 2 GB FAT32 fullstorlek (Watts LCD+)</td><td class="mono">~50–100 kr</td></tr>
+      <tr><td>DS18B20 sensorer × 8 st + 4,7 kΩ pull-up-resistor</td><td class="mono">~260–310 kr</td></tr>
+      <tr><td>Kabel (1-Wire)</td><td class="mono">finns hemma</td></tr>
+      <tr><td><strong>Totalt</strong></td><td class="mono"><strong>~1 200–1 450 kr</strong></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · <a href="index.html">← Startsidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+<script>
+const now=new Date();
+const months=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortMonths=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const days=['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+document.getElementById('heroDate').textContent=`${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
+document.getElementById('footerDate').textContent=`Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
