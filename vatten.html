@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vatten &amp; Sophämtning — Sjövägen 22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1a18;--muted:#6b6b62;--subtle:#9a9a8e;--accent-green:#16a34a;--accent-blue:#2563eb;--accent-orange:#ea580c;--accent-amber:#b45309;--accent-red:#dc2626;--accent-teal:#0d9488;--accent-purple:#7c3aed;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;--font-display:'Fraunces',serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
+.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;animation:fadeUp .5s ease both;}
+.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-teal);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--accent-teal);display:inline-block;}
+.hero-title{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:200;letter-spacing:-.03em;line-height:1;color:var(--text);}
+.hero-title em{font-style:italic;color:var(--muted);}
+.hero-nav{font-family:var(--font-mono);font-size:11px;color:var(--accent-teal);text-decoration:none;margin-top:16px;display:inline-flex;align-items:center;gap:6px;}
+.hero-nav:hover{text-decoration:underline;}
+.hero-meta{text-align:right;}
+.hero-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase;}
+.hero-date-val{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--muted);letter-spacing:-.02em;}
+.section-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:40px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+.block{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:32px;margin-bottom:16px;position:relative;overflow:hidden;animation:fadeUp .4s ease both .1s;}
+.block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.block.c-teal::before{background:var(--accent-teal);}
+.block.c-blue::before{background:var(--accent-blue);}
+.block.c-green::before{background:var(--accent-green);}
+.block-header{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;}
+.block-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--subtle);text-transform:uppercase;}
+.block-title{font-family:var(--font-display);font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
+.block-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}
+.tbl th{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border2);}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--surface2);}
+.tbl td.mono{font-family:var(--font-mono);font-size:12px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:4px;margin-bottom:32px;}
+.kpi{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;}
+.kpi-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--subtle);margin-bottom:4px;}
+.kpi-val{font-family:var(--font-display);font-size:26px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
+.kpi-unit{font-size:13px;color:var(--muted);margin-left:3px;}
+.chart-wrap{margin-top:20px;}
+canvas{max-width:100%;display:block;}
+.import-area{margin-top:4px;}
+.import-label{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent-teal);border:1px solid rgba(13,148,136,0.3);background:rgba(13,148,136,0.06);padding:7px 14px;border-radius:6px;cursor:pointer;transition:background .15s,border-color .15s;}
+.import-label:hover{background:rgba(13,148,136,0.12);border-color:rgba(13,148,136,0.45);}
+.import-hint{margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);line-height:1.7;}
+.import-hint a{color:var(--accent-teal);text-decoration:none;}
+.import-hint code{background:var(--surface2);padding:1px 5px;border-radius:3px;}
+.pending-note{font-family:var(--font-mono);font-size:12px;color:var(--subtle);padding:32px;text-align:center;border:1px dashed var(--border2);border-radius:8px;margin-top:8px;}
+footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:40px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
+.footer-txt a{color:var(--accent-teal);text-decoration:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-meta{text-align:left;}}
+@media(max-width:600px){.wrap{padding:0 16px;}.hero-title{font-size:32px;}.hero{padding:40px 0 32px;}.block{padding:20px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fastighetsdashboard · Vatten &amp; VA</div>
+      <h1 class="hero-title">Vatten &amp; Sophämtning<br><em>Roslagsvatten</em></h1>
+      <a href="index.html" class="hero-nav">← Startsidan</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-date">Idag</div>
+      <div class="hero-date-val" id="heroDate">—</div>
+    </div>
+  </div>
+</header>
+
+<div class="kpi-grid" id="vattenKPIs">
+  <div class="kpi"><div class="kpi-label">Total period</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">Snitt/period</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">Senaste period</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+  <div class="kpi"><div class="kpi-label">Kostnad/år</div><div class="kpi-val" style="font-size:20px;color:var(--subtle);">—</div></div>
+</div>
+
+<div class="section-row" style="margin-top:0;">
+  <span class="section-label">Importera data</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">01</span>
+    <span class="block-title">Hämta fakturor från Roslagsvatten</span>
+  </div>
+  <div class="block-sub">Logga in på Mina sidor och ladda upp fakturadata här</div>
+  <div class="import-area">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <label for="vattenCsvInput" class="import-label">↑ Importera CSV / fakturadata</label>
+      <input type="file" id="vattenCsvInput" accept=".csv,.txt" style="display:none;">
+      <span id="vattenImportStatus" style="font-family:var(--font-mono);font-size:11px;color:var(--subtle);">Ingen fil inläst</span>
+    </div>
+    <div class="import-hint">
+      Logga in på <a href="https://minasidor.roslagsvatten.se" target="_blank">minasidor.roslagsvatten.se</a> och exportera förbrukningshistorik.<br>
+      Abonnentnr: <code>14569</code> · Format som stöds: <code>Period</code> <code>Förbrukning (m³)</code> <code>Belopp (kr)</code>
+    </div>
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Förbrukning per period</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">02</span>
+    <span class="block-title">Vattenförbrukning (m³)</span>
+  </div>
+  <div class="block-sub">Avläst förbrukning per faktureringsperiod · källdata: Roslagsvatten mätardata</div>
+  <div class="chart-wrap" id="vattenChartWrap" style="display:none;">
+    <canvas id="vattenManadChart" width="700" height="220"></canvas>
+  </div>
+  <div id="vattenChartEmpty" class="pending-note">Ingen data inläst ännu — ladda upp fakturadata ovan eller hämta fakturor från <a href="https://minasidor.roslagsvatten.se" target="_blank" style="color:var(--accent-teal);">minasidor.roslagsvatten.se</a></div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Kostnad per period</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">03</span>
+    <span class="block-title">Fakturerade kostnader (kr)</span>
+  </div>
+  <div class="block-sub">Vatten &amp; avlopp per faktureringsperiod · inkl. moms · exkl. sophämtning (se block 05)</div>
+  <div class="chart-wrap" id="vattenKostnadWrap" style="display:none;">
+    <canvas id="vattenKostnadChart" width="700" height="180"></canvas>
+  </div>
+  <div id="vattenKostnadEmpty" class="pending-note">Ingen kostnadsdata inläst — hämta fakturor från Roslagsvatten Mina sidor</div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Avläsningslogg</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">04</span>
+    <span class="block-title">Mätarhistorik</span>
+  </div>
+  <div class="block-sub">Avlästa mätarställningar och förbrukning per faktureringsperiod</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Period</th>
+        <th style="text-align:right">Mätarst. start (m³)</th>
+        <th style="text-align:right">Mätarst. slut (m³)</th>
+        <th style="text-align:right">Förbrukning (m³)</th>
+        <th style="text-align:right">Vatten+avlopp (kr)</th>
+      </tr>
+    </thead>
+    <tbody id="vattenTblBody">
+      <tr><td colspan="5" style="font-family:var(--font-mono);font-size:12px;color:var(--subtle);padding:24px 12px;text-align:center;">Ingen data inläst — hämta fakturor från <a href="https://minasidor.roslagsvatten.se" target="_blank" style="color:var(--accent-teal);">Roslagsvatten Mina sidor</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Sophämtning</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-green">
+  <div class="block-header">
+    <span class="block-num">05</span>
+    <span class="block-title">Sophämtning &amp; Avfall</span>
+  </div>
+  <div class="block-sub">Sophämtningsabonnemang via Roslagsvatten · Österåkers kommun</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Leverantör</td><td class="mono">Roslagsvatten AB (på uppdrag av Österåkers kommun)</td></tr>
+      <tr><td>Hämtningsadress</td><td class="mono">Sjövägen 22, 184 52 Österskär</td></tr>
+      <tr><td>Abonnemangstyp</td><td class="mono" style="color:var(--subtle);">— fyll i från faktura</td></tr>
+      <tr><td>Kärl restavfall</td><td class="mono" style="color:var(--subtle);">— liter, hämtning var — vecka</td></tr>
+      <tr><td>Kärl matavfall</td><td class="mono" style="color:var(--subtle);">— liter, hämtning var — vecka</td></tr>
+      <tr><td>Årsavgift sophämtning</td><td class="mono" style="color:var(--subtle);">— kr/år inkl. moms</td></tr>
+      <tr><td>Faktureras</td><td class="mono" style="color:var(--subtle);">Kvartalsvis eller halvårsvis (via Roslagsvatten)</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:14px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);">
+    Uppdatera tabellen ovan när faktura finns på <a href="https://minasidor.roslagsvatten.se" target="_blank" style="color:var(--accent-teal);">minasidor.roslagsvatten.se</a>
+  </div>
+</div>
+
+<div class="section-row">
+  <span class="section-label">Avtalsinformation</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-teal">
+  <div class="block-header">
+    <span class="block-num">06</span>
+    <span class="block-title">VA-abonnemang · Roslagsvatten</span>
+  </div>
+  <div class="block-sub">Kallvatten, spillvatten &amp; dagvatten · Österåkers kommun</div>
+  <table class="tbl">
+    <tbody>
+      <tr><td>Leverantör</td><td class="mono">Roslagsvatten AB</td></tr>
+      <tr><td>Kundportal</td><td class="mono"><a href="https://minasidor.roslagsvatten.se" target="_blank" style="color:var(--accent-teal);">minasidor.roslagsvatten.se</a></td></tr>
+      <tr><td>Abonnentnummer</td><td class="mono">14569</td></tr>
+      <tr><td>Fastighetsbeteckning</td><td class="mono">Sjövägen 22, 184 52 Österskär</td></tr>
+      <tr><td>Mätarnummer</td><td class="mono" style="color:var(--subtle);">— fyll i från faktura</td></tr>
+      <tr><td style="border-top:1px solid var(--border2);padding-top:12px;font-weight:500;" colspan="2">Taxekomponenter (fyll i från faktura)</td></tr>
+      <tr><td>Fast avgift vatten+avlopp</td><td class="mono" style="color:var(--subtle);">— kr/år</td></tr>
+      <tr><td>Rörlig avgift vatten</td><td class="mono" style="color:var(--subtle);">— kr/m³</td></tr>
+      <tr><td>Rörlig avgift avlopp</td><td class="mono" style="color:var(--subtle);">— kr/m³</td></tr>
+      <tr><td>Dagvattenavgift</td><td class="mono" style="color:var(--subtle);">— kr/år</td></tr>
+      <tr><td>Faktureringsperiod</td><td class="mono" style="color:var(--subtle);">— (kvartalsvis / halvårsvis / årsvis)</td></tr>
+      <tr><td style="border-top:1px solid var(--border2);padding-top:12px;font-weight:500;" colspan="2">Kontakt</td></tr>
+      <tr><td>Kundservice</td><td class="mono"><a href="tel:018185000" style="color:var(--accent-teal);">018-18 50 00</a></td></tr>
+      <tr><td>E-post</td><td class="mono"><a href="mailto:kundservice@roslagsvatten.se" style="color:var(--accent-teal);">kundservice@roslagsvatten.se</a></td></tr>
+      <tr><td>Hemsida</td><td class="mono"><a href="https://roslagsvatten.se" target="_blank" style="color:var(--accent-teal);">roslagsvatten.se</a></td></tr>
+      <tr><td>Driftstörningar</td><td class="mono"><a href="tel:018185000" style="color:var(--accent-teal);">018-18 50 00</a> (dygnet runt)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · <a href="index.html">← Startsidan</a></div>
+  <div class="footer-txt" id="footerDate">—</div>
+</footer>
+</div>
+
+<script>
+const now = new Date();
+const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortMonths = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
+document.getElementById('heroDate').textContent = `${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
+document.getElementById('footerDate').textContent = `Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+// ── Diagram ────────────────────────────────────────────────
+function ritaStaplar(canvasId, data, color, unit, title) {
+  const canvas = document.getElementById(canvasId);
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth || 700;
+  const H = parseInt(canvas.getAttribute('height'));
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const pad = { top: 28, right: 20, bottom: 52, left: 64 };
+  const vals = data.map(d => d.v);
+  const maxV = Math.ceil(Math.max(...vals) * 1.15 / 10) * 10 || 10;
+  const n = data.length;
+  const plotW = W - pad.left - pad.right;
+  const plotH = H - pad.top - pad.bottom;
+  const barW = Math.max(4, plotW / n - 4);
+  function xBar(i) { return pad.left + (i + 0.5) * plotW / n - barW / 2; }
+  function yVal(v) { return pad.top + (1 - v / maxV) * plotH; }
+  const gridStep = maxV <= 20 ? 5 : maxV <= 100 ? 20 : maxV <= 500 ? 100 : 500;
+  ctx.font = '11px "DM Mono",monospace';
+  for (let v = 0; v <= maxV; v += gridStep) {
+    const y = yVal(v);
+    ctx.strokeStyle = 'rgba(0,0,0,0.07)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+    ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'right';
+    ctx.fillText(v + ' ' + unit, pad.left - 6, y + 4);
+  }
+  data.forEach((d, i) => {
+    const x = xBar(i), y = yVal(d.v), bh = plotH - (y - pad.top);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, barW, bh, [3, 3, 0, 0]);
+    else ctx.rect(x, y, barW, bh);
+    ctx.fill();
+    ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'center';
+    ctx.font = '10px "DM Mono",monospace';
+    ctx.save(); ctx.translate(x + barW / 2, H - pad.bottom + 8);
+    ctx.rotate(-Math.PI / 4); ctx.fillText(d.lbl, 0, 0); ctx.restore();
+    if (barW > 24) {
+      ctx.fillStyle = '#6b6b62'; ctx.textAlign = 'center';
+      ctx.fillText(d.v, x + barW / 2, y - 4);
+    }
+  });
+  ctx.fillStyle = '#9a9a8e'; ctx.font = '10px "DM Mono",monospace';
+  ctx.textAlign = 'left'; ctx.fillText(title, pad.left, 16);
+}
+
+// ── Startdata ──────────────────────────────────────────────
+// Fyll i manuellt när fakturor finns från Roslagsvatten.
+// Format per post: { period: 'textsträng', m3: <m³>, kr: <kr inkl moms>, matarStart: <valfri>, matarSlut: <valfri> }
+var STARTDATA = [
+  // Exempel (ta bort kommentaren och fyll i riktiga värden):
+  // { period: '2023-H1', m3: 72, kr: 4800, matarStart: 1200, matarSlut: 1272 },
+];
+
+function kpi(label, val, unit) {
+  const fs = String(val).length > 8 ? '18px' : '26px';
+  return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-val" style="font-size:${fs}">${val}<span class="kpi-unit"> ${unit}</span></div></div>`;
+}
+
+function rendera(data) {
+  const hasData = data.length > 0;
+  document.getElementById('vattenChartWrap').style.display = hasData ? 'block' : 'none';
+  document.getElementById('vattenChartEmpty').style.display = hasData ? 'none' : 'block';
+  document.getElementById('vattenKostnadWrap').style.display = hasData ? 'block' : 'none';
+  document.getElementById('vattenKostnadEmpty').style.display = hasData ? 'none' : 'block';
+  if (!hasData) return;
+
+  // Rita diagram
+  ritaStaplar('vattenManadChart', data.map(d => ({ lbl: d.period, v: d.m3 })), 'rgba(13,148,136,0.65)', 'm³', 'VATTENFÖRBRUKNING PER PERIOD (M³)');
+  ritaStaplar('vattenKostnadChart', data.map(d => ({ lbl: d.period, v: d.kr })), 'rgba(37,99,235,0.55)', 'kr', 'KOSTNAD VATTEN+AVLOPP PER PERIOD (KR INKL. MOMS)');
+
+  // KPI
+  const totM3 = data.reduce((s, d) => s + d.m3, 0);
+  const totKr = data.reduce((s, d) => s + d.kr, 0);
+  const snittM3 = Math.round(totM3 / data.length * 10) / 10;
+  const senaste = data[data.length - 1];
+  document.getElementById('vattenKPIs').innerHTML =
+    kpi('Total period', totM3.toLocaleString('sv-SE'), 'm³') +
+    kpi('Snitt/period', snittM3.toLocaleString('sv-SE'), 'm³') +
+    kpi('Senaste period', senaste.m3 + ' m³', '') +
+    kpi('Kostnad senaste', senaste.kr.toLocaleString('sv-SE'), 'kr');
+
+  // Tabell
+  document.getElementById('vattenTblBody').innerHTML = [...data].reverse().map(d =>
+    `<tr>
+      <td class="mono">${d.period}</td>
+      <td class="mono" style="text-align:right">${d.matarStart != null ? d.matarStart.toLocaleString('sv-SE') : '—'}</td>
+      <td class="mono" style="text-align:right">${d.matarSlut != null ? d.matarSlut.toLocaleString('sv-SE') : '—'}</td>
+      <td class="mono" style="text-align:right">${d.m3} m³</td>
+      <td class="mono" style="text-align:right">${d.kr.toLocaleString('sv-SE')} kr</td>
+    </tr>`
+  ).join('');
+}
+
+rendera(STARTDATA);
+
+// Rita om vid resize
+window.addEventListener('resize', () => { if (STARTDATA.length) rendera(STARTDATA); });
+
+// ── CSV-import ─────────────────────────────────────────────
+document.getElementById('vattenCsvInput').addEventListener('change', function(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const lines = ev.target.result.trim().split(/\r?\n/);
+    const data = [];
+    lines.forEach(line => {
+      const cols = line.split(/[;,\t]/).map(c => c.trim().replace(/"/g, ''));
+      if (cols.length < 2) return;
+      const m3 = parseFloat(cols[1].replace(',', '.'));
+      const kr = parseFloat((cols[2] || '0').replace(',', '.')) || 0;
+      if (!isNaN(m3) && m3 >= 0) data.push({ period: cols[0], m3: m3, kr: kr });
+    });
+    const status = document.getElementById('vattenImportStatus');
+    if (!data.length) {
+      status.textContent = '⚠ Kunde inte tolka filen — kontrollera format';
+      status.style.color = 'var(--accent-red)'; return;
+    }
+    status.textContent = '✓ ' + data.length + ' perioder inlästa';
+    status.style.color = 'var(--accent-green)';
+    rendera(data);
+  };
+  reader.readAsText(file, 'UTF-8');
+});
+</script>
+</body>
+</html>
