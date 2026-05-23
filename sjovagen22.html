@@ -135,6 +135,7 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     <div class="legend-item"><div class="legend-line" style="background:#ea580c;"></div>El SE3 rörligt</div>
     <div class="legend-item"><div class="legend-line" style="background:#2563eb;"></div>SVEF vindandel</div>
     <div class="legend-item"><div class="legend-line" style="background:#16a34a;"></div>Pellets bulk</div>
+    <div class="legend-item"><div class="legend-line" style="background:#b45309;border-top:2px dashed #b45309;height:0;"></div>Faktiskt betalt elhandel (månad)</div>
   </div>
 
   <div class="chart-wrap">
@@ -144,7 +145,8 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     El SE3 2005–2024: Nord Pool spotpris × 1,25 + nätavgift ~35 öre + energiskatt 36 öre/kWh + moms · 2025–2026: verkliga fakturor Gislaved Energi (spot + rörligt + nät + moms) ·
     SVEF 2012–2024: schablonvärde 130 öre/kWh (faktisk prishistorik ej tillgänglig) · 2025–2026: verkliga Vind andel-priser från fakturor (37→40→44 öre/kWh handel) + nät + moms ·
     Pellets: PelletsFörbundets bulkprisstatistik ÷ 4 800 kWh/ton ÷ 0,87 pannverkningsgrad ·
-    2026: jan–apr 2026 (4 månaders medel) · Källor: Gislaved Energi fakturor · Nord Pool · PelletsFörbundet
+    2026: jan–apr 2026 (4 månaders medel) · Källor: Gislaved Energi fakturor · Nord Pool · PelletsFörbundet ·
+    Faktiskt betalt elhandel (streckad linje): faktura inkl. moms ÷ förbrukad kWh per månad, maj 2025–apr 2026 · avser elhandel exkl. nätavgift
   </div>
 </div>
 
@@ -211,6 +213,11 @@ const svefData  = [null,null,null,null,null,null,null,130,130,130,130,130,130,13
 const pelletsTon= [1800,1950,2200,2750,1900,2100,2350,2600,2700,2750,2400,2150,2350,2750,3000,2800,3500,5400,4400,3700,3600,3600];
 const pellData  = pelletsTon.map(p => Math.round(p / 4800 / 0.87 * 100));
 
+// Faktiskt betalt elpris per månad (elhandel, öre/kWh inkl moms) = faktura×100÷kWh
+// maj 2025 – apr 2026, 12 månader
+const faktMaLabels = ['maj-25','jun-25','jul-25','aug-25','sep-25','okt-25','nov-25','dec-25','jan-26','feb-26','mar-26','apr-26'];
+const faktMaData   = [61, 45, 52, 62, 67, 81, 97, 70, 104, 122, 72, 70];
+
 // ── Canvas-diagram ────────────────────────────────────────────
 function ritaDiagram() {
   const canvas = document.getElementById('prisChart');
@@ -229,7 +236,7 @@ function ritaDiagram() {
   const pw = W - pad.left - pad.right;
   const ph = H - pad.top  - pad.bottom;
 
-  const allVals = [...elData, ...pellData, 130].filter(v => v !== null);
+  const allVals = [...elData, ...pellData, 130, ...faktMaData].filter(v => v !== null);
   const yMin = 0;
   const yMax = Math.ceil(Math.max(...allVals) / 50) * 50 + 30;
   const n = labels.length;
@@ -288,15 +295,45 @@ function ritaDiagram() {
     });
   }
 
+  // Månadsdata för faktiskt elpris: maj 2025 – apr 2026
+  // x-position: maj 2025 = index 20 (2025) + 4/12, apr 2026 = index 21 (2026) + 3/12
+  // Mappas linjärt: månad m (0=maj2025..11=apr2026) → x-index 20 + (m+4)/12
+  function xPosMa(m) {
+    const idx = 20 + (m + 4) / 12;
+    return pad.left + (idx / (n - 1)) * pw;
+  }
+
   // Rita linjer
   ritaLinje(pellData,  '#16a34a', null);
   ritaLinje(svefData,  '#2563eb', [6, 4]);
   ritaLinje(elData,    '#ea580c', null);
 
+  // Faktiskt betalt — streckad amber-linje
+  ctx.save();
+  ctx.strokeStyle = '#b45309';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([4, 3]);
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  faktMaData.forEach((v, m) => {
+    const x = xPosMa(m), y = yPos(v);
+    m === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.restore();
+
   // Rita punkter
   ritaPunkter(pellData,  '#16a34a');
   ritaPunkter(svefData,  '#2563eb');
   ritaPunkter(elData,    '#ea580c');
+
+  // Punkter för månadsdata
+  faktMaData.forEach((v, m) => {
+    ctx.beginPath();
+    ctx.arc(xPosMa(m), yPos(v), 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#b45309';
+    ctx.fill();
+  });
 
   // "SVEF från 2012"-etikett
   const svefStart = svefData.findIndex(v => v !== null);
@@ -314,7 +351,7 @@ function ritaDiagram() {
   ctx.fillText('* jan–apr medel', xPos(n - 1) - 60, H - pad.bottom + 30);
 
   // Tooltip vid hover
-  canvas._data = { elData, svefData, pellData, labels, xPos, yPos, pad, pw, n };
+  canvas._data = { elData, svefData, pellData, labels, xPos, yPos, pad, pw, n, faktMaData, faktMaLabels, xPosMa };
 }
 
 // Tooltip overlay
@@ -327,14 +364,39 @@ function ritaDiagram() {
 
   canvas.addEventListener('mousemove', e => {
     if (!canvas._data) return;
-    const { elData, svefData, pellData, labels, xPos, pad, n } = canvas._data;
+    const { elData, svefData, pellData, labels, xPos, pad, n, faktMaData, faktMaLabels, xPosMa } = canvas._data;
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
+
+    // Kolla om musen är nära en månadsdata-punkt
+    let closestMa = -1, minDistMa = Infinity;
+    faktMaData.forEach((v, m) => {
+      const d = Math.abs(mx - xPosMa(m));
+      if (d < minDistMa) { minDistMa = d; closestMa = m; }
+    });
+
+    // Kolla närmaste årspunkt
     let closest = 0, minDist = Infinity;
     for (let i = 0; i < n; i++) {
       const d = Math.abs(mx - xPos(i));
       if (d < minDist) { minDist = d; closest = i; }
     }
+
+    // Visa månadstooltip om närmre än årstooltip och inom räckvidd
+    if (minDistMa < minDist && minDistMa < 20) {
+      const ma = faktMaLabels[closestMa];
+      const fp = faktMaData[closestMa];
+      let html = `<strong style="color:#6b6b62;">${ma}</strong><br>`;
+      html += `<span style="color:#b45309;">■</span> Faktiskt betalt: ${fp} öre/kWh`;
+      tip.innerHTML = html;
+      tip.style.display = 'block';
+      const tx = xPosMa(closestMa) + 12;
+      const tipW = 200;
+      tip.style.left = (tx + tipW > canvas.offsetWidth ? tx - tipW - 24 : tx) + 'px';
+      tip.style.top = '20px';
+      return;
+    }
+
     if (minDist > 30) { tip.style.display = 'none'; return; }
     const yr = labels[closest];
     const el = elData[closest];
