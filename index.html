@@ -116,11 +116,12 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 </header>
 
 <div class="status-bar">
-  <div class="status-pill alert"><div class="status-dot"></div>Pelletslager — nästan tomt</div>
-  <div class="status-pill alert"><div class="status-dot"></div>Solfångare — Alarm Flöde</div>
-  <div class="status-pill warn"><div class="status-dot"></div>Pellets — beställning pågår</div>
+  <div class="status-pill warn"><div class="status-dot"></div>Solfångare — Alarm Flöde</div>
   <div class="status-pill warn"><div class="status-dot"></div>VVS-service — ej bokad</div>
+  <div class="status-pill warn"><div class="status-dot"></div>22 elfakturor (jul 2023–apr 2025) ej inlästa</div>
+  <div class="status-pill warn"><div class="status-dot"></div>Vatten — fakturor ej hämtade</div>
   <div class="status-pill ok"><div class="status-dot"></div>Webbplats live</div>
+  <div class="status-pill ok"><div class="status-dot"></div>El — 34 mån data inläst</div>
 </div>
 
 <!-- ENERGI & DRIFT -->
@@ -134,8 +135,8 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     <div class="card-icon">⚡</div>
     <div class="card-category">El</div>
     <div class="card-title">Elförbrukning</div>
-    <div class="card-desc">Gislaved Energi · manuell CSV-import · SVEF 110 vindandelar = 11 000 kWh/år · månadsstaplar · rullande snitt</div>
-    <div class="card-status partial">● importera CSV</div>
+    <div class="card-desc">Gislaved Energi · 34 månaders förbrukningsdata · spotpris SE3 per månad · SVEF 110 vindandelar = 11 000 kWh/år · 12 fakturor inlästa (maj 2025–apr 2026)</div>
+    <div class="card-status live">● live · data inläst</div>
   </a>
 
   <a href="pellets.html" class="card span-4 c-orange">
@@ -182,16 +183,16 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     <div class="card-icon">💧</div>
     <div class="card-category">Vatten</div>
     <div class="card-title">Kallvattenförbrukning</div>
-    <div class="card-desc">Roslagsvatten · abonnentnr 14569 · mätaravläsningar · dygnsförbrukning per vecka</div>
-    <div class="card-status live">● live</div>
+    <div class="card-desc">Roslagsvatten · abonnentnr 14569 · VA + sophämtning · sida klar, fakturor ej inlästa ännu</div>
+    <div class="card-status partial">● fakturor saknas</div>
   </a>
 
   <a href="sjovagen22.html" class="card span-8 c-blue">
     <div class="card-icon">📊</div>
     <div class="card-category">Prisoptimering</div>
     <div class="card-title">Prisjämförelse — El, SVEF &amp; Pellets</div>
-    <div class="card-desc">Historisk prisjämförelse · el SE3 rörligt vs SVEF vindandel vs pellets bulk · öre/kWh · 2015–idag · Nord Pool · PelletsFörbundet · SCB</div>
-    <div class="card-status live">● live · uppdateras dagligen</div>
+    <div class="card-desc">Historisk prisjämförelse · el SE3 rörligt vs SVEF vindandel vs pellets bulk · öre/kWh · 2005–2026 · verkliga fakturor 2025–2026 · Nord Pool · PelletsFörbundet</div>
+    <div class="card-status live">● live · 2026 uppdaterad</div>
   </a>
 
 </div>
