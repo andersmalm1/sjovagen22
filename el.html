@@ -145,13 +145,33 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 </div>
 
 <div class="section-row">
+  <span class="section-label">Spotpris SE3</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="block c-blue">
+  <div class="block-header">
+    <span class="block-num">04</span>
+    <span class="block-title">Medelspotpris SE3 per månad</span>
+  </div>
+  <div class="block-sub">Faktiskt medelspotpris öre/kWh från Gislaved Energi-fakturor · maj 2025–apr 2026 · exkl. nät, skatt och moms</div>
+  <div class="chart-wrap">
+    <canvas id="elSpotChart" width="700" height="200"></canvas>
+  </div>
+  <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);line-height:1.8;">
+    Spotpriset är SE3-medelspot för respektive kalendermånad enligt faktura · jan–feb 2026 extremt höga (108–110 öre/kWh) ·
+    Vind andel-priset (37–44 öre/kWh) är konstant per period och visas i block 06
+  </div>
+</div>
+
+<div class="section-row">
   <span class="section-label">Senaste avläsningar</span>
   <div class="section-line"></div>
 </div>
 
 <div class="block c-blue" id="elTblBlock">
   <div class="block-header">
-    <span class="block-num">04</span>
+    <span class="block-num">05</span>
     <span class="block-title">Avläsningslogg</span>
   </div>
   <div class="block-sub">De 10 senaste inlästa raderna</div>
@@ -168,7 +188,7 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 
 <div class="block c-amber">
   <div class="block-header">
-    <span class="block-num">05</span>
+    <span class="block-num">06</span>
     <span class="block-title">SVEF Vindkraft — Elavtal</span>
   </div>
   <div class="block-sub">Elhandel avtal 726684 · Vind medelspotpris · start 1 jul 2023 · SE3 · E.ON Energidistribution AB</div>
@@ -204,7 +224,7 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 
 <div class="block c-blue">
   <div class="block-header">
-    <span class="block-num">06</span>
+    <span class="block-num">07</span>
     <span class="block-title">Fakturerade månader</span>
   </div>
   <div class="block-sub">Elhandelsfakturor från Gislaved Energi · maj 2025 – apr 2026 · exkl. nätavgift</div>
@@ -262,28 +282,60 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 
 <div class="block c-blue">
   <div class="block-header">
-    <span class="block-num">07</span>
+    <span class="block-num">08</span>
     <span class="block-title">Mätarhistorik</span>
   </div>
-  <div class="block-sub">Avlästa mätarställningar från fakturorna · mätarnr 006438105622331318</div>
+  <div class="block-sub">Mätarnr 006438105622331318 · Anl-id 735 999 114 009 319 615 · start jul 2023</div>
   <table class="tbl">
-    <thead><tr><th>Datum</th><th style="text-align:right">Mätarställning (kWh)</th><th style="text-align:right">Förbrukning perioden</th></tr></thead>
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th style="text-align:right">Mätarställning (kWh)</th>
+        <th style="text-align:right">Förbrukning perioden</th>
+        <th style="text-align:right">Källa</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td class="mono">2025-05-01</td><td class="mono" style="text-align:right">64 737</td><td class="mono" style="text-align:right">—</td></tr>
-      <tr><td class="mono">2025-06-01</td><td class="mono" style="text-align:right">66 824</td><td class="mono" style="text-align:right">2 087 kWh</td></tr>
-      <tr><td class="mono">2025-07-01</td><td class="mono" style="text-align:right">67 817</td><td class="mono" style="text-align:right">993 kWh</td></tr>
-      <tr><td class="mono">2025-08-01</td><td class="mono" style="text-align:right">68 423</td><td class="mono" style="text-align:right">606 kWh</td></tr>
-      <tr><td class="mono">2025-09-01</td><td class="mono" style="text-align:right">69 426</td><td class="mono" style="text-align:right">1 003 kWh</td></tr>
-      <tr><td class="mono">2025-10-01</td><td class="mono" style="text-align:right">70 783</td><td class="mono" style="text-align:right">1 357 kWh</td></tr>
-      <tr><td class="mono">2025-11-01</td><td class="mono" style="text-align:right">73 673</td><td class="mono" style="text-align:right">2 890 kWh</td></tr>
-      <tr><td class="mono">2025-12-01</td><td class="mono" style="text-align:right">77 339</td><td class="mono" style="text-align:right">3 666 kWh</td></tr>
-      <tr><td class="mono">2026-01-01</td><td class="mono" style="text-align:right">81 279</td><td class="mono" style="text-align:right">3 940 kWh</td></tr>
-      <tr><td class="mono">2026-02-01</td><td class="mono" style="text-align:right">86 235</td><td class="mono" style="text-align:right">4 956 kWh</td></tr>
-      <tr><td class="mono">2026-03-01</td><td class="mono" style="text-align:right">90 958</td><td class="mono" style="text-align:right">4 723 kWh</td></tr>
-      <tr><td class="mono">2026-04-01</td><td class="mono" style="text-align:right">94 039</td><td class="mono" style="text-align:right">3 081 kWh</td></tr>
-      <tr><td class="mono">2026-05-01</td><td class="mono" style="text-align:right">96 102</td><td class="mono" style="text-align:right">2 063 kWh</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-07-01</td><td class="mono" style="text-align:right">~861</td><td class="mono" style="text-align:right">— (mätarstart)</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-08-01</td><td class="mono" style="text-align:right">~1 559</td><td class="mono" style="text-align:right">698 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-09-01</td><td class="mono" style="text-align:right">~2 448</td><td class="mono" style="text-align:right">889 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-10-01</td><td class="mono" style="text-align:right">~3 720</td><td class="mono" style="text-align:right">1 272 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-11-01</td><td class="mono" style="text-align:right">~7 301</td><td class="mono" style="text-align:right">3 581 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2023-12-01</td><td class="mono" style="text-align:right">~11 656</td><td class="mono" style="text-align:right">4 355 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-01-01</td><td class="mono" style="text-align:right">~16 772</td><td class="mono" style="text-align:right">5 116 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-02-01</td><td class="mono" style="text-align:right">~22 256</td><td class="mono" style="text-align:right">5 484 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-03-01</td><td class="mono" style="text-align:right">~26 757</td><td class="mono" style="text-align:right">4 501 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-04-01</td><td class="mono" style="text-align:right">~30 666</td><td class="mono" style="text-align:right">3 909 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-05-01</td><td class="mono" style="text-align:right">~33 986</td><td class="mono" style="text-align:right">3 320 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-06-01</td><td class="mono" style="text-align:right">~35 199</td><td class="mono" style="text-align:right">1 213 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-07-01</td><td class="mono" style="text-align:right">~35 985</td><td class="mono" style="text-align:right">786 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-08-01</td><td class="mono" style="text-align:right">~36 583</td><td class="mono" style="text-align:right">598 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-09-01</td><td class="mono" style="text-align:right">~37 222</td><td class="mono" style="text-align:right">639 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-10-01</td><td class="mono" style="text-align:right">~38 815</td><td class="mono" style="text-align:right">1 593 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-11-01</td><td class="mono" style="text-align:right">~41 544</td><td class="mono" style="text-align:right">2 729 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2024-12-01</td><td class="mono" style="text-align:right">~45 354</td><td class="mono" style="text-align:right">3 810 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2025-01-01</td><td class="mono" style="text-align:right">~49 765</td><td class="mono" style="text-align:right">4 411 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2025-02-01</td><td class="mono" style="text-align:right">~54 438</td><td class="mono" style="text-align:right">4 673 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2025-03-01</td><td class="mono" style="text-align:right">~58 719</td><td class="mono" style="text-align:right">4 281 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="color:var(--subtle)"><td class="mono">2025-04-01</td><td class="mono" style="text-align:right">~62 278</td><td class="mono" style="text-align:right">3 559 kWh</td><td class="mono" style="text-align:right;font-size:11px;">beräknad*</td></tr>
+      <tr style="border-top:2px solid var(--border2);"><td class="mono" style="font-weight:500;">2025-05-01</td><td class="mono" style="text-align:right;font-weight:500;">64 737</td><td class="mono" style="text-align:right">2 659 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-06-01</td><td class="mono" style="text-align:right">66 824</td><td class="mono" style="text-align:right">2 087 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-07-01</td><td class="mono" style="text-align:right">67 817</td><td class="mono" style="text-align:right">993 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-08-01</td><td class="mono" style="text-align:right">68 423</td><td class="mono" style="text-align:right">606 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-09-01</td><td class="mono" style="text-align:right">69 426</td><td class="mono" style="text-align:right">1 003 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-10-01</td><td class="mono" style="text-align:right">70 783</td><td class="mono" style="text-align:right">1 357 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-11-01</td><td class="mono" style="text-align:right">73 673</td><td class="mono" style="text-align:right">2 890 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2025-12-01</td><td class="mono" style="text-align:right">77 339</td><td class="mono" style="text-align:right">3 666 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2026-01-01</td><td class="mono" style="text-align:right">81 279</td><td class="mono" style="text-align:right">3 940 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2026-02-01</td><td class="mono" style="text-align:right">86 235</td><td class="mono" style="text-align:right">4 956 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2026-03-01</td><td class="mono" style="text-align:right">90 958</td><td class="mono" style="text-align:right">4 723 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2026-04-01</td><td class="mono" style="text-align:right">94 039</td><td class="mono" style="text-align:right">3 081 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
+      <tr><td class="mono">2026-05-01</td><td class="mono" style="text-align:right">96 102</td><td class="mono" style="text-align:right">2 063 kWh</td><td class="mono" style="text-align:right;font-size:11px;color:var(--accent-green);">faktura ✓</td></tr>
     </tbody>
   </table>
+  <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--subtle);line-height:1.8;">
+    * Beräknade ställningar: bakräknat från verifierad mätarst. 64 737 kWh (2025-05-01) med avrundade CSV-kWh-värden — avvikelse ±200 kWh möjlig. Korrigeras när de 22 återstående fakturorna (jul 2023–apr 2025) läses in från Gislaved Energi.
+  </div>
 </div>
 
 <footer>
@@ -430,6 +482,7 @@ function rendera(data){
   visaKPI(data,manadData);
   ritaManad(manadData);
   ritaSnitt(data);
+  ritaSpot();
   visaTabell(data);
 }
 
@@ -468,6 +521,125 @@ function parseGislavedCSV(text){
     if(!isNaN(kwh)&&kwh>=0)result.push({datum:isoDate,kwh:kwh});
   });
   return result.sort(function(a,b){return a.datum<b.datum?-1:1;});
+}
+
+// ── Spotprisdata från fakturor (SE3 medelspotpris öre/kWh) ────
+// Källa: Gislaved Energi fakturor, faktisk fakturerad spotkomponent per månad
+var SPOTDATA = [
+  {datum:'2025-05-01', spot:42.94, vindpris:37.00, rorligt:9.61},
+  {datum:'2025-06-01', spot:22.78, vindpris:37.00, rorligt:8.04},
+  {datum:'2025-07-01', spot:37.01, vindpris:37.00, rorligt:8.97},
+  {datum:'2025-08-01', spot:48.56, vindpris:40.00, rorligt:9.47},
+  {datum:'2025-09-01', spot:52.33, vindpris:40.00, rorligt:11.03},
+  {datum:'2025-10-01', spot:62.81, vindpris:40.00, rorligt:8.83},
+  {datum:'2025-11-01', spot:69.64, vindpris:40.00, rorligt:14.83},
+  {datum:'2025-12-01', spot:51.68, vindpris:40.00, rorligt:7.41},
+  {datum:'2026-01-01', spot:108.45, vindpris:40.00, rorligt:8.10},
+  {datum:'2026-02-01', spot:110.23, vindpris:44.00, rorligt:8.64},
+  {datum:'2026-03-01', spot:58.66,  vindpris:44.00, rorligt:7.22},
+  {datum:'2026-04-01', spot:56.08,  vindpris:44.00, rorligt:6.39}
+];
+
+function ritaSpot() {
+  var canvas = document.getElementById('elSpotChart');
+  if (!canvas) return;
+  var dpr = window.devicePixelRatio || 1;
+  var W = canvas.offsetWidth || 700;
+  var H = 200;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  var ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.fillStyle = '#f5f4f0';
+  ctx.fillRect(0, 0, W, H);
+
+  var pad = {top:28, right:20, bottom:52, left:60};
+  var pw = W - pad.left - pad.right;
+  var ph = H - pad.top  - pad.bottom;
+  var n  = SPOTDATA.length;
+
+  var allVals = SPOTDATA.map(function(d){ return Math.max(d.spot, d.vindpris); });
+  var maxV = Math.ceil(Math.max.apply(null, allVals) * 1.15 / 10) * 10 || 50;
+
+  function xPos(i) { return pad.left + (i + 0.5) * pw / n; }
+  function yPos(v) { return pad.top  + (1 - v / maxV) * ph; }
+
+  // Rutnät + y-axel
+  ctx.font = '10px "DM Mono",monospace';
+  var gridStep = maxV <= 60 ? 20 : maxV <= 120 ? 25 : 50;
+  for (var v = 0; v <= maxV; v += gridStep) {
+    var y = yPos(v);
+    ctx.strokeStyle = 'rgba(0,0,0,0.06)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
+    ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'right';
+    ctx.fillText(v + ' öre', pad.left - 6, y + 3);
+  }
+
+  // Staplar: spot (orange) med vind-andel-priset som referenslinje
+  var barW = Math.max(6, pw / n - 6);
+  SPOTDATA.forEach(function(d, i) {
+    var x  = xPos(i) - barW / 2;
+    var ys = yPos(d.spot);
+    var bh = ph - (ys - pad.top);
+
+    // Stapel-färg: rött om spot > vindpris, annars grönt
+    var overVind = d.spot > d.vindpris;
+    ctx.fillStyle = overVind ? 'rgba(220,38,38,0.65)' : 'rgba(22,163,74,0.55)';
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, ys, barW, bh, [3,3,0,0]);
+    else ctx.rect(x, ys, barW, bh);
+    ctx.fill();
+
+    // Värde ovanför stapel
+    ctx.fillStyle = '#6b6b62'; ctx.textAlign = 'center';
+    ctx.font = '9px "DM Mono",monospace';
+    ctx.fillText(d.spot.toFixed(1), xPos(i), ys - 4);
+
+    // X-etikett
+    var lbl = d.datum.slice(0,7);
+    ctx.fillStyle = '#9a9a8e'; ctx.textAlign = 'center';
+    ctx.font = '10px "DM Mono",monospace';
+    ctx.save();
+    ctx.translate(xPos(i), H - pad.bottom + 8);
+    ctx.rotate(-Math.PI / 4);
+    ctx.fillText(lbl, 0, 0);
+    ctx.restore();
+  });
+
+  // Linje: vindandelspris (blå streckad)
+  ctx.save();
+  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath();
+  SPOTDATA.forEach(function(d, i) {
+    var x = xPos(i), y = yPos(d.vindpris);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.restore();
+
+  // Legend
+  ctx.font = '10px "DM Mono",monospace'; ctx.textAlign = 'left';
+  ctx.fillStyle = '#9a9a8e';
+  ctx.fillText('MEDELSPOTPRIS SE3 PER MÅNAD (ÖRE/KWH) · KÄLLA: GISLAVED ENERGI FAKTUROR', pad.left, 16);
+
+  // Liten legend nere till höger
+  var lx = W - pad.right - 200;
+  var ly = pad.top + 10;
+  ctx.fillStyle = 'rgba(220,38,38,0.65)'; ctx.fillRect(lx, ly, 10, 10);
+  ctx.fillStyle = '#6b6b62'; ctx.textAlign = 'left';
+  ctx.fillText('Spot > Vind andel-pris', lx + 14, ly + 9);
+  ctx.fillStyle = 'rgba(22,163,74,0.55)'; ctx.fillRect(lx, ly + 16, 10, 10);
+  ctx.fillStyle = '#6b6b62';
+  ctx.fillText('Spot ≤ Vind andel-pris', lx + 14, ly + 25);
+  // Vind andel-linje legend
+  ctx.save();
+  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = 1.5; ctx.setLineDash([5,4]);
+  ctx.beginPath(); ctx.moveTo(lx, ly + 33); ctx.lineTo(lx + 10, ly + 33); ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle = '#6b6b62'; ctx.fillText('Vind andel-pris', lx + 14, ly + 37);
 }
 
 // ── Inbyggd startdata (Gislaved Energi export 2026-05-21) ─────
@@ -514,6 +686,9 @@ document.getElementById('elImportStatus').textContent =
   '✓ 34 månader · jul 2023 – apr 2026 · Gislaved Energi export 2026-05-21 · 12 fakturor inlästa (maj 2025–apr 2026)';
 document.getElementById('elImportStatus').style.color = 'var(--accent-green)';
 rendera(STARTDATA);
+
+// Rita spot-diagrammet vid resize
+window.addEventListener('resize', function(){ ritaSpot(); });
 </script>
 </body>
 </html>
