@@ -196,7 +196,7 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
       <tr><td class="mono">8</td><td>Retur övervåningskrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning övervåning</td></tr>
     </tbody>
   </table>
-  <div class="next-step">Raspberry Pi ej inköpt ännu (~1 200–1 450 kr totalt, se inköpslistan nedan) · VVS-service ej bokad (Alarm Flöde kvarstår) · Solfångardata exporteras via optisk IR-adapter mot LCD+:s IR-port — köp kompatibel Watts datakabel (fråga Watts teknisk support: watts.eu/nordic, artikelnummer för P-3481 / OF: 272813)</div>
+  <div class="next-step">Raspberry Pi ej inköpt ännu (~1 200–1 450 kr totalt, se inköpslistan nedan) · SD-kort insatt i Watts LCD+ 2026-05-22 — solfångarloggning aktiv · VVS-service ej bokad (Alarm Flöde kvarstår)</div>
 </div>
 
 <div class="section-row">
@@ -222,8 +222,7 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
       <tr><td>Optisk PC-adapter / datakabel (Watts LCD+)</td><td class="mono" style="color:var(--accent-orange);">⚠ inköp krävs — fråga Watts teknisk support om kompatibel kabel för P-3481</td></tr>
       <tr><td>DS18B20 sensorer × 8 st + 4,7 kΩ pull-up-resistor</td><td class="mono">~260–310 kr</td></tr>
       <tr><td>Kabel (1-Wire)</td><td class="mono">finns hemma</td></tr>
-      <tr><td>Optisk IR-adapter / datakabel för Watts LCD+ P-3481</td><td class="mono" style="color:var(--accent-orange);">okänt pris — kontakta Watts (watts.eu/nordic)</td></tr>
-      <tr><td><strong>Totalt (exkl. optisk adapter)</strong></td><td class="mono"><strong>~1 150–1 350 kr</strong></td></tr>
+      <tr><td><strong>Totalt</strong></td><td class="mono"><strong>~1 200–1 450 kr</strong></td></tr>
     </tbody>
   </table>
 </div>
