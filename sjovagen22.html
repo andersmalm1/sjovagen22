@@ -206,55 +206,62 @@ document.getElementById('footerDate').textContent = `Genererad ${now.getDate()} 
 // ── Prisdata ──────────────────────────────────────────────────
 // Alla värden: öre/kWh inkl. moms, totalt inkl. nätavgift, energiskatt och moms
 //
-// El SE3 rörligt (totalkostnad kund):
+// X-AXELN har 24 index (0–23):
+//   index  0 = jan 2005
+//   index 20 = jan 2025
+//   index 21 = jan 2026
+//   index 22 = jan 2027  ← tom höger-marginal, ger rum för apr-26 (21,25) och ev. kommande fakturor
+//   Årsdata placeras vid januari (heltalsindex). Månadsdata interpoleras fritt utan klippning.
+//
+// El SE3 rörligt:
 //   2005–2024: Nord Pool årsmedel-spot × 1,25 + nätavgift ~35 öre + energiskatt 36 öre + moms 25 %
-//   2025 (maj–dec, 8 mån verkliga fakturor): spotmedel 48,7 + rörligt 9,5 + påslag 1,2 = 59,4 × 1,25 + nät 44 = 118 öre/kWh
-//   2026* (jan–apr, 4 mån verkliga fakturor): spotmedel 83,4 + rörligt 7,8 + påslag 1,2 = 92,4 × 1,25 + nät 44 = 159 öre/kWh
-const labels = ['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026*'];
-const elData  = [92,102,108,118,78,108,128,112,118,102,88,83,93,128,112,88,155,285,142,118,118,159];
+//   2025 (maj–dec, 8 mån): spotmedel 48,7 + rörligt 9,5 + påslag 1,2 = 59,4 × 1,25 + nät 44 = 118 öre/kWh
+//   2026* (jan–apr, 4 mån): spotmedel 83,4 + rörligt 7,8 + påslag 1,2 = 92,4 × 1,25 + nät 44 = 159 öre/kWh
+const labels = ['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014',
+                 '2015','2016','2017','2018','2019','2020','2021','2022','2023','2024',
+                 '2025','2026*',''];  // index 22 = tom höger-marginal (maj 2026-läge)
+const elData  = [92,102,108,118,78,108,128,112,118,102,88,83,93,128,112,88,155,285,142,118,118,159,null];
 
-// SVEF vindandel (totalkostnad kund):
+// SVEF vindandel:
 //   2012–2024: schablonvärde 130 öre/kWh — faktisk prishistorik ej tillgänglig
-//   2025 (maj–dec, 8 mån): vindandel (37×3+40×5)/8 = 38,9 + rörligt 9,7 + påslag 1,2 = 49,8 × 1,25 + nät 44 = 106 öre/kWh
-//   2026* (jan–apr, 4 mån): vindandel (40×1+44×3)/4 = 43,0 + rörligt 7,6 + påslag 1,2 = 51,8 × 1,25 + nät 44 = 109 öre/kWh
-const svefData = [null,null,null,null,null,null,null,130,130,130,130,130,130,130,130,130,130,130,130,130,106,109];
+//   2025 (maj–dec, 8 mån): (37×3+40×5)/8=38,9 + rörligt 9,7 + påslag 1,2 = 49,8 × 1,25 + nät 44 = 106 öre/kWh
+//   2026* (jan–apr, 4 mån): (40+44+44+44)/4=43,0 + rörligt 7,6 + påslag 1,2 = 51,8 × 1,25 + nät 44 = 109 öre/kWh
+const svefData = [null,null,null,null,null,null,null,130,130,130,130,130,130,130,130,130,130,130,130,130,106,109,null];
 
-// Pellets bulk → värmekostnad öre/kWh: bulkpris kr/ton ÷ 4 800 kWh/ton ÷ 0,87 pannverkningsgrad × 100
-// 2026*: schablonvärde = 2025 (faktiskt 2026-pris ej känt)
-const pelletsTon = [1800,1950,2200,2750,1900,2100,2350,2600,2700,2750,2400,2150,2350,2750,3000,2800,3500,5400,4400,3700,3600,3600];
-const pellData   = pelletsTon.map(p => Math.round(p / 4800 / 0.87 * 100));
+// Pellets bulk: kr/ton ÷ 4 800 kWh/ton ÷ 0,87 × 100  — 2026*: schablon = 2025
+const pelletsTon = [1800,1950,2200,2750,1900,2100,2350,2600,2700,2750,2400,2150,2350,2750,3000,2800,3500,5400,4400,3700,3600,3600,null];
+const pellData   = pelletsTon.map(p => p === null ? null : Math.round(p / 4800 / 0.87 * 100));
 
 // ── Faktiskt betalt elhandel per månad ────────────────────────
-// Beräkning: (faktura exkl. moms × 1,25) ÷ kWh förbrukning × 100 = öre/kWh inkl. moms
-// Avser elhandel (Gislaved Energi) — nätavgift (E.ON) ingår ej
+// Beräkning: (faktura exkl. moms × 1,25) ÷ kWh × 100 = öre/kWh inkl. moms
 // Källa: 12 fakturor avt. 726684, maj 2025–apr 2026
+// Avser elhandel — nätavgift (E.ON) faktureras separat och ingår ej
 //
-// Månad       | exkl.moms  | kWh  | öre/kWh inkl.moms
-// maj-2025    | 1 022,87   | 2087 | 61,3
-// jun-2025    |   357,03   |  993 | 44,9
-// jul-2025    |   252,79   |  606 | 52,1
-// aug-2025    |   500,00   | 1003 | 62,3
-// sep-2025    |   725,64   | 1357 | 66,8
-// okt-2025    | 1 863,88   | 2890 | 80,6
-// nov-2025    | 2 850,90   | 3666 | 97,2
-// dec-2025    | 2 208,55   | 3940 | 70,1
-// jan-2026    | 4 136,85   | 4956 | 104,3
-// feb-2026    | 4 594,78   | 4723 | 121,7
-// mar-2026    | 1 773,75   | 3081 | 72,0
-// apr-2026    | 1 152,10   | 2063 | 69,8
-const faktMaData = [61.3, 44.9, 52.1, 62.3, 66.8, 80.6, 97.2, 70.1, 104.3, 121.7, 72.0, 69.8];
+// Månad    | exkl.moms  | kWh  | öre/kWh
+// maj-2025 | 1 022,87   | 2087 | 61,3
+// jun-2025 |   357,03   |  993 | 44,9
+// jul-2025 |   252,79   |  606 | 52,1
+// aug-2025 |   500,00   | 1003 | 62,3
+// sep-2025 |   725,64   | 1357 | 66,8
+// okt-2025 | 1 863,88   | 2890 | 80,6
+// nov-2025 | 2 850,90   | 3666 | 97,2
+// dec-2025 | 2 208,55   | 3940 | 70,1
+// jan-2026 | 4 136,85   | 4956 | 104,3
+// feb-2026 | 4 594,78   | 4723 | 121,7
+// mar-2026 | 1 773,75   | 3081 | 72,0
+// apr-2026 | 1 152,10   | 2063 | 69,8
+const faktMaData   = [61.3, 44.9, 52.1, 62.3, 66.8, 80.6, 97.2, 70.1, 104.3, 121.7, 72.0, 69.8];
 const faktMaLabels = ['maj-25','jun-25','jul-25','aug-25','sep-25','okt-25','nov-25','dec-25','jan-26','feb-26','mar-26','apr-26'];
 
-// X-positionering för månadsdata:
-// Diagrammets x-axel: index 0 = 2005, index 21 = 2026* (22 punkter)
-// Varje år = 1 enhet. Månadsdata mappas till bråkdelar av år.
-// maj-25 = år 2025 (index 20) + 4 månader in på året = 20 + 4/12 = 20,333
-// apr-26 = år 2026 (index 21) + 3 månader in på året = 21 + 3/12 = 21,250
-// Obs: 21,25 > max index 21 — klipps till 21,0 för sista punkten (apr-26 = 2026-poängen)
+// X-positionering månadsdata (ingen klippning — höger-marginal ger plats):
+//   m=0  maj-25 → index 20 + 4/12  = 20,333
+//   m=7  dec-25 → index 20 + 11/12 = 20,917
+//   m=8  jan-26 → index 21 + 0/12  = 21,000  (= exakt jan-26-punkten)
+//   m=9  feb-26 → index 21 + 1/12  = 21,083
+//   m=11 apr-26 → index 21 + 3/12  = 21,250  (ryms i höger-marginalen)
 const faktMaYearIdx = faktMaData.map((_, m) => {
-  // m=0 = maj 2025, m=7 = dec 2025, m=8 = jan 2026, m=11 = apr 2026
-  if (m <= 7) return 20 + (m + 4) / 12;       // maj=4/12 ... dec=11/12 av 2025
-  return Math.min(21, 21 + (m - 8 + 1) / 12); // jan=1/12 ... apr=4/12 av 2026, max=21
+  if (m <= 7) return 20 + (m + 4) / 12;  // maj(4)..dec(11) av 2025
+  return 21 + (m - 8) / 12;              // jan(0)..apr(3) av 2026 — ingen klippning
 });
 
 // ── Canvas-diagram ────────────────────────────────────────────
@@ -296,11 +303,12 @@ function ritaDiagram() {
     ctx.fillText(v + ' öre', pad.left - 6, y + 3);
   }
 
-  // X-axel etiketter (vartannat år)
+  // X-axel etiketter (vartannat år, sista tomma index hoppas över)
   ctx.textAlign = 'center';
   labels.forEach((lbl, i) => {
-    if (i % 2 === 0 || i === n - 1) {
-      ctx.fillStyle = i === n - 1 ? '#b45309' : '#9a9a8e';
+    if (!lbl) return;  // hoppa över tom höger-marginal
+    if (i % 2 === 0 || i === n - 2) {  // n-2 = 2026*
+      ctx.fillStyle = i === n - 2 ? '#b45309' : '#9a9a8e';
       ctx.fillText(lbl, xPos(i), H - pad.bottom + 16);
     }
   });
@@ -370,10 +378,10 @@ function ritaDiagram() {
     ctx.fillText('SVEF från 2012 →', xPos(svefStart) + 6, yPos(130) - 8);
   }
 
-  // Etikett "* jan–apr" vid sista x-axelpunkten
+  // Etikett "* jan–apr" under 2026*-punkten (index n-2 = 21)
   ctx.font = "9px 'DM Mono', monospace";
   ctx.fillStyle = '#b45309'; ctx.textAlign = 'center';
-  ctx.fillText('* jan–apr', xPos(n - 1), H - pad.bottom + 30);
+  ctx.fillText('* jan–apr', xPos(n - 2), H - pad.bottom + 30);
 
   // Spara data för tooltip
   canvas._data = { elData, svefData, pellData, labels, xPos, yPos, pad, pw, n,
@@ -433,7 +441,8 @@ function ritaDiagram() {
     html += `<span style="color:#ea580c;">●</span> El SE3: <strong>${el}</strong> öre/kWh<br>`;
     if (sv !== null) html += `<span style="color:#2563eb;">●</span> SVEF: <strong>${sv}</strong> öre/kWh<br>`;
     html += `<span style="color:#16a34a;">●</span> Pellets: <strong>${pe}</strong> öre/kWh`;
-    if (closest >= 20) html += `<br><span style="font-size:10px;color:#9a9a8e;">${closest===20?'maj–dec 2025 (8 mån)':'jan–apr 2026 (4 mån)'}</span>`;
+    if (closest === 20) html += `<br><span style="font-size:10px;color:#9a9a8e;">maj–dec 2025 (8 mån, verkliga fakturor)</span>`;
+    if (closest === 21) html += `<br><span style="font-size:10px;color:#9a9a8e;">jan–apr 2026 (4 mån, verkliga fakturor)</span>`;
     tip.innerHTML = html;
     tip.style.display = 'block';
     const tx = xPos(closest) + 14;
