@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systemarkitektur — Sjövägen 22</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --surface2: #f0eeea;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.13);
+  --text: #1a1a18;
+  --muted: #6b6b62;
+  --subtle: #9a9a8e;
+  --mono: 'DM Mono', monospace;
+  --body: 'DM Sans', sans-serif;
+
+  /* Layer colors */
+  --c-sensor:   #0d9488; /* teal   — sensorer */
+  --c-lora:     #7c3aed; /* purple — LoRa radio */
+  --c-gateway:  #2563eb; /* blue   — gateway/pi */
+  --c-cloud:    #16a34a; /* green  — moln/github */
+  --c-dash:     #ea580c; /* orange — dashboard */
+  --c-modbus:   #dc2626; /* red    — Modbus direktkoppling */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: var(--body);
+  font-size: 14px;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 32px 24px 60px;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+
+/* HEADER */
+.hdr { margin-bottom: 40px; }
+.hdr-eye { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--c-gateway); margin-bottom: 8px; }
+.hdr-title { font-size: clamp(22px, 3.5vw, 32px); font-weight: 300; letter-spacing: -.02em; color: var(--text); }
+.hdr-sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+/* LEGEND */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 32px;
+}
+.leg { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); cursor: pointer; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2); background: var(--surface); transition: all .15s; }
+.leg:hover { border-color: rgba(0,0,0,0.25); }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ARCH DIAGRAM */
+.arch {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 0;
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 32px 24px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+/* Column headers */
+.col-header {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+/* Nodes */
+.node {
+  border-radius: 8px;
+  border: 1.5px solid;
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  position: relative;
+  background: var(--surface);
+  margin: 4px;
+}
+.node:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+
+.node-icon { font-size: 16px; margin-bottom: 4px; }
+.node-title { font-weight: 500; color: var(--text); font-size: 11px; margin-bottom: 2px; }
+.node-sub { color: var(--muted); font-size: 10px; line-height: 1.4; }
+.node-badge { display: inline-block; font-size: 9px; padding: 2px 6px; border-radius: 3px; margin-top: 5px; border: 1px solid; }
+
+/* Node color variants */
+.node-sensor  { border-color: rgba(13,148,136,.35); background: rgba(13,148,136,.04); }
+.node-sensor .node-badge  { color: var(--c-sensor); border-color: rgba(13,148,136,.3); background: rgba(13,148,136,.07); }
+
+.node-lora    { border-color: rgba(124,58,237,.3); background: rgba(124,58,237,.04); }
+.node-lora .node-badge    { color: var(--c-lora); border-color: rgba(124,58,237,.3); background: rgba(124,58,237,.07); }
+
+.node-gateway { border-color: rgba(37,99,235,.3); background: rgba(37,99,235,.04); }
+.node-gateway .node-badge { color: var(--c-gateway); border-color: rgba(37,99,235,.3); background: rgba(37,99,235,.07); }
+
+.node-modbus  { border-color: rgba(220,38,38,.3); background: rgba(220,38,38,.04); }
+.node-modbus .node-badge  { color: var(--c-modbus); border-color: rgba(220,38,38,.3); background: rgba(220,38,38,.07); }
+
+.node-cloud   { border-color: rgba(22,163,74,.3); background: rgba(22,163,74,.04); }
+.node-cloud .node-badge   { color: var(--c-cloud); border-color: rgba(22,163,74,.3); background: rgba(22,163,74,.07); }
+
+.node-dash    { border-color: rgba(234,88,12,.3); background: rgba(234,88,12,.04); }
+.node-dash .node-badge    { color: var(--c-dash); border-color: rgba(234,88,12,.3); background: rgba(234,88,12,.07); }
+
+/* SVG arrows overlay */
+.arrows-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* FLOW TABLE */
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.flow-table th {
+  background: var(--surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border2);
+}
+.flow-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; }
+.flow-table tr:last-child td { border-bottom: none; }
+.flow-table td:first-child { color: var(--text); font-weight: 500; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: middle; }
+
+/* COST TABLE */
+.cost-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 32px; }
+.cost-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 10px; padding: 18px 16px; }
+.cost-label { font-family: var(--mono); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.cost-items { display: flex; flex-direction: column; gap: 5px; }
+.cost-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; }
+.cost-key { color: var(--muted); }
+.cost-val { color: var(--text); }
+.cost-total { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 8px; font-weight: 500; }
+.cost-total .cost-val { color: var(--c-gateway); }
+
+footer { font-family: var(--mono); font-size: 11px; color: var(--subtle); border-top: 1px solid var(--border); padding-top: 20px; margin-top: 8px; }
+
+@media (max-width: 700px) {
+  .arch { grid-template-columns: 1fr 1fr; }
+  body { padding: 20px 14px 40px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="hdr-eye">Systemarkitektur · IoT &amp; Datainfrastruktur</div>
+  <h1 class="hdr-title">Sjövägen 22 — Sensorarkitektur</h1>
+  <p class="hdr-sub">LoRaWAN · Modbus RTU · Raspberry Pi · GitHub Pages · Dashboard</p>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="leg"><span class="leg-dot" style="background:var(--c-sensor)"></span>Sensorer</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--c-lora)"></span>LoRa radio</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--c-modbus)"></span>Modbus RTU (kabel)</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--c-gateway)"></span>Gateway / Raspberry Pi</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--c-cloud)"></span>Moln / GitHub</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--c-dash)"></span>Dashboard</div>
+</div>
+
+<!-- ARCHITECTURE DIAGRAM -->
+<div style="overflow-x:auto;">
+<div style="min-width:720px;">
+<div class="arch" id="archDiagram">
+
+  <!-- COLUMN HEADERS -->
+  <div class="col-header" style="grid-column:1">Sensorer &amp; källor</div>
+  <div class="col-header" style="grid-column:2">LoRa-noder</div>
+  <div class="col-header" style="grid-column:3">Raspberry Pi<br>Pannrum</div>
+  <div class="col-header" style="grid-column:4">Moln</div>
+  <div class="col-header" style="grid-column:5">Dashboard</div>
+
+  <!-- ROW 1: SENSORS -->
+  <div style="grid-column:1; display:flex; flex-direction:column; gap:8px;">
+    <div class="node node-sensor">
+      <div class="node-icon">🌡</div>
+      <div class="node-title">DS18B20 ×4</div>
+      <div class="node-sub">Ackumulatortank<br>Fram/retur pellets</div>
+      <div class="node-badge">1-Wire</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">☀️</div>
+      <div class="node-title">DS18B20 ×2</div>
+      <div class="node-sub">Solfångare kollektor<br>in/ut + ackumulatortank</div>
+      <div class="node-badge">1-Wire</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">🌤</div>
+      <div class="node-title">Wiking 02049</div>
+      <div class="node-sub">Temp, vind, hum<br>Sänder 433 MHz</div>
+      <div class="node-badge">433 MHz OOK</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">🛢</div>
+      <div class="node-title">Ultraljudsnivå</div>
+      <div class="node-sub">Pelletslager<br>Lagernivå</div>
+      <div class="node-badge">HC-SR04</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">💧</div>
+      <div class="node-title">Pulsmätare</div>
+      <div class="node-sub">Vattenmätare<br>Förbrukning</div>
+      <div class="node-badge">puls</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">⚡</div>
+      <div class="node-title">Pulsmätare</div>
+      <div class="node-sub">Elmätare<br>Förbrukning kWh</div>
+      <div class="node-badge">IR/puls</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: LORA NODES -->
+  <div style="grid-column:2; display:flex; flex-direction:column; gap:8px; padding-top:4px;">
+    <div class="node node-lora" style="opacity:.35; border-style:dashed;">
+      <div class="node-icon">📡</div>
+      <div class="node-title">Direkt till Pi</div>
+      <div class="node-sub">1-Wire GPIO<br>Ingen LoRa</div>
+      <div class="node-badge">GPIO kabel</div>
+    </div>
+    <div class="node node-lora" style="opacity:.35; border-style:dashed;">
+      <div class="node-icon">📡</div>
+      <div class="node-title">Direkt till Pi</div>
+      <div class="node-sub">1-Wire GPIO<br>Ingen LoRa</div>
+      <div class="node-badge">GPIO kabel</div>
+    </div>
+    <div class="node node-lora" style="opacity:.35;border-style:dashed;">
+      <div class="node-icon">📡</div>
+      <div class="node-title">LoRa-nod A</div>
+      <div class="node-sub">Ej behövs — väder<br>via RTL-SDR istället</div>
+      <div class="node-badge">utgår</div>
+    </div>
+    <div class="node node-lora">
+      <div class="node-icon">📡</div>
+      <div class="node-title">LoRa-nod B</div>
+      <div class="node-sub">TTGO LoRa32<br>Pelletsnivå</div>
+      <div class="node-badge">868 MHz</div>
+    </div>
+    <div class="node node-lora">
+      <div class="node-icon">📡</div>
+      <div class="node-title">LoRa-nod C</div>
+      <div class="node-sub">TTGO LoRa32<br>Vatten + el puls</div>
+      <div class="node-badge">868 MHz</div>
+    </div>
+  </div>
+
+  <!-- MIDDLE: RASPBERRY PI -->
+  <div style="grid-column:3; display:flex; flex-direction:column; gap:8px; padding-top:4px;">
+    <div class="node node-gateway" style="padding:16px 14px;">
+      <div class="node-icon">🖥</div>
+      <div class="node-title">Raspberry Pi 4</div>
+      <div class="node-sub">Pannrum · alltid på<br>Debian Linux</div>
+      <div class="node-badge">hub</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">📻</div>
+      <div class="node-title">RTL-SDR USB-dongel</div>
+      <div class="node-sub">Nooelec NESDR Mini<br>Tar emot 433 MHz</div>
+      <div class="node-badge">USB → Pi</div>
+    </div>
+    <div class="node node-sensor">
+      <div class="node-icon">⚙️</div>
+      <div class="node-title">rtl_433</div>
+      <div class="node-sub">Dekoder för 258 protokoll<br>Wiking 02049 → JSON</div>
+      <div class="node-badge">öppen källkod</div>
+    </div>
+    <div class="node node-modbus">
+      <div class="node-icon">🔌</div>
+      <div class="node-title">Danfoss ECL 110</div>
+      <div class="node-sub">Modbus RTU<br>USB–RS485 adapter</div>
+      <div class="node-badge">RS485 kabel</div>
+    </div>
+    <div class="node node-gateway">
+      <div class="node-icon">📶</div>
+      <div class="node-title">LoRa Gateway</div>
+      <div class="node-sub">RAK7268<br>LoRaWAN → MQTT</div>
+      <div class="node-badge">868 MHz</div>
+    </div>
+    <div class="node node-gateway">
+      <div class="node-icon">⚙️</div>
+      <div class="node-title">MQTT Broker</div>
+      <div class="node-sub">Mosquitto<br>Samlar all data</div>
+      <div class="node-badge">lokal</div>
+    </div>
+    <div class="node node-gateway">
+      <div class="node-icon">🐍</div>
+      <div class="node-title">Python-script</div>
+      <div class="node-sub">Hämtar, bearbetar<br>pushar till GitHub</div>
+      <div class="node-badge">cron 5 min</div>
+    </div>
+  </div>
+
+  <!-- CLOUD -->
+  <div style="grid-column:4; display:flex; flex-direction:column; gap:8px; padding-top:4px;">
+    <div class="node node-cloud">
+      <div class="node-icon">☁️</div>
+      <div class="node-title">GitHub repo</div>
+      <div class="node-sub">andersmalm1/<br>sjovagen22</div>
+      <div class="node-badge">main branch</div>
+    </div>
+    <div class="node node-cloud">
+      <div class="node-icon">⚡</div>
+      <div class="node-title">GitHub Actions</div>
+      <div class="node-sub">Bygg + deploy<br>vid push</div>
+      <div class="node-badge">CI/CD</div>
+    </div>
+    <div class="node node-cloud">
+      <div class="node-icon">🌐</div>
+      <div class="node-title">Nord Pool API</div>
+      <div class="node-sub">SE3 spotpris<br>Daglig hämtning</div>
+      <div class="node-badge">extern API</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div style="grid-column:5; display:flex; flex-direction:column; gap:8px; padding-top:4px;">
+    <div class="node node-dash">
+      <div class="node-icon">🏠</div>
+      <div class="node-title">index.html</div>
+      <div class="node-sub">Startsida / hub</div>
+      <div class="node-badge">live</div>
+    </div>
+    <div class="node node-dash">
+      <div class="node-icon">⚡</div>
+      <div class="node-title">sjovagen22.html</div>
+      <div class="node-sub">Energioptimering<br>Elprisdiagram</div>
+      <div class="node-badge">live</div>
+    </div>
+    <div class="node node-dash">
+      <div class="node-icon">🛢</div>
+      <div class="node-title">pellets.html</div>
+      <div class="node-sub">Pelletslogg<br>Förbrukning</div>
+      <div class="node-badge">live</div>
+    </div>
+    <div class="node node-dash">
+      <div class="node-icon">☀️</div>
+      <div class="node-title">solfangare.html</div>
+      <div class="node-sub">Solfångardata<br>kWh, temp, flöde</div>
+      <div class="node-badge">planerad</div>
+    </div>
+    <div class="node node-dash">
+      <div class="node-icon">🌡</div>
+      <div class="node-title">varmesystem.html</div>
+      <div class="node-sub">Danfoss, ack.tank<br>Värmekrets</div>
+      <div class="node-badge">planerad</div>
+    </div>
+    <div class="node node-dash">
+      <div class="node-icon">🌤</div>
+      <div class="node-title">vader.html</div>
+      <div class="node-sub">Väderstation<br>Historik</div>
+      <div class="node-badge">planerad</div>
+    </div>
+  </div>
+
+</div><!-- /arch -->
+</div>
+</div>
+
+<!-- DATA FLOW TABLE -->
+<h2 style="font-size:15px;font-weight:400;letter-spacing:-.01em;margin-bottom:12px;">Dataflöden</h2>
+<table class="flow-table">
+  <thead>
+    <tr>
+      <th>Datakälla</th>
+      <th>Transport</th>
+      <th>Frekvens</th>
+      <th>Destination</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Nord Pool SE3 spotpris</td>
+      <td>HTTPS API → GitHub Actions</td>
+      <td>1×/dag 06:00</td>
+      <td>sjovagen22.html</td>
+      <td><span class="dot" style="background:var(--c-cloud)"></span>Live</td>
+    </tr>
+    <tr>
+      <td>Danfoss ECL Comfort 110</td>
+      <td>Modbus RTU → USB-RS485 → Pi</td>
+      <td>Var 5:e minut</td>
+      <td>varmesystem.html</td>
+      <td><span class="dot" style="background:var(--muted)"></span>Väntar Pi</td>
+    </tr>
+    <tr>
+      <td>DS18B20 temp ×4</td>
+      <td>1-Wire GPIO → Pi</td>
+      <td>Var 5:e minut</td>
+      <td>varmesystem.html</td>
+      <td><span class="dot" style="background:var(--muted)"></span>Väntar Pi</td>
+    </tr>
+    <tr>
+      <td>Solfångare (DS18B20 ×2)</td>
+      <td>1-Wire GPIO → Pi</td>
+      <td>Var 5:e minut</td>
+      <td>solfangare.html</td>
+      <td><span class="dot" style="background:var(--c-sensor)"></span>Vald lösning</td>
+    </tr>
+    <tr>
+      <td>Wiking 02049 väderstation</td>
+      <td>433 MHz → RTL-SDR → rtl_433 → Pi</td>
+      <td>Var ~60 sek (sändare)</td>
+      <td>vader.html</td>
+      <td><span class="dot" style="background:var(--c-sensor)"></span>Protokoll verifieras</td>
+    </tr>
+    <tr>
+      <td>Pelletsnivå (ultraljud)</td>
+      <td>LoRa-nod B → Gateway → Pi</td>
+      <td>1×/timme</td>
+      <td>pellets.html</td>
+      <td><span class="dot" style="background:var(--muted)"></span>Planerad</td>
+    </tr>
+    <tr>
+      <td>Vattenmätare (puls)</td>
+      <td>LoRa-nod C → Gateway → Pi</td>
+      <td>Var 5:e minut</td>
+      <td>fastighet.html</td>
+      <td><span class="dot" style="background:var(--muted)"></span>Planerad</td>
+    </tr>
+    <tr>
+      <td>Elmätare (puls/IR)</td>
+      <td>LoRa-nod C → Gateway → Pi</td>
+      <td>Var 5:e minut</td>
+      <td>sjovagen22.html</td>
+      <td><span class="dot" style="background:var(--muted)"></span>Planerad</td>
+    </tr>
+    <tr>
+      <td>Pelletslogg (manuell)</td>
+      <td>Formulär → JSON → GitHub push</td>
+      <td>Vid leverans</td>
+      <td>pellets.html</td>
+      <td><span class="dot" style="background:var(--c-cloud)"></span>Live</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- COST OVERVIEW -->
+<h2 style="font-size:15px;font-weight:400;letter-spacing:-.01em;margin-bottom:12px;">Uppskattad hårdvarukostnad</h2>
+<div class="cost-grid">
+  <div class="cost-card">
+    <div class="cost-label">Raspberry Pi (hub)</div>
+    <div class="cost-items">
+      <div class="cost-row"><span class="cost-key">Pi 4 · 4GB</span><span class="cost-val">~700 kr</span></div>
+      <div class="cost-row"><span class="cost-key">SD-kort 32GB</span><span class="cost-val">~100 kr</span></div>
+      <div class="cost-row"><span class="cost-key">Strömadapter + hölje</span><span class="cost-val">~200 kr</span></div>
+      <div class="cost-row cost-total"><span class="cost-key">Delsumma</span><span class="cost-val">~1 000 kr</span></div>
+    </div>
+  </div>
+  <div class="cost-card">
+    <div class="cost-label">Modbus + 1-Wire (kabel)</div>
+    <div class="cost-items">
+      <div class="cost-row"><span class="cost-key">USB–RS485 adapter</span><span class="cost-val">~150 kr</span></div>
+      <div class="cost-row"><span class="cost-key">DS18B20 ×8 (4 tank + 2 sol + 2 panna)</span><span class="cost-val">~220 kr</span></div>
+      <div class="cost-row"><span class="cost-key">Kabel + kontakter</span><span class="cost-val">~100 kr</span></div>
+      <div class="cost-row cost-total"><span class="cost-key">Delsumma</span><span class="cost-val">~450 kr</span></div>
+    </div>
+  </div>
+  <div class="cost-card">
+    <div class="cost-label">LoRa (trådlöst)</div>
+    <div class="cost-items">
+      <div class="cost-row"><span class="cost-key">RAK7268 gateway</span><span class="cost-val">~700 kr</span></div>
+      <div class="cost-row"><span class="cost-key">TTGO LoRa32 ×2 (pellets+vatten)</span><span class="cost-val">~350 kr</span></div>
+      <div class="cost-row"><span class="cost-key">RTL-SDR USB-dongel</span><span class="cost-val">~300 kr</span></div>
+      <div class="cost-row"><span class="cost-key">Sensorer per nod</span><span class="cost-val">~300 kr</span></div>
+      <div class="cost-row cost-total"><span class="cost-key">Delsumma</span><span class="cost-val">~1 500 kr</span></div>
+    </div>
+  </div>
+  <div class="cost-card">
+    <div class="cost-label" style="color:var(--c-gateway)">Totalt</div>
+    <div class="cost-items">
+      <div class="cost-row"><span class="cost-key">Fas 1 (Pi + Modbus)</span><span class="cost-val">~1 400 kr</span></div>
+      <div class="cost-row"><span class="cost-key">Fas 2 (LoRa)</span><span class="cost-val">~1 500 kr</span></div>
+      <div class="cost-row cost-total" style="font-size:13px;"><span class="cost-key">Komplett system</span><span class="cost-val" style="color:var(--c-gateway)">~2 900 kr</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Sjövägen 22 · Systemarkitektur v1.0 · <span id="footerDate"></span>
+</footer>
+
+</div><!-- /wrap -->
+<script>
+const now = new Date();
+const months = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+document.getElementById('footerDate').textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+</script>
+</body>
+</html>
