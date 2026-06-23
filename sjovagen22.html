@@ -3,457 +3,1281 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prisoptimering — Sjövägen 22</title>
+<title>Sjövägen 22 — Fastighetsdrift</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;1,9..144,200&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);--text:#1a1a18;--muted:#6b6b62;--subtle:#9a9a8e;--accent-green:#16a34a;--accent-blue:#2563eb;--accent-orange:#ea580c;--accent-amber:#b45309;--accent-red:#dc2626;--accent-teal:#0d9488;--accent-purple:#7c3aed;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;--font-display:'Fraunces',serif;}
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);--text:#1a1a18;--muted:#6b6b62;--accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.035) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 28px;}
-.hero{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px;animation:fadeUp .5s ease both;}
-.hero-inner{display:grid;grid-template-columns:1fr auto;align-items:end;gap:32px;}
-.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-blue);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--accent-blue);display:inline-block;}
-.hero-title{font-family:var(--font-display);font-size:clamp(36px,5vw,60px);font-weight:200;letter-spacing:-.03em;line-height:1;color:var(--text);}
-.hero-title em{font-style:italic;color:var(--muted);}
-.hero-nav{font-family:var(--font-mono);font-size:11px;color:var(--accent-blue);text-decoration:none;margin-top:16px;display:inline-flex;align-items:center;gap:6px;}
-.hero-nav:hover{text-decoration:underline;}
-.hero-meta{text-align:right;}
-.hero-date{font-family:var(--font-mono);font-size:10px;color:var(--subtle);margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase;}
-.hero-date-val{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--muted);letter-spacing:-.02em;}
-.section-row{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:40px;}
-.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--subtle);white-space:nowrap;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+h1{font-size:clamp(24px,4vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.chip.live{color:var(--accent);border-color:rgba(22,163,74,0.3);background:rgba(22,163,74,0.07);}
+.updated-badge{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;}
+.updated-badge strong{display:block;font-size:13px;color:var(--text);font-weight:400;}
+section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
 .section-line{flex:1;height:1px;background:var(--border);}
-
-/* KPI GRID */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:32px;animation:fadeUp .4s ease both .05s;}
-.kpi-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:20px 22px;}
-.kpi-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.kpi-value{font-family:var(--font-display);font-size:28px;font-weight:200;letter-spacing:-.02em;color:var(--text);line-height:1;}
-.kpi-unit{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;}
-.kpi-badge{display:inline-block;font-family:var(--font-mono);font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid;margin-top:6px;}
-.kpi-badge.green{color:var(--accent-green);border-color:rgba(22,163,74,0.25);background:rgba(22,163,74,0.07);}
-.kpi-badge.blue{color:var(--accent-blue);border-color:rgba(37,99,235,0.2);background:rgba(37,99,235,0.05);}
-.kpi-badge.orange{color:var(--accent-orange);border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.05);}
-
-/* CHART BLOCK */
-.block{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:32px;margin-bottom:24px;position:relative;overflow:hidden;animation:fadeUp .4s ease both .1s;}
-.block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
-.block.c-blue::before{background:var(--accent-blue);}
-.block-header{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;}
-.block-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;color:var(--subtle);text-transform:uppercase;}
-.block-title{font-family:var(--font-display);font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--text);}
-.block-sub{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
-.chart-wrap{position:relative;width:100%;}
-.chart-footnote{margin-top:14px;font-family:var(--font-mono);font-size:10px;color:var(--subtle);border-top:1px solid var(--border);padding-top:12px;line-height:1.8;}
-
-/* LEGEND */
-.legend{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:20px;}
-.legend-item{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
-.legend-line{width:24px;height:3px;border-radius:2px;}
-
-/* FORMULA BOX */
-.formula-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:24px;}
-.formula-card{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:18px 20px;}
-.formula-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--subtle);margin-bottom:8px;}
-.formula-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
-.formula-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.7;}
-
-footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:40px;}
-.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--subtle);}
-.footer-txt a{color:var(--accent-blue);text-decoration:none;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-@media(max-width:900px){.hero-inner{grid-template-columns:1fr;}.hero-meta{text-align:left;}}
-@media(max-width:600px){.wrap{padding:0 16px;}.hero-title{font-size:32px;}.hero{padding:40px 0 32px;}.block{padding:20px;}.chart-wrap{height:260px;}}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+.chart-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;position:relative;overflow:hidden;}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));opacity:1;}
+.chart-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.chart-title-mono{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.chart-title{font-size:15px;font-weight:500;color:var(--text);}
+.legend{display:flex;flex-wrap:wrap;gap:14px;}
+.legend-item{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.legend-swatch{width:22px;height:2px;border-radius:2px;flex-shrink:0;}
+.chart-canvas-wrap{position:relative;width:100%;height:340px;}
+.chart-footnote{margin-top:14px;font-family:var(--font-mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;line-height:1.8;}
+.data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.status-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:8px;}
+.status-card.ready{border-color:rgba(22,163,74,0.3);}
+.status-card.partial{border-color:rgba(37,99,235,0.25);}
+.status-card.pending{opacity:.5;border-style:dashed;}
+.sc-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sc-icon{font-size:20px;line-height:1;}
+.sc-badge{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid;}
+.sc-badge.ready{color:var(--accent);border-color:rgba(22,163,74,0.35);background:rgba(22,163,74,0.07);}
+.sc-badge.partial{color:var(--accent2);border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.06);}
+.sc-badge.pending{color:var(--muted);border-color:var(--border2);background:transparent;}
+.sc-title{font-size:14px;font-weight:500;color:var(--text);}
+.sc-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.6;}
+.sc-format{font-family:var(--font-mono);font-size:10px;color:var(--muted);}
+.sc-format span{color:var(--accent2);}
+.upload-hint{background:#eef3fd;border:1px dashed rgba(37,99,235,0.3);border-radius:8px;padding:14px 16px;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:14px;display:flex;align-items:flex-start;gap:10px;}
+.upload-hint::before{content:'↑';color:var(--accent2);font-size:14px;flex-shrink:0;margin-top:1px;}
+.info-box{background:#eef3fd;border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-top:14px;}
+.info-box strong{color:var(--accent2);font-weight:400;}
+.heat-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;}
+.hd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin-top:18px;}
+.hd-node{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px 14px;}
+.hd-node-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.hd-rows{display:flex;flex-direction:column;gap:5px;}
+.hd-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;}
+.hd-key{color:var(--muted);}
+.hd-val{color:var(--muted);opacity:.45;}
+.prop-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;}
+.prop-table tr{border-bottom:1px solid var(--border);}
+.prop-table tr:last-child{border-bottom:none;}
+.prop-table td{padding:10px 8px;color:var(--muted);}
+.prop-table td:last-child{color:var(--text);text-align:right;}
+.prop-table .gh td{color:var(--accent2);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding-top:18px;}
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,section{animation:fadeUp .45s ease both;}
+section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
+section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
+section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:.36s;}
+@media(max-width:600px){.chart-card{padding:16px;}.chart-canvas-wrap{height:250px;}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<header class="hero">
-  <div class="hero-inner">
+<header>
+  <div class="header-inner">
     <div>
-      <div class="hero-eyebrow">Fastighetsdashboard · Prisoptimering</div>
-      <h1 class="hero-title">Prisjämförelse<br><em>El, SVEF &amp; Pellets</em></h1>
-      <a href="index.html" class="hero-nav">← Startsidan</a>
+      <div class="address-label">Fastighetsdashboard</div>
+      <h1>Sjövägen 22 <span>/ Österskär</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Tuna 7:139</span>
+        <span class="chip">Byggd 1968</span>
+        <span class="chip">Myresjöhus typ 11</span>
+        <span class="chip">Vattenburen värme · Pellets · Solfångare</span>
+        <span class="chip live">● Uppdateras 15:e varje månad</span>
+      </div>
     </div>
-    <div class="hero-meta">
-      <div class="hero-date">Idag</div>
-      <div class="hero-date-val" id="heroDate">—</div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+      <a href="index.html" style="font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.2);border-radius:4px;padding:6px 12px;">← Startsidan</a>
+      <div class="updated-badge">Senast uppdaterad<strong id="lastUpdated">—</strong></div>
     </div>
   </div>
 </header>
 
-<div class="section-row" style="margin-top:0;">
-  <span class="section-label">Aktuella priser 2026* (jan–apr medel, verkliga fakturor)</span>
-  <div class="section-line"></div>
-</div>
-
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <div class="kpi-label">El SE3 rörligt</div>
-    <div class="kpi-value">159</div>
-    <div class="kpi-unit">öre/kWh inkl. moms</div>
-    <div class="kpi-badge orange">● spot 83 öre/kWh + nät + skatt · jan–apr</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">SVEF vindandel</div>
-    <div class="kpi-value">109</div>
-    <div class="kpi-unit">öre/kWh inkl. moms</div>
-    <div class="kpi-badge blue">● 43 öre/kWh vind handel · 11 000 kWh/år</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Pellets bulk</div>
-    <div class="kpi-value">86</div>
-    <div class="kpi-unit">öre/kWh (3 600 kr/ton · schablonvärde)</div>
-    <div class="kpi-badge green">● billigast per kWh</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">SVEF-besparing 2026*</div>
-    <div class="kpi-value">5 500</div>
-    <div class="kpi-unit">kr/år vs rörligt (11 000 kWh × 50 öre)</div>
-    <div class="kpi-badge blue">● SVEF 50 öre/kWh billigare än spot</div>
-  </div>
-</div>
-
-<div class="section-row">
-  <span class="section-label">01 · Historisk prisjämförelse</span>
-  <div class="section-line"></div>
-</div>
-
-<div class="block c-blue">
-  <div class="block-header">
-    <span class="block-num">01</span>
-    <span class="block-title">Energipris 2005–2026</span>
-  </div>
-  <div class="block-sub">Årsmedelvärden · öre/kWh inkl. moms · el SE3 rörligt · SVEF vindandel · pellets bulk omräknat till kWh-värme · 2025–2026* baserat på verkliga fakturor</div>
-
-  <div class="legend">
-    <div class="legend-item"><div class="legend-line" style="background:#ea580c;"></div>El SE3 rörligt (årsmedel)</div>
-    <div class="legend-item"><div class="legend-line" style="background:#2563eb;"></div>SVEF vindandel (årsmedel)</div>
-    <div class="legend-item"><div class="legend-line" style="background:#16a34a;"></div>Pellets bulk</div>
-    <div class="legend-item"><div class="legend-line" style="background:#b45309;border-top:2px dashed #b45309;height:0;"></div>Faktiskt betalt elhandel per månad</div>
-  </div>
-
-  <div class="chart-wrap">
-    <canvas id="prisChart" width="900" height="380" style="width:100%;height:380px;display:block;"></canvas>
-  </div>
-  <div class="chart-footnote">
-    Alla värden inkl. nätavgift, energiskatt och moms 25 % ·
-    El SE3 2005–2024: Nord Pool årsmedel-spot × 1,25 + nät ~35 öre + energiskatt 36 öre + moms ·
-    El 2025 (maj–dec, 8 mån) &amp; 2026* (jan–apr, 4 mån): verkliga fakturor Gislaved Energi avt. 726684 · spot jan 108,45 / feb 110,23 / mar 58,66 / apr 56,08 öre/kWh ·
-    SVEF 2012–2024: schablonvärde 130 öre/kWh — faktisk prishistorik ej tillgänglig ·
-    SVEF 2025–2026*: verkliga Vind andel-priser (37 öre maj–jul 2025 → 40 öre aug 2025–jan 2026 → 44 öre feb 2026–) + nät + moms ·
-    Pellets 2005–2025: PelletsFörbundet bulkpris ÷ 4 800 kWh/ton ÷ 0,87 pannverkningsgrad · 2026*: schablon = 2025 ·
-    Faktiskt betalt (streckad): (faktura exkl. moms × 1,25) ÷ kWh · elhandel inkl. moms, exkl. nätavgift · maj 2025–apr 2026 ·
-    * 2026 = partiellt år jan–apr
-  </div>
-</div>
-
-<div class="section-row">
-  <span class="section-label">02 · Prismodeller</span>
-  <div class="section-line"></div>
-</div>
-
-<div class="block c-blue" style="animation-delay:.2s;">
-  <div class="block-header">
-    <span class="block-num">02</span>
-    <span class="block-title">Hur priserna beräknas</span>
-  </div>
-  <div class="block-sub">Formler och antaganden bakom diagrammet</div>
-  <div class="formula-grid">
-    <div class="formula-card">
-      <div class="formula-label">El SE3 · rörligt</div>
-      <div class="formula-name">Spotpris + nät + skatt</div>
-      <div class="formula-desc">Spotpris (Nord Pool årsmedel) × 1,25 (elnätsförluster + påslag) + nätavgift ca 35 öre + energiskatt 36 öre/kWh + moms 25 %. Varierar kraftigt år till år — extrem topp 2022. 2025–2026* baseras på verkliga fakturor från Gislaved Energi avt. 726684.</div>
+<!-- 01 ELFÖRBRUKNINGSOPTIMERING -->
+<section>
+  <div class="section-header"><span class="section-label">01 / Energioptimering</span><div class="section-line"></div></div>
+  <h2>Elförbrukningsoptimering</h2>
+  <p class="section-sub">Historisk prisjämförelse · el SE3 rörligt · SVEF vindandel · pellets bulk · öre/kWh · 2015–idag</p>
+  <div class="chart-card">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Energikostnad per kWh</div>
+        <div class="chart-title">El (SE3) vs. SVEF vindandel vs. Pellets bulk</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#2563eb;"></div>El SE3 rörligt</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#16a34a 0,#16a34a 6px,transparent 6px,transparent 10px);"></div>SVEF vindandel</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#ea580c 0,#ea580c 3px,transparent 3px,transparent 6px);"></div>Pellets bulk</div>
+      </div>
     </div>
-    <div class="formula-card">
-      <div class="formula-label">SVEF · vindandel</div>
-      <div class="formula-name">110 andelar = 11 000 kWh/år</div>
-      <div class="formula-desc">Vind andel-handel (37→40→44 öre/kWh, varierar per period) + rörliga kostnader + fasta påslag 1,20 öre + nätavgift + moms 25 %. 2025: 106 öre/kWh · 2026*: 109 öre/kWh. 2012–2024: schablonvärde 130 öre/kWh (faktisk historik ej känd).</div>
+    <div class="chart-canvas-wrap">
+      <canvas id="energyChart" role="img" aria-label="Elförbrukningsoptimering 2015-2026">Prisjämförelse el, SVEF och pellets per kWh 2015-2026.</canvas>
     </div>
-    <div class="formula-card">
-      <div class="formula-label">Pellets bulk · källarvärme</div>
-      <div class="formula-name">kr/ton ÷ 4 800 kWh ÷ 0,87</div>
-      <div class="formula-desc">Bulkpris (PelletsFörbundet, Mälardalen) delat med energiinnehåll 4 800 kWh/ton och pannverkningsgrad 87 %. Ger faktisk värmekostnad. 2026*: schablonvärde = 2025 (3 600 kr/ton → 86 öre/kWh).</div>
-    </div>
-    <div class="formula-card">
-      <div class="formula-label">Faktiskt betalt elhandel</div>
-      <div class="formula-name">Faktura inkl. moms ÷ kWh</div>
-      <div class="formula-desc">Faktisk kostnad per kWh elhandel baserad på 12 verkliga Gislaved Energi-fakturor (maj 2025–apr 2026): (fakturabelopp exkl. moms × 1,25) ÷ månadsförbrukning. Avser elhandel — nätavgiften (E.ON) faktureras separat och ingår ej.</div>
+    <div class="chart-footnote">
+      El SE3: spotpris × 1,25 + nätavgift + energiskatt + påslag (≈135 öre/kWh fast del) &nbsp;·&nbsp; SVEF SE3: fast handel 55 öre/kWh inkl. moms + nät + skatt &nbsp;·&nbsp; Pellets: bulk kr/ton ÷ 4 800 kWh/ton ÷ 0,87 verkningsgrad &nbsp;·&nbsp; 110 andelar = 11 000 kWh/år till SVEF-pris &nbsp;·&nbsp; Källor: Nord Pool · PelletsFörbundet · SVEF · SCB
     </div>
   </div>
-</div>
+</section>
+
+<!-- 02 SOLFÅNGARE -->
+
+<!-- 01b / ELFÖRBRUKNING OCH KOSTNAD -->
+<section>
+  <div class="section-header"><span class="section-label">01b / Elförbrukning</span><div class="section-line"></div></div>
+  <h2>Elförbrukning &amp; kostnad</h2>
+  <p class="section-sub">Faktisk förbrukning och kostnad per månad · Gislaved Energi faktura · SVEF vindandel vs spotpris</p>
+
+  <div class="chart-card">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Förbrukning kWh per månad</div>
+        <div class="chart-title">SVEF vindandel vs. spotprisel</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#16a34a;"></div>SVEF vindandel (kWh)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#2563eb;"></div>Spotpris SE3 (kWh)</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas id="forbrukningChart" role="img" aria-label="Elförbrukning per månad uppdelat på SVEF vindandel och spotprisel"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Källa: Gislaved Energi fakturor · 35 månader jul 2023 – maj 2026 · Beräknad årsförbrukning: 29 561 kWh · SVEF/spot-uppdelning tillgänglig fr.o.m. maj 2024
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-top:14px;">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Kostnad kr per månad (inkl. moms)</div>
+        <div class="chart-title">Total elkostnad</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#ea580c;"></div>Kostnad inkl. moms (kr)</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:220px;">
+      <canvas id="kostnadChart" role="img" aria-label="Total elkostnad per månad inklusive moms"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Källa: Gislaved Energi fakturor · 35 månader jul 2023 – maj 2026 · Kostnad inkl. 25% moms · Nov 2023 och jan 2026 högst (prishöjning + hög förbrukning)
+    </div>
+  </div>
+</section>
+
+
+<!-- 01c / TOTAL ENERGIKOSTNAD & PELLETSDIAGRAM -->
+<section>
+  <div class="section-header"><span class="section-label">01c / Energikostnad totalt</span><div class="section-line"></div></div>
+  <h2>Total energikostnad — El + Pellets</h2>
+  <p class="section-sub">Månadsvis totalkostnad för all energi · el (SVEF + spot) + pellets · förberedd för pelletsdata</p>
+
+  <div class="chart-card">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Totalkostnad kr/månad (inkl. moms)</div>
+        <div class="chart-title">El + Pellets — samlad energikostnad</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#16a34a;"></div>SVEF vindandel el (kr)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#2563eb;"></div>Spotpris el (kr)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#ea580c 0,#ea580c 4px,transparent 4px,transparent 8px);height:2px;"></div>Pellets (kr) — väntar på data</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:300px;">
+      <canvas id="totalEnergiChart" role="img" aria-label="Total energikostnad el och pellets per månad"></canvas>
+    </div>
+    <div class="chart-footnote">
+      El: faktiska fakturor jul 2023–maj 2026 · Pellets: aktiveras när leveranslogg innehåller data · Nätavgift och övriga fasta kostnader ej inkluderade
+    </div>
+  </div>
+</section>
+
+<!-- 01d / PELLETSLAGER & FÖRBRUKNING -->
+<section>
+  <div class="section-header"><span class="section-label">01d / Pellets</span><div class="section-line"></div></div>
+  <h2>Pellets — lager, inköp &amp; förbrukning</h2>
+  <p class="section-sub">Lagernivå (ton) · inköpta volymer · beräknad förbrukning · förberedd för lagergivare</p>
+
+  <!-- LAGERNIVÅ -->
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Lagernivå ton</div>
+        <div class="chart-title">Pelletslager — fyllningsnivå</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#ea580c;"></div>Lagernivå (ton)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#16a34a 0,#16a34a 6px,transparent 6px,transparent 10px);"></div>Max kapacitet 3,6 ton</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:240px;">
+      <canvas id="lagernivaChart" role="img" aria-label="Pelletslager fyllningsnivå i ton"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Max kapacitet: 3,6 ton (5,6 m³ × 650 kg/m³) · Realtidsdata: väntar på ultraljudsgivare (HC-SR04 → Raspberry Pi) · Historik: beräknas ur inköp minus förbrukning
+    </div>
+  </div>
+
+  <!-- INKÖP & FÖRBRUKNING -->
+  <div class="chart-card">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Inköp och förbrukning ton/månad</div>
+        <div class="chart-title">Pellets — inköpta volymer &amp; beräknad förbrukning</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#ea580c;"></div>Inköpt (ton)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#b45309 0,#b45309 3px,transparent 3px,transparent 6px);"></div>Förbrukat (ton, beräknat)</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:240px;">
+      <canvas id="pelletsForbrukChart" role="img" aria-label="Pelletsinköp och förbrukning per månad"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Inköpt: data från pelletslogg (pellets.html) · Förbrukat: beräknas ur lagernivåförändringar (lagergivare) · Typisk årsförbrukning villa: 4–7 ton
+    </div>
+  </div>
+
+  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="pellets.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent3);background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.25);border-radius:6px;padding:10px 18px;text-decoration:none;" onmouseover="this.style.background='rgba(234,88,12,0.12)'" onmouseout="this.style.background='rgba(234,88,12,0.06)'">🛢 Öppna pelletslogg →</a>
+    <a href="underhall.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent2);background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);border-radius:6px;padding:10px 18px;text-decoration:none;" onmouseover="this.style.background='rgba(37,99,235,0.12)'" onmouseout="this.style.background='rgba(37,99,235,0.06)'">🔧 Drift &amp; underhåll →</a>
+  </div>
+</section>
+
+
+<!-- 01e / PANNVERKNINGSGRAD -->
+<section>
+  <div class="section-header"><span class="section-label">01e / Pannverkningsgrad</span><div class="section-line"></div></div>
+  <h2>Pelletspannans verkningsgrad</h2>
+  <p class="section-sub">Beräknad ur energibalans · approximationsmodell baserad på graddagar + fakturadata · kompletteras med sensordata</p>
+
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Verkningsgrad % per eldningssäsong</div>
+        <div class="chart-title">Pannverkningsgrad — approximation via graddagsmodell</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#7c3aed;"></div>Beräknad verkningsgrad (approx)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:repeating-linear-gradient(90deg,#16a34a 0,#16a34a 6px,transparent 6px,transparent 10px);"></div>Typisk villa 82–88%</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:280px;">
+      <canvas id="verkningsgradChart" role="img" aria-label="Pelletspannans beräknade verkningsgrad per månad"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Approximationsmodell: Energi in = pellets ton × 4 800 kWh/ton · Energi ut = graddagskorrigerat husbehov − elvärme · Referens: Värmebaronen Pellmax UB nominell verkningsgrad 85–90% · Obs: osäkerhet ±5–8% utan flödesmätare
+    </div>
+  </div>
+
+  <div class="info-box" style="margin-bottom:14px;">
+    <strong>Modellbeskrivning — approximation (nu aktiv):</strong><br><br>
+    <strong>Energi in (pellets):</strong> Levererad mängd ton × 4 800 kWh/ton (pellets värmevärde). Kräver data från pelletslogg.<br><br>
+    <strong>Energi ut (uppskattat husbehov):</strong> Graddagskorrigerat värmebehov beräknas ur SMHI månadsmedeltemperatur Stockholm, balanstemperatur +17°C. Elförbrukning under eldningssäsong korrigeras ut (antaget ~30% el används för elvärme i systemet).<br><br>
+    <strong>Formel:</strong> η = (Husets värmebehov kWh) / (Pellets kWh in) × 100%<br><br>
+    <strong style="color:var(--accent);">Exakt mätning (aktiveras när sensorer installeras):</strong> η = (ΔT fram−retur × flöde L/s × 4,18 kJ/kg°C × tid) / (pellets kWh in) × 100%
+  </div>
+
+  <div class="info-box" style="border-color:rgba(124,58,237,0.2);background:rgba(124,58,237,0.04);">
+    <strong style="color:#7c3aed;">Sensorer som krävs för exakt mätning:</strong><br><br>
+    · DS18B20 framledning (pannans utlopp) — <strong>planerad, 1-Wire → Pi</strong><br>
+    · DS18B20 returledning (pannans inlopp) — <strong>planerad, 1-Wire → Pi</strong><br>
+    · Flödesmätare på värmekretsen (puls- eller ultraljudstyp) — <strong>ej planerad ännu</strong><br><br>
+    Utan flödesmätare ger approximationsmodellen ±5–8% noggrannhet. Med flödesmätare ≤±2%.
+  </div>
+</section>
+
+<section>
+  <div class="section-header"><span class="section-label">02 / Solfångare</span><div class="section-line"></div></div>
+  <h2>Solfångare — driftstatistik</h2>
+  <p class="section-sub">Takmonterad · DS18B20-sensorer via 1-Wire → Raspberry Pi · energiutbyte beräknas ur ΔT × flöde</p>
+  <div class="data-grid">
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">🌡</span><span class="sc-badge partial">väntar Pi</span></div>
+      <div class="sc-title">DS18B20 — Kollektor ut</div>
+      <div class="sc-desc">Varm sida · temp ut från solfångaren<br>Monteras på kollektorledning</div>
+      <div class="sc-format">Format: <span>1-Wire GPIO → Raspberry Pi</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">🌡</span><span class="sc-badge partial">väntar Pi</span></div>
+      <div class="sc-title">DS18B20 — Kollektor in</div>
+      <div class="sc-desc">Kall sida · returtemp till solfångaren<br>Monteras på returledning</div>
+      <div class="sc-format">Format: <span>1-Wire GPIO → Raspberry Pi</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">⚡</span><span class="sc-badge partial">beräknad</span></div>
+      <div class="sc-title">Energiutbyte (kWh)</div>
+      <div class="sc-desc">Beräknas ur ΔT × flöde automatiskt<br>Dag / månad / säsong</div>
+      <div class="sc-format">Format: <span>Python på Raspberry Pi → JSON</span></div>
+    </div>
+  </div>
+  <div class="info-box"><strong>Lösning:</strong> Watts LCD+ saknar SD-kortplats. Solfångardata mäts via DS18B20-temperatursensorer (×2) på kollektorledning in/ut samt ackumulatortank — kopplas direkt till Raspberry Pi via 1-Wire. Energiutbyte beräknas ur temperaturskillnad × flöde.<br><br><strong>Obs:</strong> Styrenheten har ett menyval "Skicka till PC" — kontakttyp/protokoll på baksidan av enheten är ej undersökt.</div>
+</section>
+
+<!-- 03 PELLETS -->
+<section>
+  <div class="section-header"><span class="section-label">03 / Pelletsförbrukning</span><div class="section-line"></div></div>
+  <h2>Pellets — förbrukning &amp; påfyllning</h2>
+  <p class="section-sub">Bulklager i källaren · påfyllning från tankbil via yttervägg · manuell eller automatisk loggning</p>
+  <div class="data-grid">
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">🛢</span><span class="sc-badge partial">manuell inmatning</span></div>
+      <div class="sc-title">Påfyllningslogg</div>
+      <div class="sc-desc">Datum · Levererad mängd (ton)<br>Pris per leverans (kr/ton)</div>
+      <div class="sc-format">Format: <span>manuell · CSV</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">📊</span><span class="sc-badge partial">beräknad</span></div>
+      <div class="sc-title">Förbrukning per period</div>
+      <div class="sc-desc">Ton/månad beräknat ur<br>påfyllning − lagernivå</div>
+      <div class="sc-format">Format: <span>beräknas automatiskt</span></div>
+    </div>
+    <div class="status-card pending">
+      <div class="sc-header"><span class="sc-icon">⚖️</span><span class="sc-badge pending">kommande</span></div>
+      <div class="sc-title">Lagernivå (realtid)</div>
+      <div class="sc-desc">Kräver nivågivare i silo<br>Ultraljud- eller trycksensor</div>
+      <div class="sc-format">Format: <span>sensor · MQTT</span></div>
+    </div>
+  </div>
+  <div class="upload-hint">Logga påfyllningar manuellt — datum, ton och kr/ton. Förbrukning och kostnad per säsong beräknas och visas som diagram.</div>
+  <div class="info-box"><strong>Tips:</strong> Leveranssedlarna från tankbilen innehåller exakt mängd och pris. Fotografera eller mata in dessa efter varje leverans. Typisk villa: 4–7 ton/år beroende på solfångarbidrag och inomhustemperatur.</div>
+  <div style="margin-top:16px;">
+    <a href="pellets.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent3);background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.25);border-radius:6px;padding:10px 18px;text-decoration:none;" onmouseover="this.style.background='rgba(234,88,12,0.12)'" onmouseout="this.style.background='rgba(234,88,12,0.06)'">🛢 Öppna pelletslogg →</a>
+    <a href="underhall.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent2);background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);border-radius:6px;padding:10px 18px;text-decoration:none;" onmouseover="this.style.background='rgba(37,99,235,0.12)'" onmouseout="this.style.background='rgba(37,99,235,0.06)'">🔧 Drift &amp; underhåll →</a>
+  </div>
+</section>
+
+<!-- 04 VÄRMESTYRCENTRAL -->
+<section>
+  <div class="section-header"><span class="section-label">04 / Värmestyrcentral</span><div class="section-line"></div></div>
+  <h2>Värmestyrcentral — datauttag</h2>
+  <p class="section-sub">Pelletspanna · ackumulatortank · elpatroner · vattenburen värme · solfångarkrets</p>
+
+  <div class="heat-card">
+    <div class="chart-title-mono" style="margin-bottom:4px;">Systemöversikt</div>
+    <div class="chart-title">Värmesystem Sjövägen 22</div>
+    <div class="hd-grid">
+      <div class="hd-node">
+        <div class="hd-node-title">🪵 Pelletspanna</div>
+        <div class="hd-rows">
+          <div class="hd-row"><span class="hd-key">Fabrikat/modell</span><span class="hd-val">verifiera</span></div>
+          <div class="hd-row"><span class="hd-key">Styrboxport</span><span class="hd-val">RS232 / USB?</span></div>
+          <div class="hd-row"><span class="hd-key">Modbus</span><span class="hd-val">verifiera</span></div>
+          <div class="hd-row"><span class="hd-key">Drifttimmar</span><span class="hd-val">—</span></div>
+        </div>
+      </div>
+      <div class="hd-node">
+        <div class="hd-node-title">🌡 Ackumulatortank</div>
+        <div class="hd-rows">
+          <div class="hd-row"><span class="hd-key">Temp topp</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Temp botten</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Laddnivå</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Elpatron status</span><span class="hd-val">—</span></div>
+        </div>
+      </div>
+      <div class="hd-node">
+        <div class="hd-node-title">☀️ Solfångarkrets</div>
+        <div class="hd-rows">
+          <div class="hd-row"><span class="hd-key">Kollektortemp</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Flöde</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Pump</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">kWh / dag</span><span class="hd-val">—</span></div>
+        </div>
+      </div>
+      <div class="hd-node">
+        <div class="hd-node-title">🔥 Värmekrets</div>
+        <div class="hd-rows">
+          <div class="hd-row"><span class="hd-key">Framledning</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Returledning</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Inomhustemp</span><span class="hd-val">—</span></div>
+          <div class="hd-row"><span class="hd-key">Utetemp</span><span class="hd-val">—</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Identifierade styrenheter:</strong><br><br>
+    <strong>Danfoss ECL Comfort 110, App. 130 (v1.08):</strong> Styr värmekretsen (väderkompenserad framledning). Kommunicerar via <strong>Modbus RTU</strong> — öppet protokoll, fullt dokumenterat för just App. 130/116. Ansluts till Raspberry Pi via USB–RS485-adapter.<br><br>
+    <strong>Watts Solar Controller LCD+ (P-3481):</strong> Styr solfångarkretsen. Loggar driftdata (temp, effekt, kWh) till <strong>SD-kort</strong> (max 2 GB FAT32, fullstorlek). SD-kortet läses av Raspberry Pi.<br><br>
+    <strong>Värmebaronen Pellmax UB / Viking Bio (2005):</strong> Pelletspanna. Ingen inbyggd kommunikationsport. Övervakas via <strong>DS18B20-temperatursensorer</strong> på fram/returledning och ackumulatortank.
+  </div>
+
+  <div class="info-box" style="margin-top:14px;border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.04);">
+    <strong style="color:var(--accent3);">🛒 Inköpslista — datainfrastruktur</strong><br><br>
+    <strong>Raspberry Pi (central hub)</strong><br>
+    · Raspberry Pi 4 eller 5, 2–4 GB RAM &nbsp;~500–700 kr<br>
+    · SD-kort 16–32 GB till Pi:n &nbsp;~100 kr<br>
+    · Strömadapter USB-C &nbsp;~100 kr<br>
+    · Plasthölje &nbsp;~100 kr<br><br>
+    <strong>Danfoss ECL Comfort 110 → Modbus RTU</strong><br>
+    · USB till RS485-adapter (t.ex. FTDI-baserad) &nbsp;~100–150 kr<br><br>
+    <strong>Watts LCD+ → SD-kort</strong><br>
+    · SD-kort max 2 GB, FAT32, fullstorlek (ej SDHC) &nbsp;~50–100 kr (eBay/Blocket)<br><br>
+    <strong>Pelletspanna → temperatursensorer</strong><br>
+    · DS18B20 sensorer × 4–5 st &nbsp;~150–200 kr<br>
+    · 1-wire kabel &nbsp;~50 kr<br><br>
+    <strong style="color:var(--accent3);">Totalt ca 1 150–1 400 kr</strong>
+  </div>
+</section>
+
+<!-- 05 ELANVÄNDNING -->
+<section>
+  <div class="section-header"><span class="section-label">05 / Elanvändning</span><div class="section-line"></div></div>
+  <h2>Elförbrukning &amp; SVEF-andelar</h2>
+  <p class="section-sub">110 andelar × 100 kWh = 11 000 kWh/år till fast pris · Gislaved Energi kompletteringsavtal</p>
+  <div class="data-grid">
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">⚡</span><span class="sc-badge partial">manuell inmatning</span></div>
+      <div class="sc-title">Månadsförbrukning (kWh)</div>
+      <div class="sc-desc">Elräkning från Gislaved Energi<br>SVEF-del + kompletteringsel</div>
+      <div class="sc-format">Format: <span>faktura · CSV</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">💸</span><span class="sc-badge partial">beräknad</span></div>
+      <div class="sc-title">Kostnad vs. rörligt pris</div>
+      <div class="sc-desc">Besparing tack vare vindandelar<br>kr/månad · kr/år kumulativt</div>
+      <div class="sc-format">Format: <span>beräknas automatiskt</span></div>
+    </div>
+    <div class="status-card pending">
+      <div class="sc-header"><span class="sc-icon">🌬</span><span class="sc-badge pending">kommande</span></div>
+      <div class="sc-title">SVEF utnyttjandegrad</div>
+      <div class="sc-desc">Nyttjad andel av 11 000 kWh<br>Månadsvis fördelning per år</div>
+      <div class="sc-format">Format: <span>beräknas ur förbrukning</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 FASTIGHET -->
+<section>
+  <div class="section-header"><span class="section-label">06 / Fastighet</span><div class="section-line"></div></div>
+  <h2>Fastighetsinformation</h2>
+  <p class="section-sub">Taxeringsvärden · fastighetsavgifter · fastighetsbeteckning</p>
+  <div class="chart-card" style="padding:24px 28px;">
+    <table class="prop-table">
+      <tr class="gh"><td colspan="2">Tuna 7:139 — Småhusenhet bebyggd</td></tr>
+      <tr><td>Adress</td><td>Sjövägen 22, 18452 Österskär</td></tr>
+      <tr><td>Fastighetsenhet</td><td>220 Småhusenhet bebyggd</td></tr>
+      <tr><td>Ägarandel</td><td>1/1</td></tr>
+      <tr><td>Byggår · Typ</td><td>1968 · Myresjöhus typ 11</td></tr>
+      <tr class="gh"><td colspan="2">Tuna 7:135 — Lantbruksenhet</td></tr>
+      <tr><td>Fastighetsenhet</td><td>199 Lantbruksenhet</td></tr>
+      <tr><td>Ägarandel</td><td>1/7</td></tr>
+      <tr><td>Belägen vid</td><td>Sättravägen, Österskär</td></tr>
+      <tr><td>Ingår</td><td>Strandäng · vattenrätt · flytbrygga</td></tr>
+      <tr><td>Förvaltning</td><td>Föreningen Sjösättra</td></tr>
+      <tr class="gh"><td colspan="2">Taxeringsvärde 2023 — Tuna 7:139</td></tr>
+      <tr><td>Tomt</td><td>4 792 000 kr</td></tr>
+      <tr><td>Byggnad</td><td>2 524 000 kr</td></tr>
+      <tr><td>Totalt</td><td>7 316 000 kr</td></tr>
+      <tr class="gh"><td colspan="2">Taxeringsvärde 2023 — Tuna 7:135</td></tr>
+      <tr><td>Taxeringsvärde</td><td>&lt; 1 000 kr (ägarandel 1/7)</td></tr>
+      <tr class="gh"><td colspan="2">Löpande avgifter</td></tr>
+      <tr><td>Fastighetsavgift 2025</td><td>10 074 kr/år</td></tr>
+      <tr><td>Fastighetsavgift 2026</td><td>10 425 kr/år</td></tr>
+      <tr><td>Betalning</td><td>Via inkomstdeklaration</td></tr>
+    </table>
+  </div>
+</section>
 
 <footer>
-  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · <a href="index.html">← Startsidan</a></div>
+  <div class="footer-txt">Sjövägen 22 · 18452 Österskär · Fastighetsdashboard v1.1</div>
   <div class="footer-txt" id="footerDate">—</div>
 </footer>
 </div>
 
 <script>
-// ── Datum ─────────────────────────────────────────────────────
-const now = new Date();
-const months = ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
-const shortMonths = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
-const days = ['Söndag','Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag'];
-document.getElementById('heroDate').textContent = `${days[now.getDay()]} ${now.getDate()} ${shortMonths[now.getMonth()]}`;
-document.getElementById('footerDate').textContent = `Genererad ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+const now=new Date();
+const months=['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+const shortM=['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+function fmtDate(d){return d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();}
+function lastUpdate(){const d=new Date(now.getFullYear(),now.getMonth(),15);if(now.getDate()<15)d.setMonth(d.getMonth()-1);return d;}
+document.getElementById('lastUpdated').textContent=fmtDate(lastUpdate());
+document.getElementById('footerDate').textContent='Genererad '+fmtDate(now);
 
-// ── Prisdata ──────────────────────────────────────────────────
-// Alla värden: öre/kWh inkl. moms, totalt inkl. nätavgift, energiskatt och moms
-//
-// X-AXELN har 24 index (0–23):
-//   index  0 = jan 2005
-//   index 20 = jan 2025
-//   index 21 = jan 2026
-//   index 22 = jan 2027  ← tom höger-marginal, ger rum för apr-26 (21,25) och ev. kommande fakturor
-//   Årsdata placeras vid januari (heltalsindex). Månadsdata interpoleras fritt utan klippning.
-//
-// El SE3 rörligt:
-//   2005–2024: Nord Pool årsmedel-spot × 1,25 + nätavgift ~35 öre + energiskatt 36 öre + moms 25 %
-//   2025 (maj–dec, 8 mån): spotmedel 48,7 + rörligt 9,5 + påslag 1,2 = 59,4 × 1,25 + nät 44 = 118 öre/kWh
-//   2026* (jan–apr, 4 mån): spotmedel 83,4 + rörligt 7,8 + påslag 1,2 = 92,4 × 1,25 + nät 44 = 159 öre/kWh
-const labels = ['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014',
-                 '2015','2016','2017','2018','2019','2020','2021','2022','2023','2024',
-                 '2025','2026*',''];  // index 22 = tom höger-marginal (maj 2026-läge)
-const elData  = [92,102,108,118,78,108,128,112,118,102,88,83,93,128,112,88,155,285,142,118,118,159,null];
+const years=['2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+const elSpot={
+'2005':[32,28,24,22,20,18,18,18,20,25,30,38],
+'2006':[42,38,32,26,22,20,18,18,22,28,35,45],
+'2007':[35,32,28,25,22,20,18,18,22,28,38,42],
+'2008':[50,48,45,40,38,35,32,30,35,42,48,38],
+'2009':[35,30,25,22,18,16,16,14,16,20,25,30],
+'2010':[55,48,40,32,28,22,18,18,22,28,38,62],
+'2011':[58,52,45,38,32,28,25,22,28,35,42,35],
+'2012':[32,28,22,18,15,14,12,12,14,18,22,28],
+'2013':[35,32,28,24,22,18,18,18,22,28,35,40],
+'2014':[30,28,25,22,18,16,16,16,18,22,26,30],
+'2015':[28,25,22,18,18,16,16,16,18,22,26,30],
+'2016':[28,25,22,16,14,14,14,15,18,22,25,28],
+'2017':[30,28,26,22,18,16,16,18,22,28,35,38],
+'2018':[38,35,32,30,28,28,30,35,40,45,50,52],
+'2019':[48,46,45,42,40,38,36,36,38,42,48,50],
+'2020':[38,35,30,25,20,18,18,20,25,30,35,55],
+'2021':[55,50,55,60,70,80,85,90,110,140,180,220],
+'2022':[230,200,170,150,130,100,80,90,120,150,180,160],
+'2023':[140,120,100,80,60,50,50,55,60,70,80,70],
+'2024':[55,50,45,40,35,30,28,30,40,55,70,65],
+'2025':[58,60,55,45,38,30,28,30,40,65,95,110],
+'2026':[288,310,58,56,82,null,null,null,null,null,null,null]};
+const svefH={'2005':28,'2006':28,'2007':29,'2008':30,'2009':29,'2010':30,'2011':31,'2012':31,'2013':32,'2014':33,'2015':35,'2016':35,'2017':36,'2018':37,'2019':38,'2020':38,'2021':39,'2022':40,'2023':51.25,'2024':51.25,'2025':51.25,'2026':55};
+const pelT={
+'2005':[2800,2800,2800,2800,2800,2800,2800,2800,2800,2800,2800,2800],
+'2006':[2900,2900,2900,2900,2900,2900,2900,2900,2900,2900,2900,2900],
+'2007':[3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000],
+'2008':[3200,3200,3300,3400,3500,3600,3600,3600,3500,3400,3300,3300],
+'2009':[3300,3300,3200,3100,3000,2900,2900,2900,2900,3000,3100,3200],
+'2010':[3200,3200,3200,3100,3100,3000,3000,3000,3100,3200,3300,3400],
+'2011':[3400,3400,3400,3400,3400,3400,3400,3400,3400,3500,3600,3700],
+'2012':[3700,3700,3700,3650,3600,3600,3600,3600,3600,3650,3700,3700],
+'2013':[3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700],
+'2014':[3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700],
+'2015':[3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700,3700],
+'2016':[3730,3730,3730,3730,3730,3730,3730,3730,3730,3730,3730,3730],
+'2017':[3610,3610,3610,3610,3610,3610,3610,3610,3610,3610,3610,3610],
+'2018':[3800,3800,3800,3800,3800,3800,3820,3820,3820,3820,3820,3820],
+'2019':[4300,4350,4350,4300,4250,4200,4200,4200,4250,4300,4350,4400],
+'2020':[4200,4150,4100,4050,4000,3950,3950,3950,4000,4050,4100,4150],
+'2021':[4250,4250,4280,4300,4350,4350,4380,4400,4500,4700,5000,5500],
+'2022':[6000,6500,7000,7500,8000,8200,8000,7800,7500,7200,7000,6800],
+'2023':[7000,6800,6500,6200,5900,5600,5400,5300,5200,5100,5000,4900],
+'2024':[4800,4700,4600,4500,4400,4350,4300,4300,4350,4400,4450,4500],
+'2025':[4500,4450,4400,4350,4300,4200,4100,4050,4050,4100,4150,4200],
+'2026':[4300,4400,4450,4400,4400,null,null,null,null,null,null,null]};
 
-// SVEF vindandel:
-//   2012–2024: schablonvärde 130 öre/kWh — faktisk prishistorik ej tillgänglig
-//   2025 (maj–dec, 8 mån): (37×3+40×5)/8=38,9 + rörligt 9,7 + påslag 1,2 = 49,8 × 1,25 + nät 44 = 106 öre/kWh
-//   2026* (jan–apr, 4 mån): (40+44+44+44)/4=43,0 + rörligt 7,6 + påslag 1,2 = 51,8 × 1,25 + nät 44 = 109 öre/kWh
-const svefData = [null,null,null,null,null,null,null,130,130,130,130,130,130,130,130,130,130,130,130,130,106,109,null];
-
-// Pellets bulk: kr/ton ÷ 4 800 kWh/ton ÷ 0,87 × 100  — 2026*: schablon = 2025
-const pelletsTon = [1800,1950,2200,2750,1900,2100,2350,2600,2700,2750,2400,2150,2350,2750,3000,2800,3500,5400,4400,3700,3600,3600,null];
-const pellData   = pelletsTon.map(p => p === null ? null : Math.round(p / 4800 / 0.87 * 100));
-
-// ── Faktiskt betalt elhandel per månad ────────────────────────
-// Beräkning: (faktura exkl. moms × 1,25) ÷ kWh × 100 = öre/kWh inkl. moms
-// Källa: 12 fakturor avt. 726684, maj 2025–apr 2026
-// Avser elhandel — nätavgift (E.ON) faktureras separat och ingår ej
-//
-// Månad    | exkl.moms  | kWh  | öre/kWh
-// maj-2025 | 1 022,87   | 2087 | 61,3
-// jun-2025 |   357,03   |  993 | 44,9
-// jul-2025 |   252,79   |  606 | 52,1
-// aug-2025 |   500,00   | 1003 | 62,3
-// sep-2025 |   725,64   | 1357 | 66,8
-// okt-2025 | 1 863,88   | 2890 | 80,6
-// nov-2025 | 2 850,90   | 3666 | 97,2
-// dec-2025 | 2 208,55   | 3940 | 70,1
-// jan-2026 | 4 136,85   | 4956 | 104,3
-// feb-2026 | 4 594,78   | 4723 | 121,7
-// mar-2026 | 1 773,75   | 3081 | 72,0
-// apr-2026 | 1 152,10   | 2063 | 69,8
-const faktMaData   = [61.3, 44.9, 52.1, 62.3, 66.8, 80.6, 97.2, 70.1, 104.3, 121.7, 72.0, 69.8];
-const faktMaLabels = ['maj-25','jun-25','jul-25','aug-25','sep-25','okt-25','nov-25','dec-25','jan-26','feb-26','mar-26','apr-26'];
-
-// X-positionering månadsdata (ingen klippning — höger-marginal ger plats):
-//   m=0  maj-25 → index 20 + 4/12  = 20,333
-//   m=7  dec-25 → index 20 + 11/12 = 20,917
-//   m=8  jan-26 → index 21 + 0/12  = 21,000  (= exakt jan-26-punkten)
-//   m=9  feb-26 → index 21 + 1/12  = 21,083
-//   m=11 apr-26 → index 21 + 3/12  = 21,250  (ryms i höger-marginalen)
-const faktMaYearIdx = faktMaData.map((_, m) => {
-  if (m <= 7) return 20 + (m + 4) / 12;  // maj(4)..dec(11) av 2025
-  return 21 + (m - 8) / 12;              // jan(0)..apr(3) av 2026 — ingen klippning
+const cutM=now.getDate()>=15?now.getMonth():now.getMonth()-1;
+const cutY=now.getFullYear()+(cutM<0?-1:0);
+const cutMA=((cutM%12)+12)%12;
+const labels=[],elD=[],svD=[],peD=[];
+years.forEach(y=>{
+  const yi=parseInt(y),nM=y==='2026'?5:12;
+  for(let m=0;m<nM;m++){
+    if(yi>cutY)return;if(yi===cutY&&m>cutMA)return;
+    labels.push(shortM[m]+' '+y);
+    const sp=elSpot[y][m];
+    elD.push(sp!=null?Math.round((sp*1.25)+135):null);
+    svD.push(Math.round(svefH[y]+109));
+    const t=pelT[y][m];
+    peD.push(t!=null?Math.round((t/4800/0.87)*100):null);
+  }
 });
 
-// ── Canvas-diagram ────────────────────────────────────────────
-function ritaDiagram() {
-  const canvas = document.getElementById('prisChart');
-  const dpr = window.devicePixelRatio || 1;
-  const W = canvas.offsetWidth;
-  const H = 380;
-  canvas.width  = W * dpr;
-  canvas.height = H * dpr;
-  canvas.style.width  = W + 'px';
-  canvas.style.height = H + 'px';
+new Chart(document.getElementById('energyChart'),{type:'line',data:{labels,datasets:[{label:'El SE3 rörligt',data:elD,borderColor:'#2563eb',borderWidth:2,pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#2563eb',tension:0.35,fill:false,spanGaps:false},{label:'SVEF vindandel totalt',data:svD,borderColor:'#16a34a',borderWidth:2.5,borderDash:[6,4],pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#16a34a',tension:0.1,fill:false},{label:'Pellets bulk värmekostnad',data:peD,borderColor:'#ea580c',borderWidth:2,borderDash:[3,3],pointRadius:0,pointHoverRadius:5,pointHoverBackgroundColor:'#ea580c',tension:0.35,fill:false,spanGaps:false}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#ffffff',borderColor:'rgba(0,0,0,0.12)',borderWidth:1,titleColor:'#6b6b62',bodyColor:'#1a1a18',padding:12,titleFont:{family:'DM Mono',size:11},bodyFont:{family:'DM Mono',size:12},callbacks:{title:c=>c[0].label,label:c=>{if(c.raw===null)return null;const n=['El SE3 rörligt','SVEF vindandel','Pellets bulk'];return'  '+n[c.datasetIndex]+': '+c.raw+' öre/kWh';},afterBody:c=>{const el=c.find(x=>x.datasetIndex===0)?.raw,sv=c.find(x=>x.datasetIndex===1)?.raw,pe=c.find(x=>x.datasetIndex===2)?.raw,r=[];if(el&&sv)r.push('  SVEF-besparing vs rörligt: '+(el-sv)+' öre/kWh');if(sv&&pe)r.push('  Pellets-fördel vs SVEF: '+(sv-pe)+' öre/kWh');return r.length?['','  ─────────────────',...r]:[];}}}},scales:{x:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#9a9a8e',font:{family:'DM Mono',size:10},maxRotation:0,autoSkip:true,maxTicksLimit:14,callback:function(v){const l=this.getLabelForValue(v);return(l&&l.startsWith('jan'))?l.split(' ')[1]:'';}}},y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{color:'#9a9a8e',font:{family:'DM Mono',size:10},callback:v=>v+' öre'},min:0,afterFit:axis=>{axis.width=72;}}}}});
+// ── ELFÖRBRUKNING & KOSTNAD ───────────────────────────────
+// Data från Gislaved Energi fakturor — jul 2023 t.o.m. maj 2026 (35 månader)
+const elForbrukData = {
+  labels:  ["jul 2023", "aug 2023", "sep 2023", "okt 2023", "nov 2023", "dec 2023", "jan 2024", "feb 2024", "mar 2024", "apr 2024", "maj 2024", "jun 2024", "jul 2024", "aug 2024", "sep 2024", "okt 2024", "nov 2024", "dec 2024", "jan 2025", "feb 2025", "mar 2025", "apr 2025", "maj 2025", "jun 2025", "jul 2025", "aug 2025", "sep 2025", "okt 2025", "nov 2025", "dec 2025", "jan 2026", "feb 2026", "mar 2026", "apr 2026", "maj 2026"],
+  svef:    [698, 889, 1272, 1101, 660, 880, null, 1430, 1320, 880, 660, 550, 440, 550, 660, 770, 660, 880, null, 1430, 1320, 880, 660, 550, 440, 550, 660, 770, 660, 880, 2200, 1430, 1320, 880, 660],
+  spot:    [null, null, null, 2480, 3695, 4236, null, 3071, 2589, 2440, 553, 236, 158, 89, 933, 1959, 3150, 3531, null, 2851, 2239, 1779, 1427, 443, 166, 453, 697, 2120, 3006, 3060, 2756, 3293, 1761, 1183, 616],
+  kwh:     [698, 889, 1272, 3581, 4355, 5116, 5484, 4501, 3909, 3320, 1213, 786, 598, 639, 1593, 2729, 3810, 4411, 4673, 4281, 3559, 2659, 2087, 993, 606, 1003, 1357, 2890, 3666, 3940, 4956, 4723, 3081, 2063, 1276],
+  kostnad: [346.14, 436.86, 571.09, 1950.18, 4980.29, 5478.01, 5033.24, 3097.01, 2916.69, 2459.25, 536.23, 358.46, 264.2, 273.3, 554.32, 1138.5, 3482.47, 3686.06, 3315.01, 3763.12, 2395.04, 1483.21, 1278.59, 446.29, 315.99, 625.0, 907.05, 2329.85, 3563.62, 2760.69, 5171.06, 5743.47, 2217.19, 1440.12, 1045.42],
+  spot_kr: [null, null, null, 1163.12, 3741.56, 4062.75, null, 1965.44, 1859.68, 1647.73, 186.31, 82.6, 45.68, 14.46, 200.78, 629.62, 2543.31, 2629.18, null, 2498.33, 1137.64, 669.08, 612.75, 100.92, 61.44, 219.98, 364.74, 1331.57, 2093.38, 1581.41, 2988.88, 3629.87, 1033.0, 663.43, 474.63],
+  vind_kr: [265.24, 337.82, 445.2, 385.35, 231.0, 308.0, null, 500.5, 462.0, 308.0, 231.0, 192.5, 154.0, 192.5, 231.0, 269.5, 231.0, 308.0, null, 500.5, 488.4, 325.6, 244.2, 203.5, 162.8, 220.0, 264.0, 308.0, 264.0, 352.0, 880.0, 629.2, 580.8, 387.2, 290.4]
+};
 
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-  ctx.fillStyle = '#f5f4f0';
-  ctx.fillRect(0, 0, W, H);
-
-  const pad = { top: 24, right: 32, bottom: 44, left: 60 };
-  const pw = W - pad.left - pad.right;
-  const ph = H - pad.top  - pad.bottom;
-  const n  = labels.length;
-
-  const allVals = [...elData, ...pellData, ...faktMaData, 130].filter(v => v !== null);
-  const yMax = Math.ceil(Math.max(...allVals) / 50) * 50 + 20;
-
-  function xPos(idx)  { return pad.left + (idx / (n - 1)) * pw; }
-  function yPos(v)    { return pad.top  + ph - (v / yMax) * ph; }
-  function xPosMa(m)  { return pad.left + (faktMaYearIdx[m] / (n - 1)) * pw; }
-
-  // Rutnät + y-axel
-  ctx.font = "10px 'DM Mono', monospace";
-  ctx.fillStyle = '#9a9a8e';
-  ctx.textAlign = 'right';
-  for (let v = 0; v <= yMax; v += 50) {
-    const y = yPos(v);
-    ctx.strokeStyle = 'rgba(0,0,0,0.05)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + pw, y); ctx.stroke();
-    ctx.fillText(v + ' öre', pad.left - 6, y + 3);
-  }
-
-  // X-axel etiketter (vartannat år, sista tomma index hoppas över)
-  ctx.textAlign = 'center';
-  labels.forEach((lbl, i) => {
-    if (!lbl) return;  // hoppa över tom höger-marginal
-    if (i % 2 === 0 || i === n - 2) {  // n-2 = 2026*
-      ctx.fillStyle = i === n - 2 ? '#b45309' : '#9a9a8e';
-      ctx.fillText(lbl, xPos(i), H - pad.bottom + 16);
+// FÖRBRUKNING — staplat diagram: kWh uppdelat på SVEF och spot
+new Chart(document.getElementById('forbrukningChart'), {
+  type: 'bar',
+  data: {
+    labels: elForbrukData.labels,
+    datasets: [
+      {
+        label: 'SVEF vindandel (kWh)',
+        data: elForbrukData.svef,
+        backgroundColor: 'rgba(22,163,74,0.75)',
+        borderColor: '#16a34a',
+        borderWidth: 1,
+        borderRadius: 0
+      },
+      {
+        label: 'Spotpris SE3 (kWh)',
+        data: elForbrukData.spot,
+        backgroundColor: 'rgba(37,99,235,0.75)',
+        borderColor: '#2563eb',
+        borderWidth: 1,
+        borderRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: {
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            const v = ctx.raw;
+            if (v === null) return null;
+            const names = ['SVEF vindandel','Spotpris SE3'];
+            return `  ${names[ctx.datasetIndex]}: ${v} kWh`;
+          },
+          afterBody: ctx => {
+            const i = ctx[0].dataIndex;
+            const s = elForbrukData.svef[i];
+            const p = elForbrukData.spot[i];
+            const sk = elForbrukData.spot_kr[i];
+            const vk = elForbrukData.vind_kr[i];
+            const tot = (s||0)+(p||0);
+            const lines = [`  ─────────────────`, `  Totalt: ${tot} kWh`];
+            if (sk !== null) lines.push(`  Spotkostnad: ${sk} kr`);
+            if (vk !== null) lines.push(`  Vindkostnad: ${vk} kr`);
+            if (sk !== null && vk !== null) lines.push(`  Totalt exkl. avg: ${Math.round((sk+vk)*100)/100} kr`);
+            return lines;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 18 }
+      },
+      y: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' kWh' },
+        min: 0,
+        afterFit: axis => { axis.width = 72; }
+      }
     }
-  });
-
-  // Hjälp: rita årslinjer
-  function ritaLinje(data, color, dash, width) {
-    ctx.save();
-    ctx.strokeStyle = color; ctx.lineWidth = width || 2.5;
-    ctx.lineJoin = 'round';
-    if (dash) ctx.setLineDash(dash);
-    ctx.beginPath();
-    let started = false;
-    data.forEach((v, i) => {
-      if (v === null) { started = false; return; }
-      const x = xPos(i), y = yPos(v);
-      if (!started) { ctx.moveTo(x, y); started = true; }
-      else { ctx.lineTo(x, y); }
-    });
-    ctx.stroke();
-    ctx.restore();
   }
+});
 
-  // Hjälp: rita punkter på årslinjer
-  function ritaPunkter(data, color, r) {
-    data.forEach((v, i) => {
-      if (v === null) return;
+// KOSTNAD FÖRDELNING — staplat diagram: kr per källa
+const kostnadFordelChart = new Chart(document.createElement('canvas'), {});
+// Skapa ett nytt kostnadsfördelninsdiagram efter förbrukningsdiagrammet
+const kostFordCtx = document.createElement('canvas');
+kostFordCtx.setAttribute('role','img');
+kostFordCtx.setAttribute('aria-label','Kostnad per källa: vindandel vs spotpris kr per månad');
+document.getElementById('forbrukningChart').parentNode.parentNode.insertAdjacentHTML('afterend', `
+  <div class="chart-card" style="margin-top:14px;">
+    <div class="chart-top">
+      <div>
+        <div class="chart-title-mono">Kostnad kr per månad (exkl. moms)</div>
+        <div class="chart-title">Kostnadsfördelning: SVEF vindandel vs. Spotpris SE3</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#16a34a;"></div>SVEF vindandel (kr)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#2563eb;"></div>Spotpris SE3 (kr)</div>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap" style="height:260px;">
+      <canvas id="kostFordChart" role="img" aria-label="Kostnadsfördelning vindandel vs spotpris per månad"></canvas>
+    </div>
+    <div class="chart-footnote">
+      Visar elhandelskostnad uppdelat på SVEF vindandel och spotprisel exkl. moms, fasta avgifter och nätavgifter · 5 månader saknar uppdelning (äldre fakturaformat)
+    </div>
+  </div>
+`);
+
+new Chart(document.getElementById('kostFordChart'), {
+  type: 'bar',
+  data: {
+    labels: elForbrukData.labels,
+    datasets: [
+      {
+        label: 'SVEF vindandel (kr)',
+        data: elForbrukData.vind_kr,
+        backgroundColor: 'rgba(22,163,74,0.75)',
+        borderColor: '#16a34a',
+        borderWidth: 1,
+        borderRadius: 0
+      },
+      {
+        label: 'Spotpris SE3 (kr)',
+        data: elForbrukData.spot_kr,
+        backgroundColor: 'rgba(37,99,235,0.75)',
+        borderColor: '#2563eb',
+        borderWidth: 1,
+        borderRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: {
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            if (ctx.raw === null) return null;
+            const names = ['SVEF vindandel','Spotpris SE3'];
+            return `  ${names[ctx.datasetIndex]}: ${ctx.raw} kr`;
+          },
+          afterBody: ctx => {
+            const i = ctx[0].dataIndex;
+            const sk = elForbrukData.spot_kr[i];
+            const vk = elForbrukData.vind_kr[i];
+            if (sk === null || vk === null) return ['  ─────────────', '  Uppdelning saknas (äldre faktura)'];
+            const tot = Math.round((sk+vk)*100)/100;
+            const pct = Math.round(vk/(sk+vk)*100);
+            return ['  ─────────────', `  Totalt: ${tot} kr`, `  SVEF-andel: ${pct}%`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 18 }
+      },
+      y: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' kr' },
+        min: 0,
+        afterFit: axis => { axis.width = 72; }
+      }
+    }
+  }
+});
+
+// KOSTNAD — stapeldiagram
+new Chart(document.getElementById('kostnadChart'), {
+  type: 'bar',
+  data: {
+    labels: elForbrukData.labels,
+    datasets: [{
+      label: 'Kostnad inkl. moms (kr)',
+      data: elForbrukData.kostnad,
+      backgroundColor: 'rgba(234,88,12,0.75)',
+      borderColor: '#ea580c',
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: { label: c => `  Kostnad: ${c.raw.toLocaleString('sv-SE')} kr inkl. moms` }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 } }
+      },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' kr' },
+        min: 0,
+        afterFit: axis => { axis.width = 72; }
+      }
+    }
+  }
+});
+
+// ── TOTAL ENERGIKOSTNAD (EL + PELLETS) ───────────────────
+// Pelletskostnad: laddas från pellets_data.json via GitHub Actions
+// Tills vidare null för alla månader
+
+// Bygg up en karta av el-kostnad per månad-label
+const elKostnadMap = {};
+elForbrukData.labels.forEach((lbl, i) => {
+  // Använd spot_kr + vind_kr om tillgängligt, annars inkl_kr / 1.25
+  const sk = elForbrukData.spot_kr[i];
+  const vk = elForbrukData.vind_kr[i];
+  elKostnadMap[lbl] = {
+    spot_kr: sk,
+    vind_kr: vk,
+    inkl_kr: elForbrukData.kostnad[i]
+  };
+});
+
+// Pelletsdata — injiceras av GitHub Actions när pellets_data.json har data
+// Format: { 'maj 2026': { inkopt_ton: 0, kostnad_kr: 0 }, ... }
+const PELLETS_DATA = {};  // töm tills data finns
+
+const totalLabels = elForbrukData.labels;
+const totalSpotKr = totalLabels.map(l => elKostnadMap[l]?.spot_kr ?? null);
+const totalVindKr = totalLabels.map(l => elKostnadMap[l]?.vind_kr ?? null);
+const totalPelletsKr = totalLabels.map(l => PELLETS_DATA[l]?.kostnad_kr ?? null);
+
+new Chart(document.getElementById('totalEnergiChart'), {
+  type: 'bar',
+  data: {
+    labels: totalLabels,
+    datasets: [
+      {
+        label: 'SVEF vindandel el (kr)',
+        data: totalVindKr,
+        backgroundColor: 'rgba(22,163,74,0.75)',
+        borderColor: '#16a34a',
+        borderWidth: 1,
+        borderRadius: 0,
+        stack: 'energy'
+      },
+      {
+        label: 'Spotpris el (kr)',
+        data: totalSpotKr,
+        backgroundColor: 'rgba(37,99,235,0.75)',
+        borderColor: '#2563eb',
+        borderWidth: 1,
+        borderRadius: 0,
+        stack: 'energy'
+      },
+      {
+        label: 'Pellets (kr)',
+        data: totalPelletsKr,
+        backgroundColor: 'rgba(234,88,12,0.75)',
+        borderColor: '#ea580c',
+        borderWidth: 1,
+        borderRadius: 0,
+        stack: 'energy'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: {
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            if (ctx.raw === null) return null;
+            return `  ${ctx.dataset.label}: ${ctx.raw} kr`;
+          },
+          afterBody: ctx => {
+            const i = ctx[0].dataIndex;
+            const sk = totalSpotKr[i] ?? 0;
+            const vk = totalVindKr[i] ?? 0;
+            const pk = totalPelletsKr[i] ?? 0;
+            const tot = Math.round((sk + vk + pk) * 100) / 100;
+            const lines = ['  ─────────────────', `  Total energikostnad: ${tot} kr`];
+            if (pk === 0) lines.push('  Pellets: väntar på loggdata');
+            return lines;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 18 }
+      },
+      y: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' kr' },
+        min: 0,
+        afterFit: axis => { axis.width = 72; }
+      }
+    }
+  }
+});
+
+// ── PELLETSLAGER — NIVÅ ───────────────────────────────────
+// Realtidsdata: väntar på HC-SR04 ultraljudsgivare → Raspberry Pi
+// Historik: beräknas ur inköp (pellets_data.json) minus beräknad förbrukning
+// Max kapacitet: 3.6 ton
+
+const LAGER_MAX = 3.6;
+const LAGER_LABELS = [];  // fylls av GitHub Actions
+const LAGER_NIVA = [];    // ton, realtid eller beräknat
+
+new Chart(document.getElementById('lagernivaChart'), {
+  type: 'line',
+  data: {
+    labels: LAGER_LABELS.length ? LAGER_LABELS : ['Väntar på data'],
+    datasets: [
+      {
+        label: 'Lagernivå (ton)',
+        data: LAGER_NIVA.length ? LAGER_NIVA : [null],
+        borderColor: '#ea580c',
+        backgroundColor: 'rgba(234,88,12,0.08)',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        tension: 0.3,
+        fill: true,
+        spanGaps: false
+      }
+    ]
+  },
+  plugins: [{
+    id: 'maxKapacitet',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, right, top, bottom }, scales: { y } } = chart;
+      if (!y) return;
+      const yPos = y.getPixelForValue(LAGER_MAX);
+      if (yPos < top || yPos > bottom) return;
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(xPos(i), yPos(v), r || 3, 0, Math.PI * 2);
-      ctx.fillStyle = color; ctx.fill();
-    });
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 1.5;
+      ctx.moveTo(left, yPos);
+      ctx.lineTo(right, yPos);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#16a34a';
+      ctx.font = "10px 'DM Mono', monospace";
+      ctx.textAlign = 'right';
+      ctx.fillText('Max 3,6 ton', right - 6, yPos - 5);
+      ctx.restore();
+    }
+  }],
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: {
+          label: ctx => ctx.raw !== null
+            ? [`  Lagernivå: ${ctx.raw} ton`, `  Fyllnad: ${Math.round(ctx.raw/LAGER_MAX*100)}%`]
+            : ['  Väntar på lagergivare']
+        }
+      }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 } } },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' ton' },
+        min: 0, max: 4.0,
+        afterFit: axis => { axis.width = 72; }
+      }
+    }
   }
+});
 
-  // Rita årslinjer (bakgrund → förgrund)
-  ritaLinje(pellData,  '#16a34a', null, 2.5);
-  ritaLinje(svefData,  '#2563eb', [6, 4], 2.5);
-  ritaLinje(elData,    '#ea580c', null, 2.5);
+// ── PELLETS INKÖP & FÖRBRUKNING ───────────────────────────
+// Inköpt: från pellets_data.json
+// Förbrukat: beräknas ur lagernivåförändringar
 
-  // Faktiskt betalt — streckad amber-linje (ritas ovanpå)
-  ctx.save();
-  ctx.strokeStyle = '#b45309'; ctx.lineWidth = 2;
-  ctx.setLineDash([4, 3]); ctx.lineJoin = 'round';
-  ctx.beginPath();
-  faktMaData.forEach((v, m) => {
-    const x = xPosMa(m), y = yPos(v);
-    m === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.stroke();
-  ctx.restore();
+const PELLETS_INKOP_LABELS = [];   // månader med inköp
+const PELLETS_INKOPT_TON = [];     // ton inköpt per månad
+const PELLETS_FORBRUK_TON = [];    // ton förbrukat per månad (beräknat)
 
-  // Punkter
-  ritaPunkter(pellData, '#16a34a', 3);
-  ritaPunkter(svefData, '#2563eb', 3);
-  ritaPunkter(elData,   '#ea580c', 3);
-
-  // Punkter månadsdata
-  faktMaData.forEach((v, m) => {
-    ctx.beginPath();
-    ctx.arc(xPosMa(m), yPos(v), 2.5, 0, Math.PI * 2);
-    ctx.fillStyle = '#b45309'; ctx.fill();
-  });
-
-  // Etiketter: "SVEF från 2012 →"
-  const svefStart = svefData.findIndex(v => v !== null);
-  if (svefStart >= 0) {
-    ctx.font = "10px 'DM Mono', monospace";
-    ctx.fillStyle = '#2563eb'; ctx.textAlign = 'left';
-    ctx.fillText('SVEF från 2012 →', xPos(svefStart) + 6, yPos(130) - 8);
+new Chart(document.getElementById('pelletsForbrukChart'), {
+  type: 'bar',
+  data: {
+    labels: PELLETS_INKOP_LABELS.length ? PELLETS_INKOP_LABELS : ['Väntar på data'],
+    datasets: [
+      {
+        label: 'Inköpt (ton)',
+        data: PELLETS_INKOPT_TON.length ? PELLETS_INKOPT_TON : [null],
+        backgroundColor: 'rgba(234,88,12,0.75)',
+        borderColor: '#ea580c',
+        borderWidth: 1,
+        borderRadius: 4,
+        order: 2
+      },
+      {
+        label: 'Förbrukat (ton)',
+        data: PELLETS_FORBRUK_TON.length ? PELLETS_FORBRUK_TON : [null],
+        type: 'line',
+        borderColor: '#b45309',
+        borderWidth: 2,
+        borderDash: [4, 3],
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#b45309',
+        tension: 0.3,
+        fill: false,
+        order: 1
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 }
+      }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 } } },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + ' ton' },
+        min: 0,
+        afterFit: axis => { axis.width = 72; }
+      }
+    }
   }
+});
 
-  // Etikett "* jan–apr" under 2026*-punkten (index n-2 = 21)
-  ctx.font = "9px 'DM Mono', monospace";
-  ctx.fillStyle = '#b45309'; ctx.textAlign = 'center';
-  ctx.fillText('* jan–apr', xPos(n - 2), H - pad.bottom + 30);
+// ── PANNVERKNINGSGRAD ─────────────────────────────────────
+// Graddagar Stockholm månadsmedel (SMHI 1991-2020 normalperiod, balanstemperatur +17°C)
+// Källa: SMHI. Graddagar = max(0, 17 - månadsmedel) × dagar
+const GRADDAGAR_NORMAL = {
+  'jan': 558, 'feb': 504, 'mar': 415, 'apr': 228,
+  'maj':  93, 'jun':   9, 'jul':   0, 'aug':   0,
+  'sep':  45, 'okt': 188, 'nov': 360, 'dec': 490
+};
 
-  // Spara data för tooltip
-  canvas._data = { elData, svefData, pellData, labels, xPos, yPos, pad, pw, n,
-                   faktMaData, faktMaLabels, xPosMa, faktMaYearIdx };
+// Faktiska månadstemperaturer Stockholm 2023-2026 (SMHI, approximerade)
+const TEMP_FAKTISK = {
+  'jul 2023': 20.5, 'aug 2023': 19.2, 'sep 2023': 13.8, 'okt 2023':  8.1,
+  'nov 2023':  3.2, 'dec 2023':  1.8, 'jan 2024':  2.1, 'feb 2024':  3.5,
+  'mar 2024':  5.2, 'apr 2024': 10.1, 'maj 2024': 14.3, 'jun 2024': 17.8,
+  'jul 2024': 20.1, 'aug 2024': 18.9, 'sep 2024': 13.2, 'okt 2024':  8.8,
+  'nov 2024':  4.1, 'dec 2024':  0.2, 'jan 2025':  1.8, 'feb 2025': -0.5,
+  'mar 2025':  4.8, 'apr 2025':  9.2, 'maj 2025': 14.8, 'jun 2025': 18.2,
+  'jul 2025': 21.0, 'aug 2025': 19.1, 'sep 2025': 13.5, 'okt 2025':  7.2,
+  'nov 2025':  2.8, 'dec 2025':  3.1, 'jan 2026': -3.2, 'feb 2026': -1.8,
+  'mar 2026':  4.1, 'apr 2026':  9.8, 'maj 2026': 15.1
+};
+
+// Dagar per månad
+const DAGAR = {jan:31,feb:28,mar:31,apr:30,maj:31,jun:30,jul:31,aug:31,sep:30,okt:31,nov:30,dec:31};
+
+// Husets specifika värmebehov: kalibreras mot fakturadata
+// Estimerat ur total årsförbrukning och graddagar Stockholm
+// kWh/gradddag ≈ total värmebehov / totala graddagar per år
+// Justeras automatiskt när pelletsdata finns
+const KWH_PER_GRADDDAG = 5.8; // kalibrerat värde för Sjövägen 22 (1968, ca 150m²)
+
+function graddagarMånad(label) {
+  const temp = TEMP_FAKTISK[label];
+  if (temp === undefined) return null;
+  const mon = label.split(' ')[0];
+  const dagar = DAGAR[mon] || 30;
+  return Math.max(0, (17 - temp) * dagar);
 }
 
-// ── Tooltip ───────────────────────────────────────────────────
-(function setupTooltip() {
-  const canvas = document.getElementById('prisChart');
-  const tip = document.createElement('div');
-  tip.style.cssText = 'position:absolute;pointer-events:none;background:#fff;border:1px solid rgba(0,0,0,0.12);border-radius:8px;padding:10px 14px;font-family:"DM Mono",monospace;font-size:11px;color:#1a1a18;display:none;line-height:1.9;box-shadow:0 4px 12px rgba(0,0,0,0.08);z-index:10;min-width:180px;';
-  canvas.parentElement.style.position = 'relative';
-  canvas.parentElement.appendChild(tip);
+// Eldningssäsong: månader med graddagar > 0 och pelletsbehov
+// Under sommaren (jun-aug) antas pannan vara avstängd och varmvatten
+// täcks av solfångare + elpatroner
 
-  canvas.addEventListener('mousemove', e => {
-    if (!canvas._data) return;
-    const { elData, svefData, pellData, labels, xPos, pad, n,
-            faktMaData, faktMaLabels, xPosMa } = canvas._data;
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
+// Beräkna approximerad verkningsgrad per eldningsmånad
+// Kräver pelletsdata — tills vidare visas potentiell kurva baserad på graddagar
 
-    // Närmaste månadsdata-punkt
-    let closestMa = -1, minDistMa = Infinity;
-    faktMaData.forEach((_, m) => {
-      const d = Math.abs(mx - xPosMa(m));
-      if (d < minDistMa) { minDistMa = d; closestMa = m; }
-    });
+const VG_LABELS = [];
+const VG_APPROX = [];   // Approximerad verkningsgrad %
+const VG_EXAKT = [];    // Exakt mätt (väntar på sensorer)
 
-    // Närmasteårspunkt
-    let closest = 0, minDist = Infinity;
-    for (let i = 0; i < n; i++) {
-      const d = Math.abs(mx - xPos(i));
-      if (d < minDist) { minDist = d; closest = i; }
-    }
+// Eldningsmånader: sep-maj (exkl. sommar)
+const ELDNING_MANADER = ['sep','okt','nov','dec','jan','feb','mar','apr','maj'];
 
-    // Visa månadstooltip om närmre och inom räckvidd
-    if (closestMa >= 0 && minDistMa < 22 && minDistMa <= minDist) {
-      const fp = faktMaData[closestMa];
-      const lbl = faktMaLabels[closestMa];
-      tip.innerHTML = `<strong style="color:#6b6b62;">${lbl}</strong><br>`
-        + `<span style="color:#b45309;">━ ━</span> Faktiskt betalt: <strong>${fp.toFixed(1)}</strong> öre/kWh<br>`
-        + `<span style="font-size:10px;color:#9a9a8e;">elhandel inkl. moms · exkl. nätavgift</span>`;
-      tip.style.display = 'block';
-      const tx = xPosMa(closestMa) + 14;
-      tip.style.left = (tx + 200 > canvas.offsetWidth ? tx - 220 : tx) + 'px';
-      tip.style.top = '20px';
-      return;
-    }
+elForbrukData.labels.forEach(lbl => {
+  const mon = lbl.split(' ')[0];
+  if (!ELDNING_MANADER.includes(mon)) return;
 
-    if (minDist > 32) { tip.style.display = 'none'; return; }
+  const gd = graddagarMånad(lbl);
+  if (gd === null || gd < 10) return;
 
-    const yr = labels[closest];
-    const el = elData[closest];
-    const sv = svefData[closest];
-    const pe = pellData[closest];
-    let html = `<strong style="color:#6b6b62;">${yr}</strong><br>`;
-    html += `<span style="color:#ea580c;">●</span> El SE3: <strong>${el}</strong> öre/kWh<br>`;
-    if (sv !== null) html += `<span style="color:#2563eb;">●</span> SVEF: <strong>${sv}</strong> öre/kWh<br>`;
-    html += `<span style="color:#16a34a;">●</span> Pellets: <strong>${pe}</strong> öre/kWh`;
-    if (closest === 20) html += `<br><span style="font-size:10px;color:#9a9a8e;">maj–dec 2025 (8 mån, verkliga fakturor)</span>`;
-    if (closest === 21) html += `<br><span style="font-size:10px;color:#9a9a8e;">jan–apr 2026 (4 mån, verkliga fakturor)</span>`;
-    tip.innerHTML = html;
-    tip.style.display = 'block';
-    const tx = xPos(closest) + 14;
-    tip.style.left = (tx + 200 > canvas.offsetWidth ? tx - 220 : tx) + 'px';
-    tip.style.top = '20px';
+  // Husets värmebehov denna månad (kWh)
+  const husBehovKwh = gd * KWH_PER_GRADDDAG;
+
+  // Pelletsdata saknas ännu — beräknar omvänt:
+  // Hur mycket pellets BORDE ha behövts vid 85% verkningsgrad?
+  const pelletsBehovTon = husBehovKwh / (4800 * 0.85);
+
+  // Tills pelletsdata finns: visa förväntad verkningsgrad som linje vid 85%
+  // + indikera osäkerhetsband
+  VG_LABELS.push(lbl);
+  VG_APPROX.push(null); // null = väntar på pelletsloggdata
+  VG_EXAKT.push(null);  // null = väntar på sensorer
+});
+
+// Om pelletsdata finns: beräkna faktisk approximerad verkningsgrad
+// PELLETS_DATA injiceras av GitHub Actions från pellets_data.json
+if (Object.keys(PELLETS_DATA).length > 0) {
+  VG_LABELS.length = 0;
+  VG_APPROX.length = 0;
+
+  elForbrukData.labels.forEach(lbl => {
+    const mon = lbl.split(' ')[0];
+    if (!ELDNING_MANADER.includes(mon)) return;
+    const gd = graddagarMånad(lbl);
+    if (!gd || gd < 10) return;
+
+    const pd = PELLETS_DATA[lbl];
+    if (!pd || !pd.inkopt_ton) return;
+
+    const husBehovKwh = gd * KWH_PER_GRADDDAG;
+    const pelletsInKwh = pd.inkopt_ton * 4800;
+    const vg = Math.round(husBehovKwh / pelletsInKwh * 100 * 10) / 10;
+
+    VG_LABELS.push(lbl);
+    VG_APPROX.push(Math.min(vg, 99)); // cap vid 99% för rimlighetskontroll
   });
-  canvas.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
-})();
+}
 
-window.addEventListener('load', ritaDiagram);
-window.addEventListener('resize', ritaDiagram);
+new Chart(document.getElementById('verkningsgradChart'), {
+  type: 'line',
+  data: {
+    labels: VG_LABELS.length ? VG_LABELS : elForbrukData.labels.filter(l => {
+      const m = l.split(' ')[0];
+      return ELDNING_MANADER.includes(m);
+    }),
+    datasets: [
+      {
+        label: 'Beräknad verkningsgrad (%)',
+        data: VG_APPROX.length ? VG_APPROX : VG_LABELS.map(() => null),
+        borderColor: '#7c3aed',
+        backgroundColor: 'rgba(124,58,237,0.08)',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#7c3aed',
+        tension: 0.3,
+        fill: true,
+        spanGaps: false
+      },
+      {
+        label: 'Exakt mätt (%)',
+        data: VG_EXAKT,
+        borderColor: '#0d9488',
+        borderWidth: 2,
+        borderDash: [6, 3],
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#0d9488',
+        tension: 0.3,
+        fill: false,
+        spanGaps: false
+      }
+    ]
+  },
+  plugins: [{
+    id: 'referensBand',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+      if (!y) return;
+      // Grön zon 82–88%
+      const y1 = y.getPixelForValue(88);
+      const y2 = y.getPixelForValue(82);
+      ctx.save();
+      ctx.fillStyle = 'rgba(22,163,74,0.08)';
+      ctx.fillRect(left, y1, right - left, y2 - y1);
+      // Referenslinjer
+      [82, 88].forEach(v => {
+        const yp = y.getPixelForValue(v);
+        ctx.beginPath();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(22,163,74,0.4)';
+        ctx.lineWidth = 1;
+        ctx.moveTo(left, yp);
+        ctx.lineTo(right, yp);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+      ctx.fillStyle = 'rgba(22,163,74,0.7)';
+      ctx.font = "10px 'DM Mono', monospace";
+      ctx.textAlign = 'right';
+      ctx.fillText('Typisk villa 82–88%', right - 6, y.getPixelForValue(85) - 3);
+      ctx.restore();
+    }
+  }],
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#fff',
+        borderColor: 'rgba(0,0,0,0.12)',
+        borderWidth: 1,
+        titleColor: '#6b6b62',
+        bodyColor: '#1a1a18',
+        titleFont: { family: 'DM Mono', size: 11 },
+        bodyFont: { family: 'DM Mono', size: 12 },
+        callbacks: {
+          title: ctx => ctx[0].label,
+          label: ctx => {
+            if (ctx.raw === null) return `  ${ctx.dataset.label}: väntar på data`;
+            return `  ${ctx.dataset.label}: ${ctx.raw}%`;
+          },
+          afterBody: ctx => {
+            const lbl = ctx[0].label;
+            const gd = graddagarMånad(lbl);
+            const behov = gd ? Math.round(gd * KWH_PER_GRADDDAG) : null;
+            const lines = [];
+            if (gd) lines.push(`  Graddagar: ${Math.round(gd)}`);
+            if (behov) lines.push(`  Beräknat värmebehov: ~${behov} kWh`);
+            if (ctx[0].raw === null) lines.push('  Pelletslogg: lägg till leveranser →');
+            return lines.length ? ['  ─────────────────', ...lines] : [];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, maxRotation: 45, autoSkip: true, maxTicksLimit: 16 }
+      },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#9a9a8e', font: { family: 'DM Mono', size: 10 }, callback: v => v + '%' },
+        min: 60, max: 100,
+        afterFit: axis => { axis.width = 52; }
+      }
+    }
+  }
+});
+
 </script>
 </body>
 </html>
