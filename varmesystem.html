@@ -207,25 +207,33 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 <div class="block c-blue">
   <div class="block-header">
     <span class="block-num">04</span>
-    <span class="block-title">Datainfrastruktur — inköpslista</span>
+    <span class="block-title">Datainfrastruktur — Slutgiltig inköpslista</span>
   </div>
-  <div class="block-sub">Reviderad 2026-05-21</div>
+  <div class="block-sub">Reviderad 2026-06-27 — Produkter identifierade &amp; godkända</div>
   <table class="tbl">
-    <thead><tr><th>Post</th><th>Kostnad</th></tr></thead>
+    <thead><tr><th>Post</th><th>Produkt/Källa</th><th>Kostnad</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>Raspberry Pi 4 eller 5, 2–4 GB RAM</td><td class="mono">~500–700 kr</td></tr>
-      <tr><td>SD-kort 16–32 GB till Pi:n</td><td class="mono">~100 kr</td></tr>
-      <tr><td>Strömadapter USB-C</td><td class="mono">~100 kr</td></tr>
-      <tr><td>Plasthölje</td><td class="mono">~100 kr</td></tr>
-      <tr><td>USB till RS485-adapter (FTDI-baserad, Danfoss Modbus)</td><td class="mono">~100–150 kr</td></tr>
-      <tr><td>SD-kort max 2 GB FAT32 fullstorlek (Watts LCD+)</td><td class="mono" style="color:var(--accent-red);">✗ ej tillämpligt — LCD+ saknar SD-kortplats</td></tr>
-      <tr><td>Optisk PC-adapter / datakabel (Watts LCD+)</td><td class="mono" style="color:var(--accent-orange);">⚠ inköp krävs — fråga Watts teknisk support om kompatibel kabel för P-3481</td></tr>
-      <tr><td>DS18B20 sensorer × 8 st + 4,7 kΩ pull-up-resistor</td><td class="mono">~260–310 kr</td></tr>
-      <tr><td>Kabel (1-Wire)</td><td class="mono">finns hemma</td></tr>
-      <tr><td>Optisk IR-adapter / datakabel för Watts LCD+ P-3481</td><td class="mono" style="color:var(--accent-orange);">okänt pris — kontakta Watts (watts.eu/nordic)</td></tr>
-      <tr><td><strong>Totalt (exkl. optisk adapter)</strong></td><td class="mono"><strong>~1 150–1 350 kr</strong></td></tr>
+      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">RASPBERRY PI-HUBB (Pannrum)</td></tr>
+      <tr><td>Raspberry Pi</td><td class="mono">Pi 4 eller 5, 2–4 GB RAM</td><td class="mono">~500–700 kr</td><td>🔄 Att beställa</td></tr>
+      <tr><td>SD-kort</td><td class="mono">16–32 GB, Class 10</td><td class="mono">~100 kr</td><td>🔄 Att beställa</td></tr>
+      <tr><td>Strömadapter</td><td class="mono">USB-C, 5V, 3–5A</td><td class="mono">~100 kr</td><td>🔄 Att beställa</td></tr>
+      <tr><td>Plasthölje</td><td class="mono">Al för värmeavledning</td><td class="mono">~100 kr</td><td>🔄 Att beställa</td></tr>
+      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">MODBUS RTU (Danfoss ECL)</td></tr>
+      <tr><td>USB–RS485-adapter</td><td class="mono">Waveshare Industrial (Amazon)</td><td class="mono">~150 kr</td><td>✅ Godkänd</td></tr>
+      <tr><td>RS485-kabel</td><td class="mono">Telefonkabel hemma (3m)</td><td class="mono">0 kr</td><td>✅ Hemma</td></tr>
+      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">1-WIRE TEMPERATURGIVARE (10 st)</td></tr>
+      <tr><td>DS18B20 sensorer</td><td class="mono">Fasizi Waterproof (2 paket, Amazon)</td><td class="mono">~250–300 kr</td><td>✅ Godkänd</td></tr>
+      <tr><td>Pull-up resistor</td><td class="mono">4,7 kΩ från Electrokit</td><td class="mono">~5 kr</td><td>🔄 Köp lokalt</td></tr>
+      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">GIVARMONTAGE (Rörisolering etc)</td></tr>
+      <tr><td>Rörisolering</td><td class="mono">Skumgummi/mineralull 24–32mm (VVS-butik)</td><td class="mono">~50–100 kr</td><td>🔄 Köp lokalt</td></tr>
+      <tr><td>Rörklammer</td><td class="mono">10–15 st metallklammer (VVS-butik)</td><td class="mono">~20–50 kr</td><td>🔄 Köp lokalt</td></tr>
+      <tr><td>Alu-tejp / vattenfast tejp</td><td class="mono">1–2 rullar (VVS-butik)</td><td class="mono">~30–60 kr</td><td>🔄 Köp lokalt</td></tr>
+      <tr><td>Buntband</td><td class="mono">Plastband 100 st (byggvaruhus)</td><td class="mono">~20 kr</td><td>🔄 Köp lokalt</td></tr>
+      <tr><td colspan="4" style="background:#e0e0e0; font-weight:600; border-top:2px solid #999;">TOTALT FASE 1</td></tr>
+      <tr><td colspan="2"><strong>Totalkostnad</strong></td><td class="mono"><strong>~1 475–1 850 kr</strong></td><td><strong>Budgetera ~1 900 kr</strong></td></tr>
     </tbody>
   </table>
+  <div class="next-step">✅ Alla produkter godkända juni 2026 · Inköpslista slutgiltig · Se separata filer INKOEPSLISTA_JULI2026.md och varmesystem_principskiss.html för fullständiga detaljer</div>
 </div>
 
 <footer>
