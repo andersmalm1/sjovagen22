@@ -181,7 +181,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div class="card-title">Tre nivåer: Arbetsrum → Vardagsrum → Källare</div>
 
     <div class="svg-wrap">
-      <svg viewBox="0 0 780 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f0eeea;">
+      <svg viewBox="0 0 820 530" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f0eeea;">
         <defs>
           <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L0,6 L8,3 z" fill="#9a9a8e"/>
@@ -192,112 +192,147 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
           <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/>
           </marker>
-          <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/>
+          <marker id="arr-gray-dash" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#9a9a8e"/>
           </marker>
         </defs>
 
-        <!-- Bakgrundsband: Övervåning -->
-        <rect x="0" y="0" width="780" height="185" fill="rgba(37,99,235,0.04)" rx="0"/>
-        <text x="14" y="20" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">ÖVERVÅNINGEN</text>
+        <!-- ══ BAKGRUNDSBAND: ÖVERVÅNING ══ -->
+        <rect x="0" y="0" width="820" height="200" fill="rgba(37,99,235,0.04)"/>
+        <text x="14" y="18" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">ÖVERVÅNINGEN</text>
 
-        <!-- Bakgrundsband: Källare -->
-        <rect x="0" y="195" width="780" height="285" fill="rgba(22,163,74,0.04)" rx="0"/>
-        <text x="14" y="215" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">KÄLLAREN</text>
+        <!-- ══ BAKGRUNDSBAND: KÄLLARE ══ -->
+        <rect x="0" y="208" width="820" height="310" fill="rgba(22,163,74,0.04)"/>
+        <text x="14" y="226" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">KÄLLAREN</text>
 
-        <!-- ── ROUTER (arbetsrum) ── -->
-        <rect x="30" y="55" width="130" height="60" rx="8" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
-        <text x="95" y="79" font-family="DM Mono,monospace" font-size="11" fill="#ea580c" text-anchor="middle" font-weight="500">ROUTER</text>
-        <text x="95" y="95" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Arbetsrum</text>
-        <text x="95" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">modell: okänd</text>
+        <!-- ══════════════════════════════
+             ÖVERVÅNINGEN
+             ══════════════════════════════ -->
 
-        <!-- WiFi från router -->
-        <text x="95" y="145" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle">📶 WiFi</text>
-        <text x="95" y="157" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">(begränsad räckvidd)</text>
+        <!-- ROUTER (arbetsrum) — BEFINTLIG -->
+        <rect x="30" y="55" width="130" height="64" rx="8" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
+        <text x="95" y="77" font-family="DM Mono,monospace" font-size="11" fill="#ea580c" text-anchor="middle" font-weight="500">ROUTER</text>
+        <text x="95" y="93" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Arbetsrum</text>
+        <text x="95" y="108" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">modell: okänd</text>
 
-        <!-- Kabel router → TV-uttag -->
-        <line x1="160" y1="85" x2="270" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
-        <text x="215" y="76" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (befintlig)</text>
+        <!-- WiFi-signal från router -->
+        <text x="95" y="152" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle">📶 WiFi (begränsad räckvidd)</text>
 
-        <!-- ── TV-UTTAG / NY SWITCH (vardagsrum) ── -->
-        <rect x="270" y="55" width="140" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
-        <text x="340" y="75" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH  ①</text>
-        <text x="340" y="91" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">5-port Gigabit</text>
-        <text x="340" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Vardagsrum (vid TV)</text>
+        <!-- Kabel router → Switch① — BEFINTLIG Cat6 -->
+        <line x1="160" y1="87" x2="268" y2="87" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
+        <text x="214" y="78" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (befintlig)</text>
 
-        <!-- Switch① → TV (befintlig) -->
-        <line x1="340" y1="55" x2="340" y2="30" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-        <text x="348" y="42" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e">TV (befintlig)</text>
+        <!-- SWITCH ① — PLANERAD (streckad ram) -->
+        <rect x="268" y="55" width="148" height="64" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="342" y="74" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
+        <text x="342" y="90" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH ①</text>
+        <text x="342" y="106" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">5-port · Vardagsrum (vid TV)</text>
 
-        <!-- Switch① → WiFi-nod trapphall -->
-        <line x1="410" y1="85" x2="530" y2="85" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-blue)"/>
-        <text x="470" y="76" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny)</text>
+        <!-- TV vardagsrum — BEFINTLIG (Apple TV via kabel + Allente-box via WiFi) -->
+        <!-- AppleTV kabel från switch① (streckad pil eftersom switch ej finns) -->
+        <line x1="342" y1="55" x2="342" y2="28" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
+        <!-- Allente WiFi-signal (grön, prickad) -->
+        <line x1="308" y1="55" x2="240" y2="28" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-green)"/>
+        <!-- TV-ruta -->
+        <rect x="220" y="8" width="170" height="24" rx="5" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="305" y="24" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">📺 TV Vardagsrum  |  AppleTV + Allente</text>
+        <!-- Liten etikett AppleTV / Allente -->
+        <text x="372" y="44" font-family="DM Mono,monospace" font-size="8" fill="#2563eb" text-anchor="middle">Cat6*</text>
+        <text x="258" y="44" font-family="DM Mono,monospace" font-size="8" fill="#16a34a" text-anchor="middle">📶 WiFi</text>
 
-        <!-- ── WIFI-NOD (trapphall) ── -->
-        <rect x="530" y="55" width="140" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="600" y="75" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">📶 WiFi-nod</text>
-        <text x="600" y="91" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Accesspunkt / mesh</text>
-        <text x="600" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Trapphall (kabelansl.)</text>
+        <!-- Switch① → WiFi-nod trapphall (streckad — switch finns ej) -->
+        <line x1="416" y1="87" x2="548" y2="87" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
+        <text x="482" y="78" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny)*</text>
 
-        <!-- WiFi-nod täckning -->
-        <text x="600" y="148" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">↓ täcker trappa + källare</text>
+        <!-- WIFI-NOD trapphall — PLANERAD (streckad) -->
+        <rect x="548" y="55" width="148" height="64" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="622" y="74" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
+        <text x="622" y="90" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">📶 WiFi-nod</text>
+        <text x="622" y="106" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Accesspunkt · Trapphall</text>
+        <text x="622" y="152" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">↓ täcker trappa + källare</text>
 
-        <!-- ── KABELDRAGNING NED (via antennrör) ── -->
-        <!-- Vertikal linje från switch① ner -->
-        <line x1="340" y1="115" x2="340" y2="230" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue)"/>
-        <rect x="355" y="150" width="120" height="28" rx="4" fill="rgba(37,99,235,0.08)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/>
-        <text x="415" y="163" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny dragning)</text>
-        <text x="415" y="173" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">via antennkabelrör</text>
+        <!-- ══ VERTIKAL KABELDRAGNING ned (via antennkabelrör) — NY ══ -->
+        <line x1="342" y1="119" x2="342" y2="242" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue)"/>
+        <rect x="356" y="155" width="128" height="30" rx="4" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/>
+        <text x="420" y="167" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny dragning)*</text>
+        <text x="420" y="179" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">via antennkabelrör</text>
 
-        <!-- ── SWITCH ② (gillestuga/musikstudio) ── -->
-        <rect x="230" y="235" width="220" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
-        <text x="340" y="258" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH  ②</text>
-        <text x="340" y="274" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">5–8 port Gigabit</text>
-        <text x="340" y="287" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Gillestuga / musikstudio</text>
+        <!-- ══════════════════════════════
+             KÄLLAREN
+             ══════════════════════════════ -->
 
-        <!-- Switch② → TV/studio -->
-        <line x1="230" y1="265" x2="120" y2="265" stroke="#9a9a8e" stroke-width="1.5" marker-end="url(#arr)"/>
-        <rect x="20" y="248" width="100" height="34" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
-        <text x="70" y="263" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">TV / streaming</text>
-        <text x="70" y="275" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Apple TV etc.</text>
+        <!-- SWITCH ② gillestuga — PLANERAD (streckad) -->
+        <rect x="232" y="248" width="220" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="342" y="265" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
+        <text x="342" y="281" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH ②</text>
+        <text x="342" y="297" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">5–8 port · Gillestuga</text>
 
-        <!-- Switch② → dator/studio -->
-        <line x1="340" y1="295" x2="340" y2="360" stroke="#9a9a8e" stroke-width="1.5" marker-end="url(#arr)"/>
-        <rect x="270" y="363" width="140" height="34" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
-        <text x="340" y="378" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">Musikdator / NAS</text>
-        <text x="340" y="390" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">studio-utrustning</text>
+        <!-- TV källaren — BEFINTLIG, går idag DIREKT på antennkabel (ingen nätverkskoppling) -->
+        <rect x="18" y="248" width="140" height="60" rx="8" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="88" y="270" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">📺 TV Källaren</text>
+        <text x="88" y="285" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Idag: antennkabel</text>
+        <text x="88" y="299" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">(ingen nätv.-koppling)</text>
 
-        <!-- Switch② → pannrum (Cat6) -->
-        <line x1="450" y1="265" x2="570" y2="265" stroke="#16a34a" stroke-width="2" marker-end="url(#arr-green)"/>
-        <text x="510" y="255" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">Cat6 (ny)</text>
+        <!-- TV källaren → Switch② — FRAMTIDA / streckad (grå, ingen koppling idag) -->
+        <line x1="158" y1="278" x2="232" y2="278" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-gray-dash)"/>
+        <text x="195" y="271" font-family="DM Mono,monospace" font-size="8" fill="#9a9a8e" text-anchor="middle">framtida*</text>
 
-        <!-- ── PANNRUM ── -->
-        <rect x="570" y="235" width="185" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
-        <text x="662" y="258" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">PANNRUM</text>
-        <text x="662" y="274" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Raspberry Pi 5</text>
-        <text x="662" y="287" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Temperaturövervakning</text>
+        <!-- Musikdator gillestuga — PLANERAD (streckad) -->
+        <rect x="248" y="358" width="188" height="46" rx="6" fill="#fff" stroke="#9a9a8e" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="342" y="375" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">PLANERAD</text>
+        <text x="342" y="391" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">🎵 Musikdator / Studio</text>
 
-        <!-- Pi → Danfoss ECL / sensorer -->
-        <line x1="662" y1="295" x2="662" y2="355" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-        <rect x="592" y="358" width="140" height="46" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
-        <text x="662" y="373" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">Modbus RS485</text>
-        <text x="662" y="385" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Danfoss ECL</text>
-        <text x="662" y="397" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">10× DS18B20 (1-Wire)</text>
+        <!-- Switch② → Musikdator — streckad (varken switch eller dator finns) -->
+        <line x1="342" y1="308" x2="342" y2="358" stroke="#9a9a8e" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arr-gray-dash)"/>
 
-        <!-- Legender -->
-        <rect x="30" y="440" width="12" height="3" fill="#2563eb"/>
-        <text x="48" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Nätverkskabel (Cat6)</text>
-        <rect x="180" y="440" width="12" height="3" fill="#2563eb" opacity=".4"/>
-        <rect x="186" y="437" width="0" height="3" fill="none"/>
-        <!-- dashed representation -->
-        <line x1="180" y1="443" x2="192" y2="443" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
-        <text x="198" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Ny dragning</text>
-        <rect x="320" y="440" width="12" height="3" fill="#16a34a"/>
-        <text x="338" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Pannrumsnät</text>
-        <rect x="460" y="437" width="12" height="12" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,2"/>
-        <text x="478" y="445" font-family="DM Mono,monospace" font-size="10" fill="#16a34a">Planerad enhet</text>
-        <rect x="620" y="437" width="12" height="12" rx="2" fill="none" stroke="#9a9a8e" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="638" y="445" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e">Befintlig enhet</text>
+        <!-- Switch② → Pannrum, Cat6 — PLANERAD (streckad) -->
+        <line x1="452" y1="278" x2="572" y2="278" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-green)"/>
+        <text x="512" y="268" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">Cat6 (ny)*</text>
+
+        <!-- PANNRUM / Raspberry Pi — PLANERAD (streckad) -->
+        <rect x="572" y="248" width="200" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="672" y="265" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
+        <text x="672" y="281" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">Raspberry Pi 5</text>
+        <text x="672" y="297" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Pannrum · Temp.övervakning</text>
+
+        <!-- Pi → Danfoss / 1-Wire — intern koppling (dessa existerar i pannrummet) -->
+        <line x1="672" y1="308" x2="672" y2="358" stroke="#9a9a8e" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <rect x="592" y="358" width="160" height="52" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="672" y="374" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">Modbus RS485</text>
+        <text x="672" y="387" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Danfoss ECL Comfort 110</text>
+        <text x="672" y="400" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">10× DS18B20 (1-Wire)</text>
+
+        <!-- ══ LEGEND ══ -->
+        <rect x="14" y="430" width="792" height="84" rx="6" fill="rgba(255,255,255,0.7)" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>
+        <text x="26" y="447" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" letter-spacing="1">LEGEND</text>
+
+        <!-- Befintlig kabel -->
+        <line x1="26" y1="461" x2="50" y2="461" stroke="#2563eb" stroke-width="2"/>
+        <polygon points="50,457 58,461 50,465" fill="#2563eb"/>
+        <text x="64" y="465" font-family="DM Mono,monospace" font-size="10" fill="#1a1a18">Befintlig nätverkskabel (Cat6)</text>
+
+        <!-- Planerad kabel -->
+        <line x1="26" y1="481" x2="50" y2="481" stroke="#2563eb" stroke-width="2" stroke-dasharray="5,3"/>
+        <polygon points="50,477 58,481 50,485" fill="#2563eb"/>
+        <text x="64" y="485" font-family="DM Mono,monospace" font-size="10" fill="#1a1a18">Planerad kabel — finns ej idag  *</text>
+
+        <!-- WiFi -->
+        <line x1="260" y1="461" x2="284" y2="461" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <polygon points="284,457 292,461 284,465" fill="#16a34a"/>
+        <text x="298" y="465" font-family="DM Mono,monospace" font-size="10" fill="#1a1a18">WiFi-signal</text>
+
+        <!-- Framtida koppling -->
+        <line x1="260" y1="481" x2="284" y2="481" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="284,477 292,481 284,485" fill="#9a9a8e"/>
+        <text x="298" y="485" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Framtida / ej ansluten idag</text>
+
+        <!-- Planerad enhet -->
+        <rect x="490" y="453" width="14" height="14" rx="3" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="510" y="464" font-family="DM Mono,monospace" font-size="10" fill="#1a1a18">Planerad enhet — finns ej idag</text>
+
+        <!-- Befintlig enhet -->
+        <rect x="490" y="473" width="14" height="14" rx="3" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="510" y="484" font-family="DM Mono,monospace" font-size="10" fill="#1a1a18">Befintlig enhet</text>
       </svg>
     </div>
 
