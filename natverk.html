@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sjövägen 22 — IT-nätverk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);--text:#1a1a18;--muted:#6b6b62;--accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 24px;}
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:6px;}
+h1{font-size:clamp(24px,4vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.chip.pending{color:var(--accent3);border-color:rgba(234,88,12,0.3);background:rgba(234,88,12,0.06);}
+.updated-badge{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;}
+.updated-badge strong{display:block;font-size:13px;color:var(--text);font-weight:400;}
+nav-links{display:flex;gap:16px;}
+.nav-link{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border-bottom:1px solid transparent;}
+.nav-link:hover{border-bottom-color:var(--accent2);}
+section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3));}
+.card-title-mono{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.card-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:16px;}
+.card-footnote{margin-top:14px;font-family:var(--font-mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;line-height:1.8;}
+
+/* Status grid */
+.data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.status-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:8px;}
+.status-card.done{border-color:rgba(22,163,74,0.3);}
+.status-card.planned{border-color:rgba(37,99,235,0.25);}
+.status-card.open{border-style:dashed;}
+.sc-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sc-icon{font-size:20px;line-height:1;}
+.sc-badge{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid;}
+.sc-badge.done{color:var(--accent);border-color:rgba(22,163,74,0.35);background:rgba(22,163,74,0.07);}
+.sc-badge.planned{color:var(--accent2);border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.06);}
+.sc-badge.open{color:var(--accent3);border-color:rgba(234,88,12,0.3);background:rgba(234,88,12,0.06);}
+.sc-title{font-size:14px;font-weight:500;color:var(--text);}
+.sc-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* Topology diagram */
+.topo-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:24px;overflow-x:auto;}
+.topo{font-family:var(--font-mono);font-size:12px;line-height:1.9;color:var(--text);white-space:pre;min-width:520px;}
+.topo .hl-router{color:var(--accent3);font-weight:500;}
+.topo .hl-switch{color:var(--accent2);font-weight:500;}
+.topo .hl-wifi{color:var(--accent);font-weight:500;}
+.topo .hl-device{color:var(--muted);}
+.topo .hl-cable{color:var(--border2);}
+.topo .hl-pending{color:var(--accent3);opacity:.65;}
+
+/* Info box */
+.info-box{background:#eef3fd;border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-top:14px;}
+.info-box strong{color:var(--accent2);font-weight:500;}
+.warn-box{background:#fff7ed;border:1px solid rgba(234,88,12,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin-top:14px;}
+.warn-box strong{color:var(--accent3);font-weight:500;}
+
+/* Inköpstabell */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;}
+.tbl thead tr{border-bottom:2px solid var(--border2);}
+.tbl thead th{padding:8px 10px;text-align:left;color:var(--muted);font-weight:400;font-size:11px;letter-spacing:.05em;text-transform:uppercase;}
+.tbl tbody tr{border-bottom:1px solid var(--border);}
+.tbl tbody tr:last-child{border-bottom:none;}
+.tbl tbody td{padding:10px 10px;color:var(--text);vertical-align:top;}
+.tbl td.muted{color:var(--muted);}
+.tbl td.right{text-align:right;}
+.tbl td.planned{color:var(--accent2);}
+.tbl tfoot tr{border-top:2px solid var(--border2);}
+.tbl tfoot td{padding:10px 10px;font-weight:500;}
+
+/* SVG network diagram */
+.svg-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,section{animation:fadeUp .45s ease both;}
+section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
+section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
+@media(max-width:600px){.card{padding:16px;}.topo{font-size:10px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="address-label">Fastighetsdashboard · IT-infrastruktur</div>
+      <h1>Sjövägen 22 <span>/ Nätverk</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Övervåning · Källare · Pannrum</span>
+        <span class="chip">Gigabit Ethernet</span>
+        <span class="chip">WiFi 2.4/5 GHz</span>
+        <span class="chip pending">● Planering pågår</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+      <a href="index.html" style="font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.25);border-radius:4px;padding:5px 12px;">← Startsidan</a>
+      <div class="updated-badge">
+        Senast uppdaterad<strong>2026-06-28</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 NULÄGE -->
+<section>
+  <div class="section-header">
+    <span class="section-label">01 / Nuläge</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Befintlig nätverksinfrastruktur</h2>
+  <p class="section-sub">Inventering per 2026-06-28 · Routermodell okänd — kompletteras</p>
+
+  <div class="data-grid">
+    <div class="status-card done">
+      <div class="sc-header">
+        <span class="sc-icon">🔌</span>
+        <span class="sc-badge done">FINNS</span>
+      </div>
+      <div class="sc-title">Router</div>
+      <div class="sc-desc">Arbetsrum, övervåningen<br>Modell: <em>okänd — kompletteras</em><br>Sänder WiFi för hela huset</div>
+    </div>
+    <div class="status-card done">
+      <div class="sc-header">
+        <span class="sc-icon">🔗</span>
+        <span class="sc-badge done">FINNS</span>
+      </div>
+      <div class="sc-title">Nätverkskabel till TV-uttag</div>
+      <div class="sc-desc">Cat5e/Cat6 (okänd spec)<br>Arbetsrum → vägguttag vid TV<br>Vardagsrum, övervåningen</div>
+    </div>
+    <div class="status-card done">
+      <div class="sc-header">
+        <span class="sc-icon">📺</span>
+        <span class="sc-badge done">FINNS</span>
+      </div>
+      <div class="sc-title">TV-antennkabel</div>
+      <div class="sc-desc">Dragen från övervåning ner till källarens gillestuga<br>Kabelkanal/rör med utrymme för nätverkskabel</div>
+    </div>
+    <div class="status-card open">
+      <div class="sc-header">
+        <span class="sc-icon">📶</span>
+        <span class="sc-badge open">PROBLEM</span>
+      </div>
+      <div class="sc-title">WiFi-täckning källaren</div>
+      <div class="sc-desc">Betongstensväggar dämpar signalen<br>Router sitter i andra ändan av huset<br>Otillräckligt för musikstudio + Raspberry Pi</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 NÄTVERKSSKISS -->
+<section>
+  <div class="section-header">
+    <span class="section-label">02 / Nätverksskiss</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Föreslagen topologi</h2>
+  <p class="section-sub">Utkast 2026-06-28 · Routermodell kompletteras innan slutgiltigt beslut</p>
+
+  <div class="card">
+    <div class="card-title-mono">Nätverkstopologi · Sjövägen 22</div>
+    <div class="card-title">Tre nivåer: Arbetsrum → Vardagsrum → Källare</div>
+
+    <div class="svg-wrap">
+      <svg viewBox="0 0 780 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#f0eeea;">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#9a9a8e"/>
+          </marker>
+          <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+          </marker>
+          <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/>
+          </marker>
+          <marker id="arr-orange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/>
+          </marker>
+        </defs>
+
+        <!-- Bakgrundsband: Övervåning -->
+        <rect x="0" y="0" width="780" height="185" fill="rgba(37,99,235,0.04)" rx="0"/>
+        <text x="14" y="20" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">ÖVERVÅNINGEN</text>
+
+        <!-- Bakgrundsband: Källare -->
+        <rect x="0" y="195" width="780" height="285" fill="rgba(22,163,74,0.04)" rx="0"/>
+        <text x="14" y="215" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" letter-spacing="2">KÄLLAREN</text>
+
+        <!-- ── ROUTER (arbetsrum) ── -->
+        <rect x="30" y="55" width="130" height="60" rx="8" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
+        <text x="95" y="79" font-family="DM Mono,monospace" font-size="11" fill="#ea580c" text-anchor="middle" font-weight="500">ROUTER</text>
+        <text x="95" y="95" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Arbetsrum</text>
+        <text x="95" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">modell: okänd</text>
+
+        <!-- WiFi från router -->
+        <text x="95" y="145" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle">📶 WiFi</text>
+        <text x="95" y="157" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">(begränsad räckvidd)</text>
+
+        <!-- Kabel router → TV-uttag -->
+        <line x1="160" y1="85" x2="270" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
+        <text x="215" y="76" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (befintlig)</text>
+
+        <!-- ── TV-UTTAG / NY SWITCH (vardagsrum) ── -->
+        <rect x="270" y="55" width="140" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="340" y="75" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH  ①</text>
+        <text x="340" y="91" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">5-port Gigabit</text>
+        <text x="340" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Vardagsrum (vid TV)</text>
+
+        <!-- Switch① → TV (befintlig) -->
+        <line x1="340" y1="55" x2="340" y2="30" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="348" y="42" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e">TV (befintlig)</text>
+
+        <!-- Switch① → WiFi-nod trapphall -->
+        <line x1="410" y1="85" x2="530" y2="85" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+        <text x="470" y="76" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny)</text>
+
+        <!-- ── WIFI-NOD (trapphall) ── -->
+        <rect x="530" y="55" width="140" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="600" y="75" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">📶 WiFi-nod</text>
+        <text x="600" y="91" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Accesspunkt / mesh</text>
+        <text x="600" y="107" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Trapphall (kabelansl.)</text>
+
+        <!-- WiFi-nod täckning -->
+        <text x="600" y="148" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">↓ täcker trappa + källare</text>
+
+        <!-- ── KABELDRAGNING NED (via antennrör) ── -->
+        <!-- Vertikal linje från switch① ner -->
+        <line x1="340" y1="115" x2="340" y2="230" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue)"/>
+        <rect x="355" y="150" width="120" height="28" rx="4" fill="rgba(37,99,235,0.08)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/>
+        <text x="415" y="163" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny dragning)</text>
+        <text x="415" y="173" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">via antennkabelrör</text>
+
+        <!-- ── SWITCH ② (gillestuga/musikstudio) ── -->
+        <rect x="230" y="235" width="220" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+        <text x="340" y="258" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH  ②</text>
+        <text x="340" y="274" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">5–8 port Gigabit</text>
+        <text x="340" y="287" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Gillestuga / musikstudio</text>
+
+        <!-- Switch② → TV/studio -->
+        <line x1="230" y1="265" x2="120" y2="265" stroke="#9a9a8e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="20" y="248" width="100" height="34" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="70" y="263" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">TV / streaming</text>
+        <text x="70" y="275" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Apple TV etc.</text>
+
+        <!-- Switch② → dator/studio -->
+        <line x1="340" y1="295" x2="340" y2="360" stroke="#9a9a8e" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="270" y="363" width="140" height="34" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="340" y="378" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">Musikdator / NAS</text>
+        <text x="340" y="390" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">studio-utrustning</text>
+
+        <!-- Switch② → pannrum (Cat6) -->
+        <line x1="450" y1="265" x2="570" y2="265" stroke="#16a34a" stroke-width="2" marker-end="url(#arr-green)"/>
+        <text x="510" y="255" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">Cat6 (ny)</text>
+
+        <!-- ── PANNRUM ── -->
+        <rect x="570" y="235" width="185" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="662" y="258" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">PANNRUM</text>
+        <text x="662" y="274" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Raspberry Pi 5</text>
+        <text x="662" y="287" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Temperaturövervakning</text>
+
+        <!-- Pi → Danfoss ECL / sensorer -->
+        <line x1="662" y1="295" x2="662" y2="355" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <rect x="592" y="358" width="140" height="46" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="662" y="373" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">Modbus RS485</text>
+        <text x="662" y="385" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Danfoss ECL</text>
+        <text x="662" y="397" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">10× DS18B20 (1-Wire)</text>
+
+        <!-- Legender -->
+        <rect x="30" y="440" width="12" height="3" fill="#2563eb"/>
+        <text x="48" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Nätverkskabel (Cat6)</text>
+        <rect x="180" y="440" width="12" height="3" fill="#2563eb" opacity=".4"/>
+        <rect x="186" y="437" width="0" height="3" fill="none"/>
+        <!-- dashed representation -->
+        <line x1="180" y1="443" x2="192" y2="443" stroke="#2563eb" stroke-width="2" stroke-dasharray="3,2"/>
+        <text x="198" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Ny dragning</text>
+        <rect x="320" y="440" width="12" height="3" fill="#16a34a"/>
+        <text x="338" y="445" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62">Pannrumsnät</text>
+        <rect x="460" y="437" width="12" height="12" rx="2" fill="none" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="478" y="445" font-family="DM Mono,monospace" font-size="10" fill="#16a34a">Planerad enhet</text>
+        <rect x="620" y="437" width="12" height="12" rx="2" fill="none" stroke="#9a9a8e" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="638" y="445" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e">Befintlig enhet</text>
+      </svg>
+    </div>
+
+    <div class="card-footnote">
+      Utkast — routermodell okänd, kompletteras · WiFi-nod: accesspunkt (kabelansluten) föredras framför mesh-repeater · Antennkabelrör: utrymme för Cat6 bekräftas vid installation
+    </div>
+  </div>
+</section>
+
+<!-- 03 ÅTGÄRDSPLAN -->
+<section>
+  <div class="section-header">
+    <span class="section-label">03 / Åtgärdsplan</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Vad som ska göras</h2>
+  <p class="section-sub">Steg-för-steg · Utförs i samband med musikstudio-ombyggnaden</p>
+
+  <div class="data-grid">
+    <div class="status-card planned">
+      <div class="sc-header"><span class="sc-icon">🔀</span><span class="sc-badge planned">PLANERAT</span></div>
+      <div class="sc-title">Switch ① — vardagsrum</div>
+      <div class="sc-desc">5-port Gigabit i uttaget vid TV.<br>Frigör portar: TV, WiFi-nod, kabel ner till källaren.<br>Kopplas till befintlig Cat6 från arbetsrum.</div>
+    </div>
+    <div class="status-card planned">
+      <div class="sc-header"><span class="sc-icon">📡</span><span class="sc-badge planned">PLANERAT</span></div>
+      <div class="sc-title">WiFi-nod — trapphall</div>
+      <div class="sc-desc">Kabelansluten accesspunkt i trapphallen.<br>Täcker trappa, källartrappa och övre delen av källaren.<br>Routermodell avgör val av nod (mesh vs fristående AP).</div>
+    </div>
+    <div class="status-card planned">
+      <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge planned">PLANERAT</span></div>
+      <div class="sc-title">Cat6 — övervåning till källare</div>
+      <div class="sc-desc">Dras via befintligt antennkabelrör.<br>Från switch ① (vardagsrum) till switch ② (gillestuga).<br>Utrymme i röret bekräftas vid installation.</div>
+    </div>
+    <div class="status-card planned">
+      <div class="sc-header"><span class="sc-icon">🔀</span><span class="sc-badge planned">PLANERAT</span></div>
+      <div class="sc-title">Switch ② — gillestuga</div>
+      <div class="sc-desc">5–8 port Gigabit i musikstudion.<br>Ansluter: TV/streaming, musikdator, NAS, och Cat6 vidare till pannrummet.</div>
+    </div>
+    <div class="status-card planned">
+      <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge planned">PLANERAT</span></div>
+      <div class="sc-title">Cat6 — gillestuga till pannrum</div>
+      <div class="sc-desc">Kort dragning inom källarplanet.<br>Fast Gigabit-anslutning till Raspberry Pi 5.<br>Eliminerar WiFi-beroende för kritisk mätdatainsamling.</div>
+    </div>
+    <div class="status-card open">
+      <div class="sc-header"><span class="sc-icon">❓</span><span class="sc-badge open">OKÄNT</span></div>
+      <div class="sc-title">Routermodell — kompletteras</div>
+      <div class="sc-desc">Avgör val av WiFi-nod (mesh-kompatibel vs fristående AP).<br>Påverkar konfiguration av WiFi-noden i trapphallen.<br><em>Återkommer med denna info.</em></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 INKÖP -->
+<section>
+  <div class="section-header">
+    <span class="section-label">04 / Inköp</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Utrustning som behöver köpas</h2>
+  <p class="section-sub">Prisuppskattningar · Exakta modeller väljs när routermodell är känd</p>
+
+  <div class="card">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Produkt</th>
+          <th>Specifikation</th>
+          <th>Antal</th>
+          <th class="right">Uppsk. pris</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Switch ① — vardagsrum</td>
+          <td class="muted">5-port Gigabit unmanaged<br>t.ex. TP-Link LS105G eller Netgear GS305</td>
+          <td class="muted">1</td>
+          <td class="right planned">~150–200 kr</td>
+          <td class="planned">Planerat</td>
+        </tr>
+        <tr>
+          <td>Switch ② — gillestuga</td>
+          <td class="muted">5–8 port Gigabit unmanaged<br>t.ex. TP-Link TL-SG105 eller TL-SG108</td>
+          <td class="muted">1</td>
+          <td class="right planned">~150–250 kr</td>
+          <td class="planned">Planerat</td>
+        </tr>
+        <tr>
+          <td>WiFi-nod — trapphall</td>
+          <td class="muted">Kabelansluten accesspunkt (AP-läge)<br>Modell väljs efter routerinfo</td>
+          <td class="muted">1</td>
+          <td class="right planned">~300–600 kr</td>
+          <td class="planned">Väntar på routerinfo</td>
+        </tr>
+        <tr>
+          <td>Cat6-kabel</td>
+          <td class="muted">Rulle 25–50 m + RJ45-kontakter<br>eller färdiga patchkablar i rätt längd</td>
+          <td class="muted">1–2 rullar</td>
+          <td class="right planned">~200–400 kr</td>
+          <td class="planned">Planerat</td>
+        </tr>
+        <tr>
+          <td>Crimp-verktyg + tester</td>
+          <td class="muted">Om egna ändar ska monteras<br>(kan skippa med färdiga kablar)</td>
+          <td class="muted">1</td>
+          <td class="right muted">~200–400 kr</td>
+          <td class="muted">Valfritt</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="color:var(--muted);font-family:var(--font-mono);font-size:11px;">Totalt (utan WiFi-nod)</td>
+          <td class="right planned">~500–850 kr</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="color:var(--muted);font-family:var(--font-mono);font-size:11px;">Totalt (inkl. WiFi-nod)</td>
+          <td class="right planned">~800–1 450 kr</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="info-box" style="margin-top:16px;">
+      <strong>Val av WiFi-nod:</strong> Om routern är ett mesh-system (t.ex. Asus ZenWifi, Eero, Orbi) är det enklast att köpa en nod av samma märke — då sätts den upp automatiskt som satellit. Om routern är en vanlig router köps istället en fristående accesspunkt (t.ex. TP-Link EAP225 eller Ubiquiti UniFi U6 Lite) och konfigureras i AP-läge.
+    </div>
+    <div class="warn-box">
+      <strong>Väntar på:</strong> Routermodell från arbetsrummet — detta avgör WiFi-nodens modell och konfigurationsmetod.
+    </div>
+  </div>
+</section>
+
+<!-- 05 ANTECKNINGAR -->
+<section>
+  <div class="section-header">
+    <span class="section-label">05 / Anteckningar</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Tekniska noteringar</h2>
+  <p class="section-sub">Detaljer och beslut att följa upp</p>
+
+  <div class="card">
+    <div class="card-title-mono">Beslutspunkter</div>
+    <div class="card-title">Öppna frågor att stänga</div>
+    <table class="tbl" style="margin-top:8px;">
+      <thead>
+        <tr><th>#</th><th>Fråga</th><th>Påverkar</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="muted">1</td>
+          <td>Routermodell i arbetsrummet?</td>
+          <td class="muted">Val av WiFi-nod (mesh vs AP)</td>
+          <td class="planned">Kompletteras</td>
+        </tr>
+        <tr>
+          <td class="muted">2</td>
+          <td>Utrymme i antennkabelröret för Cat6?</td>
+          <td class="muted">Möjlighet att dra kabel — bekräftas vid installation</td>
+          <td class="planned">Bekräftas på plats</td>
+        </tr>
+        <tr>
+          <td class="muted">3</td>
+          <td>Hur många enheter i musikstudion?</td>
+          <td class="muted">5-port eller 8-port switch för gillestuga</td>
+          <td class="planned">Kompletteras</td>
+        </tr>
+        <tr>
+          <td class="muted">4</td>
+          <td>Befintlig kabeltyp arbetsrum → TV?</td>
+          <td class="muted">Cat5e = 100 Mbit max · Cat6 = Gigabit — avgör om den behöver bytas</td>
+          <td class="planned">Bekräftas</td>
+        </tr>
+        <tr>
+          <td class="muted">5</td>
+          <td>Ungefärligt avstånd gillestuga → pannrum?</td>
+          <td class="muted">Kabelbudget (max 100 m per segment)</td>
+          <td class="muted">Ej kritiskt</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">Sjövägen 22 · Tuna 7:139 · IT-nätverk · Utkast 2026-06-28</div>
+  <div class="footer-links">
+    <a href="index.html">← Startsidan</a>
+    <a href="arkitektur.html">Sensorarkitektur</a>
+    <a href="el.html">Elförbrukning</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

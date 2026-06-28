@@ -8,9 +8,9 @@
 
 | Post | Specifikation | Pris | Länk/Produkt | Status |
 |------|--------------|------|------|--------|
-| Raspberry Pi | Pi 4 eller 5, 2–4 GB RAM | ~500–700 kr | — | 🔄 Att beställa |
-| SD-kort | 16–32 GB, Class 10 | ~100 kr | — | 🔄 Att beställa |
-| Strömadapter | USB-C, 5V, minst 3A | ~100 kr | — | 🔄 Att beställa |
+| Raspberry Pi | Pi 4 eller 5, 2–4 GB RAM | ~500–700 kr | — | ✅ Beställd 2026-06-27, levereras 2026-07-02 |
+| SD-kort | 16–32 GB, Class 10 | ~100 kr | — | ✅ Beställt 2026-06-27, levereras 2026-07-02 |
+| Strömadapter | USB-C, 5V, minst 3A | ~100 kr | — | ✅ Beställt 2026-06-27, levereras 2026-07-02 |
 | Plasthölje | Aluminiumhölje för Pi 4/5 | ~100 kr | — | 🔄 Att beställa |
 | **Delsumma** | | **~800–1 000 kr** | | |
 
@@ -30,7 +30,7 @@
 
 | Post | Specifikation | Pris | Länk/Produkt | Status |
 |------|--------------|------|------|--------|
-| DS18B20 sensorer | Fasizi Waterproof DS18B20 (2 paket = 10 st) | ~250–300 kr | Amazon.se B09Z29TKCV | ✅ Godkänd |
+| DS18B20 sensorer | Fasizi Waterproof DS18B20 (2 paket = 10 st) | ~250–300 kr | Amazon.se B09Z29TKCV | ✅ Beställda 2026-06-27, levereras 2026-07-02 |
 | 4,7 kΩ pull-up-resistor | 1/4 W eller större | ~5 kr | Electrokit eller lokal elektronikbutik | 🔄 Köp lokalt |
 | 1-Wire-kabel | 3-ledare kabel från tank till Pi | 0–40 kr | Telefonkabel hemma eller köp | ✅ Hemma |
 | **Delsumma givare** | | **~300 kr** | | |

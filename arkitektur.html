@@ -191,7 +191,10 @@ footer { font-family: var(--mono); font-size: 11px; color: var(--subtle); border
 <div class="wrap">
 
 <div class="hdr">
-  <div class="hdr-eye">Systemarkitektur · IoT &amp; Datainfrastruktur</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <div class="hdr-eye">Systemarkitektur · IoT &amp; Datainfrastruktur</div>
+    <a href="index.html" style="font-family:var(--mono);font-size:11px;color:#2563eb;text-decoration:none;border:1px solid rgba(37,99,235,0.25);border-radius:4px;padding:5px 12px;white-space:nowrap;">← Startsidan</a>
+  </div>
   <h1 class="hdr-title">Sjövägen 22 — Sensorarkitektur</h1>
   <p class="hdr-sub">LoRaWAN · Modbus RTU · Raspberry Pi · GitHub Pages · Dashboard</p>
 </div>
@@ -524,8 +527,13 @@ footer { font-family: var(--mono); font-size: 11px; color: var(--subtle); border
   </div>
 </div>
 
-<footer>
-  Sjövägen 22 · Systemarkitektur v1.0 · <span id="footerDate"></span>
+<footer style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+  <span>Sjövägen 22 · Systemarkitektur v1.0 · <span id="footerDate"></span></span>
+  <span style="display:flex;gap:20px;">
+    <a href="index.html" style="font-family:var(--mono);font-size:11px;color:#2563eb;text-decoration:none;">← Startsidan</a>
+    <a href="natverk.html" style="font-family:var(--mono);font-size:11px;color:#2563eb;text-decoration:none;">IT-nätverk</a>
+    <a href="varmesystem.html" style="font-family:var(--mono);font-size:11px;color:#2563eb;text-decoration:none;">Värmesystem</a>
+  </span>
 </footer>
 
 </div><!-- /wrap -->
