@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Värmesystem — Principskiss</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --text: #1a1a18;
+      --muted: #6b6b62;
+      --subtle: #9a9a8e;
+      --border: #e0ddd8;
+      --ok: #16a34a;
+      --warn: #ea580c;
+      --alert: #dc2626;
+      --info: #2563eb;
+      --font-mono: 'DM Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+      --font-display: 'Fraunces', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 32px 24px 60px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 200;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .header-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .diagram-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 40px;
+      overflow: auto;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      min-width: 1600px;
+    }
+
+    .info-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--subtle);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="header">
+      <h1 class="header-title">Värmesystem Sjövägen 22</h1>
+      <p class="header-sub">Värmebärare-flödesschema | Ackumulatortank centralt | Pellets vänster | Sol ovan | Radiatorkretsår höger</p>
+    </header>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 2000 1400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            text { font-family: 'DM Sans', sans-serif; }
+            .title { font-size: 16px; font-weight: 500; fill: var(--text); }
+            .label { font-size: 10px; fill: var(--muted); }
+            .label-bold { font-size: 10px; fill: var(--text); font-weight: 600; }
+            .section-label { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; fill: var(--muted); }
+
+            /* Flödeslinjer */
+            .pipe-hot { stroke: #dc2626; stroke-width: 3; fill: none; stroke-linecap: round; }
+            .pipe-cold { stroke: #2563eb; stroke-width: 3; fill: none; stroke-linecap: round; }
+            .pipe-sol { stroke: #f59e0b; stroke-width: 3; fill: none; stroke-linecap: round; }
+            .pipe-water { stroke: #0891b2; stroke-width: 3; fill: none; stroke-linecap: round; }
+
+            /* Givarledningar */
+            .sensor-line { stroke: #7c3aed; stroke-width: 1.5; fill: none; stroke-dasharray: 4,3; }
+
+            /* Komponenter */
+            .tank-main { fill: var(--surface); stroke: var(--info); stroke-width: 3; }
+            .pump { fill: var(--surface); stroke: #888; stroke-width: 2; }
+            .valve { fill: var(--surface); stroke: #888; stroke-width: 2; }
+            .boiler { fill: var(--surface); stroke: #888; stroke-width: 2; }
+            .radiator { fill: var(--surface); stroke: #888; stroke-width: 2; }
+            .sensor-circle { r: 4; fill: #16a34a; }
+            .sensor-warn { r: 4; fill: #ea580c; }
+          </style>
+
+          <!-- Pilhuvuden -->
+          <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#dc2626"/>
+          </marker>
+          <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/>
+          </marker>
+          <marker id="arrowyellow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+          </marker>
+          <marker id="arrowcyan" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#0891b2"/>
+          </marker>
+        </defs>
+
+        <!-- Bakgrund -->
+        <rect width="2000" height="1400" fill="var(--bg)"/>
+
+        <!-- TITEL -->
+        <text x="1000" y="40" class="title" text-anchor="middle">Värmesystem Sjövägen 22 — Värmebärare-flödesschema</text>
+
+        <!-- ========== VÄNSTER SIDA: PELLETS ========== -->
+
+        <!-- Pelletsförråd/påfyllning (långt vänster ovan) -->
+        <text x="120" y="320" class="section-label">Pelletsförråd</text>
+        <rect x="80" y="340" width="80" height="60" class="valve" fill="#d2b48c" stroke="#8b6914" stroke-width="2"/>
+        <text x="120" y="375" class="label-bold" text-anchor="middle">Påfyllning</text>
+
+        <!-- Pil ner från påfyllning -->
+        <path d="M 120,400 L 120,450" class="pipe" stroke="#888" stroke-width="2" fill="none"/>
+
+        <!-- Pelletslagret (under påfyllning) -->
+        <text x="120" y="460" class="section-label">Pelletslager</text>
+        <rect x="80" y="480" width="80" height="100" class="valve" fill="#d2b48c" stroke="#8b6914" stroke-width="2"/>
+        <text x="120" y="530" class="label-bold" text-anchor="middle">Lager 3,6 t</text>
+
+        <!-- Lagernivåmätare (streckad) -->
+        <line x1="160" y1="520" x2="220" y2="520" class="sensor-line"/>
+        <circle cx="170" cy="520" r="4" class="sensor-circle"/>
+        <text x="235" y="525" class="label">Nivå-givare</text>
+
+        <!-- Matarskruv från lagret -->
+        <path d="M 120,580 L 120,620" class="pipe" stroke="#888" stroke-width="2" fill="none"/>
+        <rect x="100" y="620" width="40" height="25" class="pump" fill="#e0e0e0"/>
+        <text x="120" y="636" class="label-bold" text-anchor="middle">Matarskruv</text>
+
+        <!-- Pil in i brännare -->
+        <path d="M 140,632 L 280,632" class="pipe" stroke="#888" stroke-width="2" fill="none"/>
+
+        <!-- PELLETSPANNA (mitten vänster) -->
+        <text x="320" y="470" class="section-label">Pelletspanna</text>
+        <rect x="280" y="490" width="80" height="90" class="boiler" fill="#fff3cd" stroke="#856404" stroke-width="2"/>
+        <text x="320" y="525" class="label-bold" text-anchor="middle">Pelletsbrännare</text>
+        <text x="320" y="540" class="label" text-anchor="middle">20 kW</text>
+
+        <!-- Givare T1 (fram från panna) streckad -->
+        <line x1="280" y1="510" x2="240" y2="510" class="sensor-line"/>
+        <circle cx="260" cy="510" r="4" class="sensor-circle"/>
+        <text x="235" y="505" class="label">T1 fram</text>
+
+        <!-- Givare T2 (retur in i panna) streckad -->
+        <line x1="280" y1="560" x2="240" y2="560" class="sensor-line"/>
+        <circle cx="260" cy="560" r="4" class="sensor-circle"/>
+        <text x="235" y="555" class="label">T2 retur</text>
+
+        <!-- ========== MITTEN: ACKUMULATORTANK (CENTRUM) ========== -->
+
+        <!-- Huvudtank cirkel i mitten -->
+        <text x="1000" y="570" class="section-label" text-anchor="middle">Ackumulatortank (centro)</text>
+        <circle cx="1000" cy="700" r="140" class="tank-main"/>
+        <text x="1000" y="710" class="label-bold" text-anchor="middle" font-size="12">Tank</text>
+
+        <!-- Givare i tanken (T3-T6 streckade inåt) -->
+        <line x1="900" y1="670" x2="850" y2="670" class="sensor-line"/>
+        <circle cx="875" cy="670" r="4" class="sensor-circle"/>
+        <text x="835" y="675" class="label">T3 Topp</text>
+
+        <line x1="900" y1="700" x2="850" y2="700" class="sensor-line"/>
+        <circle cx="875" cy="700" r="4" class="sensor-circle"/>
+        <text x="815" y="705" class="label">T4 Övre mitt</text>
+
+        <line x1="900" y1="730" x2="850" y2="730" class="sensor-line"/>
+        <circle cx="875" cy="730" r="4" class="sensor-circle"/>
+        <text x="815" y="735" class="label">T5 Nedre mitt</text>
+
+        <line x1="900" y1="760" x2="850" y2="760" class="sensor-line"/>
+        <circle cx="875" cy="760" r="4" class="sensor-circle"/>
+        <text x="835" y="765" class="label">T6 Botten</text>
+
+        <!-- Elvärmeptroner inuti tanken -->
+        <rect x="980" y="680" width="12" height="120" class="valve" fill="#ffe0e0" stroke="#dc2626" stroke-width="2"/>
+        <text x="986" y="745" class="label-bold" text-anchor="middle" font-size="8">El</text>
+        <text x="986" y="758" class="label" text-anchor="middle" font-size="8">2×4,5kW</text>
+
+        <!-- Danfoss ECL box (höger om tank) -->
+        <rect x="1200" y="670" width="100" height="80" class="valve" fill="#e3f2fd" stroke="#2563eb" stroke-width="2"/>
+        <text x="1250" y="695" class="label-bold" text-anchor="middle">Danfoss</text>
+        <text x="1250" y="710" class="label-bold" text-anchor="middle">ECL 110</text>
+        <line x1="1200" y1="730" x2="1170" y2="730" class="sensor-line"/>
+        <circle cx="1185" cy="730" r="3" class="sensor-circle"/>
+        <text x="1155" y="735" class="label">Modbus</text>
+
+        <!-- ========== FRAM FRÅN TANK: VÄRMEKRETSAR ========== -->
+
+        <!-- Framledning från tank åt höger -->
+        <path d="M 1140,700 L 1350,700" class="pipe-hot" marker-end="url(#arrowred)"/>
+        <text x="1250" y="690" class="label" text-anchor="middle" font-size="9">Framledning 80°C</text>
+
+        <!-- Cirkulationspump värmekrets -->
+        <circle cx="1400" cy="700" r="20" class="pump"/>
+        <path d="M 1385,690 L 1415,700 L 1385,710" fill="none" stroke="#888" stroke-width="1.5"/>
+        <text x="1400" y="728" class="label-bold" text-anchor="middle">Pump</text>
+
+        <!-- Shuntventil (efter pump) -->
+        <polygon points="1480,685 1480,715 1520,700" class="valve" fill="#e8e8e8" stroke="#888" stroke-width="2"/>
+        <text x="1500" y="725" class="label-bold" text-anchor="middle">Shunt 3-vägs</text>
+
+        <!-- KÄLLARPLAN VÄRMEKRETS (övre höger) -->
+        <!-- Framledning till källarplan -->
+        <path d="M 1520,700 L 1600,700 L 1600,580" class="pipe-hot" marker-end="url(#arrowred)"/>
+
+        <rect x="1600" y="540" width="70" height="40" class="radiator" fill="#fff8dc" stroke="#888" stroke-width="2"/>
+        <text x="1635" y="568" class="label-bold" text-anchor="middle">Källar</text>
+        <text x="1635" y="580" class="label" text-anchor="middle">radiator</text>
+
+        <!-- Källarplan retur ner -->
+        <path d="M 1600,620 L 1600,800 L 1550,800" class="pipe-cold" marker-end="url(#arrowblue)"/>
+        <circle cx="1620" cy="800" r="4" class="sensor-circle"/>
+        <text x="1660" y="805" class="label">T9 Källar retur</text>
+
+        <!-- ÖVERVÅNING VÄRMEKRETS (nedre höger) -->
+        <!-- Avstängningsventil för övervåning -->
+        <polygon points="1500,820 1500,850 1540,835" class="valve" fill="#e8e8e8" stroke="#888" stroke-width="2"/>
+        <text x="1520" y="870" class="label-bold" text-anchor="middle">Ventil</text>
+
+        <!-- Framledning till övervåning -->
+        <path d="M 1540,835 L 1600,835 L 1600,920" class="pipe-hot" marker-end="url(#arrowred)"/>
+
+        <rect x="1600" y="920" width="70" height="40" class="radiator" fill="#fff8dc" stroke="#888" stroke-width="2"/>
+        <text x="1635" y="948" class="label-bold" text-anchor="middle">Över-</text>
+        <text x="1635" y="960" class="label" text-anchor="middle">våning</text>
+
+        <!-- Övervåning retur ner -->
+        <path d="M 1600,960 L 1600,1100 L 1550,1100" class="pipe-cold" marker-end="url(#arrowblue)"/>
+        <circle cx="1620" cy="1100" r="4" class="sensor-circle"/>
+        <text x="1660" y="1105" class="label">T10 Över retur</text>
+
+        <!-- Returer samlas -->
+        <path d="M 1550,800 L 1450,800 L 1450,1000 L 1550,1000" class="pipe-cold" marker-end="url(#arrowblue)"/>
+        <path d="M 1550,1100 L 1450,1100 L 1450,1000" class="pipe-cold"/>
+
+        <!-- Värmereglering 3-vägs in i tank -->
+        <polygon points="1450,1000 1450,1030 1410,1015" class="valve" fill="#e8e8e8" stroke="#888" stroke-width="2"/>
+        <text x="1430" y="1050" class="label-bold" text-anchor="middle">Regler-</text>
+        <text x="1430" y="1062" class="label" text-anchor="middle">ventil</text>
+
+        <!-- Retur in i tank från värmekrets -->
+        <path d="M 1410,1015 L 1300,1015 L 1300,800 L 1140,800" class="pipe-cold" marker-end="url(#arrowblue)"/>
+        <text x="1200" y="910" class="label" text-anchor="middle" font-size="9">Retur värmebärare</text>
+
+        <!-- ========== FRAM FRÅN TANK: VARMVATTEN ========== -->
+
+        <!-- Varmvattenledning från tank (höger sida, längre ned) -->
+        <path d="M 1140,750 L 1250,750 L 1250,1150 L 1180,1150" class="pipe-hot" marker-end="url(#arrowred)"/>
+        <text x="1200" y="950" class="label" text-anchor="middle" font-size="9">Varmvatten ut</text>
+
+        <!-- Blandningsventil -->
+        <polygon points="1180,1135 1180,1165 1140,1150" class="valve" fill="#e8e8e8" stroke="#888" stroke-width="2"/>
+        <text x="1160" y="1190" class="label-bold" text-anchor="middle">Bland</text>
+        <text x="1160" y="1202" class="label" text-anchor="middle">ventil</text>
+
+        <!-- Till tappställen -->
+        <path d="M 1140,1150 L 1080,1150 L 1080,1280" class="pipe-hot" marker-end="url(#arrowred)"/>
+        <text x="1050" y="1220" class="label">Till</text>
+        <text x="1050" y="1232" class="label">tappställen</text>
+
+        <!-- ========== VÄNSTER UNDERSIDA: KALLVATTEN ========== -->
+
+        <!-- Kallvattenledning från undersidan (vänster) -->
+        <text x="420" y="1050" class="section-label">Kallvatten från mark</text>
+
+        <path d="M 150,1200 L 150,1100 L 280,1100" class="pipe-water" marker-end="url(#arrowcyan)"/>
+        <text x="180" y="1160" class="label" text-anchor="middle">Kallvatten in</text>
+
+        <!-- Vattenmätare -->
+        <circle cx="320" cy="1100" r="18" class="pump"/>
+        <text x="320" y="1108" class="label-bold" text-anchor="middle" font-size="9">Vatt</text>
+        <text x="320" y="1118" class="label-bold" text-anchor="middle" font-size="9">mätr</text>
+
+        <!-- Givare från vattenmätare (streckad) -->
+        <line x1="338" y1="1100" x2="400" y2="1100" class="sensor-line"/>
+        <circle cx="369" cy="1100" r="3" class="sensor-circle"/>
+        <text x="410" y="1105" class="label">Vattenpuls</text>
+
+        <!-- Avstängningsventil före blandningsventil -->
+        <polygon points="450,1085 450,1115 490,1100" class="valve" fill="#e8e8e8" stroke="#888" stroke-width="2"/>
+        <text x="470" y="1135" class="label-bold" text-anchor="middle">Avstängn</text>
+
+        <!-- Fortsättning kallvatten till blandningsventil -->
+        <path d="M 490,1100 L 800,1100 L 800,1150 L 1140,1150" class="pipe-water" marker-end="url(#arrowcyan)"/>
+        <text x="650" y="1090" class="label" text-anchor="middle" font-size="9">Kallvatten till bland-ventil</text>
+
+        <!-- ========== ÖVRE MITTEN: SOLVÄRMEKRETS ========== -->
+
+        <!-- Solfångare på taket (ovan tank) -->
+        <text x="1000" y="350" class="section-label" text-anchor="middle">Solfångare på tak</text>
+        <rect x="930" y="370" width="140" height="70" class="radiator" fill="#fff9e6" stroke="#b8860b" stroke-width="2"/>
+        <text x="1000" y="410" class="label-bold" text-anchor="middle">Solfångare</text>
+
+        <!-- Givare sol fram (T7) streckad -->
+        <line x1="930" y1="390" x2="880" y2="390" class="sensor-line"/>
+        <circle cx="905" cy="390" r="4" class="sensor-circle"/>
+        <text x="860" y="395" class="label">T7 Sol fram</text>
+
+        <!-- Givare sol retur (T8) streckad -->
+        <line x1="930" y1="430" x2="880" y2="430" class="sensor-line"/>
+        <circle cx="905" cy="430" r="4" class="sensor-circle"/>
+        <text x="860" y="435" class="label">T8 Sol retur</text>
+
+        <!-- Framledning ned från sol -->
+        <path d="M 1000,440 L 1000,500" class="pipe-sol" marker-end="url(#arrowyellow)"/>
+        <text x="1020" y="470" class="label" font-size="9">Sol fram</text>
+
+        <!-- Sol cirkulationspump -->
+        <circle cx="1000" cy="530" r="18" class="pump"/>
+        <path d="M 985,520 L 1015,530 L 985,540" fill="none" stroke="#888" stroke-width="1.5"/>
+        <text x="1000" y="555" class="label-bold" text-anchor="middle">Sol pump</text>
+
+        <!-- Returledning från sol ned -->
+        <path d="M 1000,560 L 1000,620" class="pipe-sol" marker-end="url(#arrowyellow)"/>
+        <text x="1020" y="590" class="label" font-size="9">Sol retur</text>
+
+        <!-- Sol tryckkärl (höger om sol pump) -->
+        <circle cx="1110" cy="530" r="22" class="valve" fill="#fff3cd" stroke="#b8860b" stroke-width="2"/>
+        <text x="1110" y="538" class="label-bold" text-anchor="middle" font-size="9">Tryck</text>
+        <text x="1110" y="549" class="label-bold" text-anchor="middle" font-size="8">kärl</text>
+        <line x1="1088" y1="530" x2="1055" y2="530" class="pipe-sol" marker-end="url(#arrowyellow)"/>
+
+        <!-- Watts controller (under solfångare, med varning) -->
+        <text x="1000" y="260" class="section-label" text-anchor="middle">Watts Sol Controller</text>
+        <rect x="950" y="160" width="100" height="60" class="valve" fill="#fef3c7" stroke="#ea580c" stroke-width="2"/>
+        <text x="1000" y="185" class="label-bold" text-anchor="middle">Watts LCD+</text>
+        <text x="1000" y="200" class="label" text-anchor="middle">P-3481</text>
+
+        <!-- Varningsindikator -->
+        <circle cx="975" cy="220" r="6" class="sensor-warn"/>
+        <text x="995" y="225" class="label" fill="var(--warn)">⚠ Alarm: Flöde</text>
+
+        <!-- ========== FRAMLEDNING FRÅN PANNA IN I TANK ========== -->
+
+        <!-- Framledning från panna höger om tank -->
+        <path d="M 360,535 L 450,535 L 450,700 L 860,700" class="pipe-hot" marker-end="url(#arrowred)"/>
+        <text x="450" y="620" class="label" text-anchor="middle" font-size="9">Fram från panna</text>
+
+        <!-- ========== LEGEND & INFORMATION ========== -->
+
+        <!-- Legend nedanför diagrammet -->
+        <text x="150" y="1320" class="section-label">LEGENDA:</text>
+        <line x1="150" y1="1340" x2="200" y2="1340" class="pipe-hot"/>
+        <text x="210" y="1345" class="label">Värmebärare fram (80°C röd)</text>
+
+        <line x1="500" y1="1340" x2="550" y2="1340" class="pipe-cold"/>
+        <text x="560" y="1345" class="label">Värmebärare retur (blå)</text>
+
+        <line x1="950" y1="1340" x2="1000" y2="1340" class="pipe-sol"/>
+        <text x="1010" y="1345" class="label">Solvärmekrets (orange)</text>
+
+        <line x1="1350" y1="1340" x2="1400" y2="1340" class="pipe-water"/>
+        <text x="1410" y="1345" class="label">Kallvatten (cyan)</text>
+
+        <line x1="150" y1="1360" x2="200" y2="1360" class="sensor-line"/>
+        <text x="210" y="1365" class="label">Givare T1-T10 (streckad)</text>
+
+        <!-- Status -->
+        <text x="150" y="1390" class="section-label">STATUS:</text>
+        <circle cx="165" cy="1410" r="4" class="sensor-circle"/>
+        <text x="180" y="1415" class="label">OK</text>
+
+        <circle cx="240" cy="1410" r="4" class="sensor-warn"/>
+        <text x="255" y="1415" class="label">⚠ Varning</text>
+
+        <text x="400" y="1415" class="label" fill="#ea580c">Sol: Alarm Flöde — VVS-service krävs</text>
+
+      </svg>
+    </div>
+
+    <!-- GIVARSAMMANFATTNING -->
+    <div class="info-section">
+      <h2 class="section-title">🌡 Temperaturgivare (10 st) — Placering</h2>
+      <table style="width:100%; border-collapse:collapse; font-size:12px;">
+        <thead>
+          <tr style="background:#f0f0f0; border-bottom:1px solid #ddd;">
+            <th style="padding:8px; text-align:left;">Givare</th>
+            <th style="padding:8px; text-align:left;">Placering</th>
+            <th style="padding:8px; text-align:left;">System</th>
+            <th style="padding:8px; text-align:left;">Typisk °C</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T1</td>
+            <td style="padding:8px;">Framledning från panna</td>
+            <td style="padding:8px;">Pelletspanna</td>
+            <td style="padding:8px;">60–80°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T2</td>
+            <td style="padding:8px;">Returledning in i panna</td>
+            <td style="padding:8px;">Pelletspanna</td>
+            <td style="padding:8px;">40–60°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T3–T6</td>
+            <td style="padding:8px;">Ackumulatortank (4 höjder)</td>
+            <td style="padding:8px;">Ackumulatortank</td>
+            <td style="padding:8px;">25–65°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T7</td>
+            <td style="padding:8px;">Framledning från solfångare</td>
+            <td style="padding:8px;">Solvärmekrets</td>
+            <td style="padding:8px;">20–90°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T8</td>
+            <td style="padding:8px;">Returledning från solfångare</td>
+            <td style="padding:8px;">Solvärmekrets</td>
+            <td style="padding:8px;">15–50°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T9</td>
+            <td style="padding:8px;">Värmekrets källarplan retur</td>
+            <td style="padding:8px;">Radiatorvärmekrets</td>
+            <td style="padding:8px;">15–40°C</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px;">T10</td>
+            <td style="padding:8px;">Värmekrets övervåning retur</td>
+            <td style="padding:8px;">Radiatorvärmekrets</td>
+            <td style="padding:8px;">15–40°C</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>Värmesystem — Värmebärare-flödesschema | Sjövägen 22 Österskär | Uppdaterad 2026-06-27</p>
+    </footer>
+
+  </div>
+</body>
+</html>

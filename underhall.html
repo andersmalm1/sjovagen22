@@ -126,6 +126,7 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
       </div>
     </div>
     <a href="index.html" class="back-link">← Startsidan</a>
+    <a href="sjovagen22.html" class="back-link">← Fastighetssidan</a>
   </div>
 </header>
 
@@ -279,6 +280,151 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
 </section>
 
 <!-- 04 UTRUSTNING -->
+<!-- HC-SR04 PELLETSLAGERGIVARE -->
+<section>
+  <div class="section-header"><span class="section-label">03b / Pelletslagergivare</span><div class="section-line"></div></div>
+  <h2>HC-SR04 Ultraljudsgivare — Pelletsnivå</h2>
+  <p class="section-sub">Installation · kopplingschema · Python-script · kalibrering · felsökning</p>
+
+  <!-- TEKNISKA DATA -->
+  <div class="equip-card" style="margin-bottom:16px;">
+    <div class="chart-title-mono" style="margin-bottom:4px;">Tekniska data</div>
+    <div class="chart-title" style="margin-bottom:16px;">HC-SR04 Ultraljudsgivare</div>
+    <table class="equip-table">
+      <tr class="gh"><td colspan="2">Specifikationer</td></tr>
+      <tr><td>Mätområde</td><td>2–400 cm</td></tr>
+      <tr><td>Noggrannhet</td><td>±0,3 cm</td></tr>
+      <tr><td>Mätvinkel</td><td>15°</td></tr>
+      <tr><td>Driftspänning</td><td>5V DC</td></tr>
+      <tr><td>Utspänning ECHO</td><td>5V (kräver spänningsdelare till Pi:ns 3,3V!)</td></tr>
+      <tr><td>Anslutningar</td><td>VCC · TRIG · ECHO · GND</td></tr>
+      <tr><td>Pris</td><td>~50–100 kr (eBay, Electrokit, Amazon)</td></tr>
+      <tr class="gh"><td colspan="2">Pelletslager Sjövägen 22</td></tr>
+      <tr><td>Lagerdjup (fullt)</td><td>2,0 m (höjd)</td></tr>
+      <tr><td>Monteringsavstånd (topp)</td><td>~10–15 cm ovanför lagrets tak</td></tr>
+      <tr><td>Max mätavstånd (tomt)</td><td>~215 cm (givare→botten)</td></tr>
+      <tr><td>Kapacitet max</td><td>3,6 ton vid ~5 cm djup</td></tr>
+    </table>
+  </div>
+
+  <!-- KOPPLINGSCHEMA -->
+  <div class="info-box" style="margin-bottom:14px;">
+    <strong>⚡ Kopplingschema — Raspberry Pi GPIO</strong><br><br>
+    HC-SR04 ECHO-pin ger 5V signal. Raspberry Pi:s GPIO tål max 3,3V.
+    Använd spänningsdelare med två motstånd:<br><br>
+    <strong>Komponenter:</strong> 1 × 1 kΩ resistor · 1 × 2 kΩ resistor · kopplingskabel<br><br>
+    <code style="display:block;background:var(--surface2);padding:12px;border-radius:4px;margin-top:8px;line-height:1.9;font-size:11px;">
+    HC-SR04 VCC  → Pi pin 2  (5V)<br>
+    HC-SR04 GND  → Pi pin 6  (GND)<br>
+    HC-SR04 TRIG → Pi GPIO23 (pin 16, 3,3V OK direkt)<br>
+    HC-SR04 ECHO → 1kΩ → Pi GPIO24 (pin 18)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2kΩ → Pi GND<br>
+    (spänningsdelare 5V→3,3V: R1=1kΩ, R2=2kΩ)
+    </code>
+  </div>
+
+  <!-- INSTALLATION -->
+  <div class="routine-grid" style="margin-bottom:16px;">
+    <div class="routine-card seasonal">
+      <div class="rc-freq seasonal">Installation — engångssteg</div>
+      <div class="rc-title">🔧 Montering i pelletslagret</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Montera givaren centrerat i taket på pelletslagret, riktad rakt nedåt</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Säkerställ att givaren sitter minst 10 cm ovanför pelletsytan när lagret är fullt</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Kabelvägen från lagret till Pi: dra längs vägg, skydda mot pelletsdam med tätningslista</span></div>
+        <div class="rc-step"><span class="rc-step-num">4.</span><span>Bygg spänningsdelare (1kΩ + 2kΩ) på lödplatta eller breadboard nära Pi:n</span></div>
+        <div class="rc-step"><span class="rc-step-num">5.</span><span>Anslut enligt kopplingsschemat ovan</span></div>
+        <div class="rc-step"><span class="rc-step-num">6.</span><span>Kör kalibreringsscipt och verifiera avläsning mot känd referens</span></div>
+      </div>
+    </div>
+    <div class="routine-card weekly">
+      <div class="rc-freq weekly">Kontroll — vid behov</div>
+      <div class="rc-title">🧹 Underhåll</div>
+      <div class="rc-steps">
+        <div class="rc-step"><span class="rc-step-num">1.</span><span>Blås rent givarytan från pelletsdam med tryckluft — damm ger felaktiga avläsningar</span></div>
+        <div class="rc-step"><span class="rc-step-num">2.</span><span>Kontrollera att inga pellets fastnat direkt under givaren</span></div>
+        <div class="rc-step"><span class="rc-step-num">3.</span><span>Verifiera att kabelanslutningar sitter fast (vibrationer från skruv kan lossa kontakter)</span></div>
+        <div class="rc-step"><span class="rc-step-num">4.</span><span>Jämför avläst nivå mot visuell inspektion vid påfyllning</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PYTHON SCRIPT -->
+  <div class="info-box" style="margin-bottom:14px;">
+    <strong>🐍 Python-script — pellets_niva.py</strong><br><br>
+    Installera bibliotek: <code>pip3 install RPi.GPIO --break-system-packages</code><br><br>
+    <code style="display:block;background:var(--surface2);padding:14px;border-radius:4px;margin-top:10px;line-height:1.9;font-size:11px;white-space:pre;">
+import RPi.GPIO as GPIO
+import time, json, statistics
+
+# GPIO-pinnar (BCM-numrering)
+TRIG = 23
+ECHO = 24
+
+# Lagergeometri Sjövägen 22
+LAGER_HOJD_CM = 200.0  # lagrets totala höjd (cm)
+LAGER_BREDD   = 1.4    # m
+LAGER_LANGD   = 2.0    # m
+PELLETS_KG_M3 = 650    # kg/m³ bulk
+GIVARE_OFFSET = 12.0   # cm från lagrets tak till givaren
+
+def mat_avstand_cm(n_sampel=11):
+    """Returnerar medianen av n avståndsmätningar i cm"""
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(TRIG, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(ECHO, GPIO.IN)
+    matningar = []
+    for _ in range(n_sampel):
+        GPIO.output(TRIG, True)
+        time.sleep(0.00001)
+        GPIO.output(TRIG, False)
+        start = time.time()
+        stopp = time.time()
+        while GPIO.input(ECHO) == 0:
+            start = time.time()
+        while GPIO.input(ECHO) == 1:
+            stopp = time.time()
+        matningar.append((stopp - start) * 34300 / 2)
+        time.sleep(0.1)
+    GPIO.cleanup()
+    return round(statistics.median(matningar), 1)
+
+def berakna_niva(avstand_cm):
+    """Beräknar lagernivå i ton från avståndsmätning"""
+    djup_cm = LAGER_HOJD_CM - (avstand_cm - GIVARE_OFFSET)
+    djup_m  = max(0, min(djup_cm / 100, LAGER_HOJD_CM / 100))
+    volym_m3 = djup_m * LAGER_BREDD * LAGER_LANGD
+    ton = round(volym_m3 * PELLETS_KG_M3 / 1000, 2)
+    pct = round(ton / 3.6 * 100, 1)
+    return {"avstand_cm": avstand_cm, "djup_cm": round(djup_cm,1),
+            "volym_m3": round(volym_m3,2), "ton": ton, "procent": pct}
+
+if __name__ == "__main__":
+    avstand = mat_avstand_cm()
+    niva    = berakna_niva(avstand)
+    print(json.dumps(niva, indent=2))
+    </code>
+  </div>
+
+  <!-- KALIBRERING -->
+  <div class="info-box" style="margin-bottom:14px;">
+    <strong>📐 Kalibrering — viktigt steg</strong><br><br>
+    Mät med måttband det faktiska avståndet från givaren till pelletsytan (eller till lagergolvet om tomt).
+    Jämför med avläst <code>avstand_cm</code>. Justera <code>GIVARE_OFFSET</code> tills värdena stämmer.<br><br>
+    <strong>Kontroll vid påfyllning:</strong> Notera ton enligt leveranssedel. Jämför med beräknat ton från givaren direkt efter påfyllning. Avvikelse &gt;0,2 ton → justera <code>LAGER_HOJD_CM</code> eller <code>PELLETS_KG_M3</code>.
+  </div>
+
+  <!-- FELSÖKNING -->
+  <div class="warn-box">
+    <strong>⚠ Vanliga problem och lösningar</strong><br><br>
+    <strong>Avläsning hoppar ±10–20 cm:</strong> Pelletsytan är ojämn. Använd median av 11 mätningar (redan inbyggt i scriptet). Kan också bero på pelletsdam på givarytan — rengör.<br><br>
+    <strong>Alltid max-värde (215 cm):</strong> ECHO-pin får ingen signal. Kontrollera spänningsdelare och kablar. Mät spänning på ECHO-pin med voltmeter — ska vara 3,3V vid signal.<br><br>
+    <strong>Script fryser:</strong> Pi väntar på ECHO-signal som aldrig kommer. Lägg till timeout i while-loopen (se avancerad version på GitHub: merbanan/hc-sr04).<br><br>
+    <strong>Felaktigt ton-värde:</strong> Kontrollera <code>GIVARE_OFFSET</code> och <code>LAGER_HOJD_CM</code> mot faktiska mått med måttband.
+  </div>
+</section>
+
 <section>
   <div class="section-header"><span class="section-label">04 / Utrustning</span><div class="section-line"></div></div>
   <h2>Tekniska data</h2>
@@ -364,7 +510,7 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
 </section>
 
 <footer>
-  <div class="footer-txt">Sjövägen 22 · Drift &amp; Underhåll Pelletsanläggning · <a href="index.html" style="color:var(--accent2);text-decoration:none;">← Startsidan</a></div>
+  <div class="footer-txt">Sjövägen 22 · Drift &amp; Underhåll Pelletsanläggning · <a href="sjovagen22.html" style="color:var(--accent2);text-decoration:none;">← Fastighetssidan</a></div>
   <div class="footer-txt" id="footerDate">—</div>
 </footer>
 </div>
