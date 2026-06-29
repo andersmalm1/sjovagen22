@@ -116,7 +116,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
       <a href="index.html" style="font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.25);border-radius:4px;padding:5px 12px;">← Startsidan</a>
       <div class="updated-badge">
-        Senast uppdaterad<strong>2026-06-28</strong>
+        Senast uppdaterad<strong>2026-06-29</strong>
       </div>
     </div>
   </div>
@@ -129,7 +129,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div class="section-line"></div>
   </div>
   <h2>Befintlig nätverksinfrastruktur</h2>
-  <p class="section-sub">Inventering per 2026-06-28 · Routermodell okänd — kompletteras</p>
+  <p class="section-sub">Inventering per 2026-06-29 · Router: TP-Link Archer AX55 dokumenterad</p>
 
   <div class="data-grid">
     <div class="status-card done">
@@ -138,7 +138,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         <span class="sc-badge done">FINNS</span>
       </div>
       <div class="sc-title">Router</div>
-      <div class="sc-desc">Arbetsrum, övervåningen<br>Modell: <em>okänd — kompletteras</em><br>Sänder WiFi för hela huset</div>
+      <div class="sc-desc">Arbetsrum, övervåningen<br><strong>TP-Link Archer AX55 (AX3000)</strong><br>Wi-Fi 6 Gigabit · SSID: TP-Link_91C4 / _91C4_5G</div>
     </div>
     <div class="status-card done">
       <div class="sc-header">
@@ -174,7 +174,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div class="section-line"></div>
   </div>
   <h2>Föreslagen topologi</h2>
-  <p class="section-sub">Utkast 2026-06-28 · Routermodell kompletteras innan slutgiltigt beslut</p>
+  <p class="section-sub">Uppdaterad 2026-06-29 · Router: TP-Link Archer AX55 (mesh-kompatibel)</p>
 
   <div class="card">
     <div class="card-title-mono">Nätverkstopologi · Sjövägen 22</div>
@@ -211,9 +211,9 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
 
         <!-- ROUTER (arbetsrum) — BEFINTLIG -->
         <rect x="30" y="55" width="130" height="64" rx="8" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
-        <text x="95" y="77" font-family="DM Mono,monospace" font-size="11" fill="#ea580c" text-anchor="middle" font-weight="500">ROUTER</text>
-        <text x="95" y="93" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">Arbetsrum</text>
-        <text x="95" y="108" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">modell: okänd</text>
+        <text x="95" y="74" font-family="DM Mono,monospace" font-size="11" fill="#ea580c" text-anchor="middle" font-weight="500">ROUTER</text>
+        <text x="95" y="90" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">TP-Link Archer AX55</text>
+        <text x="95" y="108" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">AX3000 Wi-Fi 6</text>
 
         <!-- WiFi-signal från router -->
         <text x="95" y="152" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle">📶 WiFi (begränsad räckvidd)</text>
@@ -337,7 +337,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     </div>
 
     <div class="card-footnote">
-      Utkast — routermodell okänd, kompletteras · WiFi-nod: accesspunkt (kabelansluten) föredras framför mesh-repeater · Antennkabelrör: utrymme för Cat6 bekräftas vid installation
+      TP-Link Archer AX55 är <strong>inte ett mesh-system</strong> — WiFi-nod i trapphallen måste därför vara <strong>fristående AP (accesspunkt)</strong> i AP-läge, inte mesh-satellit. Kabelansluten via Cat6 från switch ① (vardagsrum). Antennkabelrör: utrymme för Cat6 bekräftas vid installation.
     </div>
   </div>
 </section>
@@ -360,7 +360,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div class="status-card planned">
       <div class="sc-header"><span class="sc-icon">📡</span><span class="sc-badge planned">PLANERAT</span></div>
       <div class="sc-title">WiFi-nod — trapphall</div>
-      <div class="sc-desc">Kabelansluten accesspunkt i trapphallen.<br>Täcker trappa, källartrappa och övre delen av källaren.<br>Routermodell avgör val av nod (mesh vs fristående AP).</div>
+      <div class="sc-desc">Kabelansluten accesspunkt i trapphallen.<br>Täcker trappa, källartrappa och övre delen av källaren.<br><strong>Måste vara fristående AP i AP-läge</strong> (TP-Link är ej mesh).</div>
     </div>
     <div class="status-card planned">
       <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge planned">PLANERAT</span></div>
@@ -422,10 +422,10 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         </tr>
         <tr>
           <td>WiFi-nod — trapphall</td>
-          <td class="muted">Kabelansluten accesspunkt (AP-läge)<br>Modell väljs efter routerinfo</td>
+          <td class="muted">Fristående accesspunkt i AP-läge<br>T.ex. TP-Link EAP225 eller Ubiquiti UniFi U6 Lite</td>
           <td class="muted">1</td>
           <td class="right planned">~300–600 kr</td>
-          <td class="planned">Väntar på routerinfo</td>
+          <td class="planned">Är ej mesh</td>
         </tr>
         <tr>
           <td>Cat6-kabel</td>
@@ -456,10 +456,10 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
       </tfoot>
     </table>
     <div class="info-box" style="margin-top:16px;">
-      <strong>Val av WiFi-nod:</strong> Om routern är ett mesh-system (t.ex. Asus ZenWifi, Eero, Orbi) är det enklast att köpa en nod av samma märke — då sätts den upp automatiskt som satellit. Om routern är en vanlig router köps istället en fristående accesspunkt (t.ex. TP-Link EAP225 eller Ubiquiti UniFi U6 Lite) och konfigureras i AP-läge.
+      <strong>Val av WiFi-nod — TP-Link Archer AX55:</strong> Denna router är <strong>inte</strong> ett mesh-system — den är en traditionell router. Därför måste WiFi-noden i trapphallen vara en <strong>fristående accesspunkt</strong> (AP-läge), inte en mesh-satellit. Rekommenderade alternativ: TP-Link EAP225, Ubiquiti UniFi U6 Lite, eller liknande.
     </div>
-    <div class="warn-box">
-      <strong>Väntar på:</strong> Routermodell från arbetsrummet — detta avgör WiFi-nodens modell och konfigurationsmetod.
+    <div class="info-box" style="margin-top:14px;border-color:rgba(22,163,74,0.2);background:rgba(22,163,74,0.07);">
+      <strong style="color:#16a34a;">✓ Routerinfo dokumenterad 2026-06-29:</strong> TP-Link Archer AX55 (AX3000), S/N 222C974001299, MAC 48-22-54-29-91-C4, SSID TP-Link_91C4 och TP-Link_91C4_5G
     </div>
   </div>
 </section>
@@ -485,7 +485,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
           <td class="muted">1</td>
           <td>Routermodell i arbetsrummet?</td>
           <td class="muted">Val av WiFi-nod (mesh vs AP)</td>
-          <td class="planned">Kompletteras</td>
+          <td class="muted">✓ TP-Link AX55 — måste vara fristående AP</td>
         </tr>
         <tr>
           <td class="muted">2</td>
@@ -517,7 +517,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
 </section>
 
 <footer>
-  <div class="footer-txt">Sjövägen 22 · Tuna 7:139 · IT-nätverk · Utkast 2026-06-28</div>
+  <div class="footer-txt">Sjövägen 22 · Tuna 7:139 · IT-nätverk · Uppdaterad 2026-06-29</div>
   <div class="footer-links">
     <a href="index.html">← Startsidan</a>
     <a href="arkitektur.html">Sensorarkitektur</a>

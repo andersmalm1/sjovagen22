@@ -80,6 +80,7 @@ header,section{animation:fadeUp .45s ease both;}
 section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
 section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
 section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:.36s;}
+section:nth-child(8){animation-delay:.42s;}
 @media(max-width:600px){.chart-card{padding:16px;}.chart-canvas-wrap{height:250px;}}
 </style>
 </head>
@@ -491,6 +492,42 @@ section:nth-child(6){animation-delay:.30s;}section:nth-child(7){animation-delay:
       <tr><td>Fastighetsavgift 2026</td><td>10 425 kr/år</td></tr>
       <tr><td>Betalning</td><td>Via inkomstdeklaration</td></tr>
     </table>
+  </div>
+</section>
+
+<!-- 07 IT-MILJÖN -->
+<section>
+  <div class="section-header"><span class="section-label">07 / IT-miljön</span><div class="section-line"></div></div>
+  <h2>IT-infrastruktur · Nätverk &amp; kommunikation</h2>
+  <p class="section-sub">Kontorets nätverksinfrastruktur · Router · WiFi · Planerad utbyggnad</p>
+  <div class="data-grid">
+    <div class="status-card ready">
+      <div class="sc-header"><span class="sc-icon">📡</span><span class="sc-badge ready">FINNS</span></div>
+      <div class="sc-title">Router</div>
+      <div class="sc-desc"><strong>TP-Link Archer AX55</strong><br>AX3000 Wi-Fi 6 Gigabit<br>Arbetsrum, övervåningen</div>
+      <div class="sc-format">Format: <span>S/N 222C974001299 · MAC 48-22-54-29-91-C4</span></div>
+    </div>
+    <div class="status-card ready">
+      <div class="sc-header"><span class="sc-icon">📶</span><span class="sc-badge ready">FINNS</span></div>
+      <div class="sc-title">WiFi-nätverk</div>
+      <div class="sc-desc">SSID: TP-Link_91C4 (2.4 GHz)<br>SSID: TP-Link_91C4_5G (5 GHz)<br>PIN: 43082131</div>
+      <div class="sc-format">Format: <span>WPA3 · Archer AX55 default</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge partial">planerat</span></div>
+      <div class="sc-title">Nätverksövervakning</div>
+      <div class="sc-desc">Raspberry Pi 5 i pannrummet<br>Övervakar värmesystem via Modbus RTU<br>10× DS18B20-givare (1-Wire)</div>
+      <div class="sc-format">Format: <span>Gigabit Ethernet · Fiberoptisk eller Cat6 från källaren</span></div>
+    </div>
+    <div class="status-card partial">
+      <div class="sc-header"><span class="sc-icon">🌐</span><span class="sc-badge partial">planerat</span></div>
+      <div class="sc-title">WiFi-täckning källaren</div>
+      <div class="sc-desc">Accesspunkt i trapphallen<br>Täcker källare + musikstudio<br>Löst konkreta väggdämpning</div>
+      <div class="sc-format">Format: <span>Fristående AP (ej mesh) · T.ex. TP-Link EAP225</span></div>
+    </div>
+  </div>
+  <div style="margin-top:16px;">
+    <a href="natverk.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent2);background:rgba(37,99,235,0.06);border:1px solid rgba(37,99,235,0.25);border-radius:6px;padding:10px 18px;text-decoration:none;" onmouseover="this.style.background='rgba(37,99,235,0.12)'" onmouseout="this.style.background='rgba(37,99,235,0.06)'">🔗 Detaljerad nätverksskiss →</a>
   </div>
 </section>
 
