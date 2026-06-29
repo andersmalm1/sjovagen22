@@ -189,23 +189,26 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 <div class="block c-teal">
   <div class="block-header">
     <span class="block-num">03</span>
-    <span class="block-title">Mätpunkter — DS18B20 (8 st)</span>
+    <span class="block-title">Mätpunkter — DS18B20 (8 st + 2 bonus = 10 st totalt)</span>
   </div>
-  <div class="block-sub">1-Wire-buss · Raspberry Pi · planerade positioner</div>
+  <div class="block-sub">1-Wire-buss (GPIO4) · Raspberry Pi · värmesystem (8 st) + kallvatten/jordtemp bonus (2 st) · Status: 10 st beställda 2026-06-27, levereras 2026-07-02</div>
   <table class="tbl">
     <thead><tr><th>#</th><th>Position</th><th>Delsystem</th><th>Syfte</th></tr></thead>
     <tbody>
-      <tr><td class="mono">1</td><td>Framledning panna</td><td class="muted">Pelletspanna</td><td>Pannans avgiven effekt</td></tr>
-      <tr><td class="mono">2</td><td>Retur in i pannan</td><td class="muted">Pelletspanna</td><td>Δt över panna, verkningsgrad</td></tr>
-      <tr><td class="mono">3</td><td>Ackumulatortank — topp</td><td class="muted">Ackumulatortank</td><td>Maxladdning, tappvarmvatten</td></tr>
-      <tr><td class="mono">4</td><td>Ackumulatortank — övre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
-      <tr><td class="mono">5</td><td>Ackumulatortank — nedre mitt</td><td class="muted">Ackumulatortank</td><td>Laddningsprofil</td></tr>
-      <tr><td class="mono">6</td><td>Ackumulatortank — botten</td><td class="muted">Ackumulatortank</td><td>Returtemp solfångare/krets</td></tr>
-      <tr><td class="mono">7</td><td>Retur källarkrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning källarplan</td></tr>
-      <tr><td class="mono">8</td><td>Retur övervåningskrets</td><td class="muted">Värmekrets (ettrör)</td><td>Värmeavgivning övervåning</td></tr>
+      <tr class="tbl-head"><td colspan="4">VÄRMESYSTEM KÄRNGIVARE (8 st — redan beställda)</td></tr>
+      <tr><td class="mono">T1</td><td>Fram värmesystem</td><td class="muted">Radiatorkretsens fram</td><td>Radiatorkretsens framledningstemp, ΔT värmesystem</td></tr>
+      <tr><td class="mono">T2</td><td>Retur värmesystem</td><td class="muted">Radiatorkretsens retur</td><td>Radiatorkretsens returtemp, ΔT värmesystem</td></tr>
+      <tr><td class="mono">T3</td><td>Ackumulatortank — topp</td><td class="muted">Ackumulatortank</td><td>Acktankens laddningsprofil</td></tr>
+      <tr><td class="mono">T4</td><td>Ackumulatortank — övre mitt</td><td class="muted">Ackumulatortank</td><td>Acktankens laddningsprofil</td></tr>
+      <tr><td class="mono">T5</td><td>Ackumulatortank — nedre mitt</td><td class="muted">Ackumulatortank</td><td>Acktankens laddningsprofil</td></tr>
+      <tr><td class="mono">T6</td><td>Ackumulatortank — botten</td><td class="muted">Ackumulatortank</td><td>Acktankens laddningsprofil, ΔT för start/stopp av solladdning</td></tr>
+      <tr><td class="mono">T7</td><td>Fram solvärme</td><td class="muted">Solvärmekrets</td><td>ΔT Sol (fram från solfångare), start/stopp solladdning</td></tr>
+      <tr><td class="mono">T8</td><td>Retur solvärme</td><td class="muted">Solvärmekrets</td><td>ΔT Sol (retur från acktank)</td></tr>
+      <tr><td class="mono">T9</td><td>KV in</td><td class="muted">Kallvattensystem (från Roslagsvatten)</td><td>Energiberäkning kallvatten→varmvatten, tjälövervakning</td></tr>
+      <tr><td class="mono">T10</td><td>Jordtemp</td><td class="muted">Trädgård (8–10 cm djup)</td><td>Frostövervakning mark, växtplanering, dräneringsoptimering</td></tr>
     </tbody>
   </table>
-  <div class="next-step">Raspberry Pi ej inköpt ännu (~1 200–1 450 kr totalt, se inköpslistan nedan) · VVS-service ej bokad (Alarm Flöde kvarstår) · Solfångardata exporteras via optisk IR-adapter mot LCD+:s IR-port — köp kompatibel Watts datakabel (fråga Watts teknisk support: watts.eu/nordic, artikelnummer för P-3481 / OF: 272813)</div>
+  <div class="next-step">✅ Raspberry Pi Starter Kit beställd, levereras 2026-07-02 · ✅ 10 st DS18B20 (T1–T10) beställda, levereras 2026-07-02 · T9 &amp; T10 monteras samtidigt som värmesystemets kärngivare · Värmedashboard visar 3 st ΔT: ΔT radiatorsystem (T1-T2) · ΔT solsystem (T7-T8) · ΔT start/stopp solladdning (T7-T6)</div>
 </div>
 
 <div class="section-row">
@@ -218,31 +221,29 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     <span class="block-num">04</span>
     <span class="block-title">Datainfrastruktur — Slutgiltig inköpslista</span>
   </div>
-  <div class="block-sub">Reviderad 2026-06-27 — Produkter identifierade &amp; godkända</div>
+  <div class="block-sub">Uppdaterad 2026-06-29 — Alla komponenter beställda med verkliga priser</div>
   <table class="tbl">
-    <thead><tr><th>Post</th><th>Produkt/Källa</th><th>Kostnad</th><th>Status</th></tr></thead>
+    <thead><tr><th>Post</th><th>Produkt/Källa</th><th>Målpris</th><th>Verklig kostnad</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">RASPBERRY PI-HUBB (Pannrum)</td></tr>
-      <tr><td>Raspberry Pi</td><td class="mono">Pi 4 eller 5, 2–4 GB RAM</td><td class="mono">~500–700 kr</td><td>✅ Beställd, levereras 2026-07-02</td></tr>
-      <tr><td>SD-kort</td><td class="mono">16–32 GB, Class 10</td><td class="mono">~100 kr</td><td>✅ Beställt, levereras 2026-07-02</td></tr>
-      <tr><td>Strömadapter</td><td class="mono">USB-C, 5V, 3–5A</td><td class="mono">~100 kr</td><td>✅ Beställt, levereras 2026-07-02</td></tr>
-      <tr><td>Plasthölje</td><td class="mono">Al för värmeavledning</td><td class="mono">~100 kr</td><td>🔄 Att beställa</td></tr>
-      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">MODBUS RTU (Danfoss ECL)</td></tr>
-      <tr><td>USB–RS485-adapter</td><td class="mono">Waveshare Industrial (Amazon)</td><td class="mono">~150 kr</td><td>✅ Godkänd</td></tr>
-      <tr><td>RS485-kabel</td><td class="mono">Telefonkabel hemma (3m)</td><td class="mono">0 kr</td><td>✅ Hemma</td></tr>
-      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">1-WIRE TEMPERATURGIVARE (10 st)</td></tr>
-      <tr><td>DS18B20 sensorer</td><td class="mono">Fasizi Waterproof (2 paket, Amazon)</td><td class="mono">~250–300 kr</td><td>✅ Beställda, levereras 2026-07-02</td></tr>
-      <tr><td>Pull-up resistor</td><td class="mono">4,7 kΩ från Electrokit</td><td class="mono">~5 kr</td><td>🔄 Köp lokalt</td></tr>
-      <tr><td colspan="4" style="background:var(--surface2); font-weight:600;">GIVARMONTAGE (Rörisolering etc)</td></tr>
-      <tr><td>Rörisolering</td><td class="mono">Skumgummi/mineralull 24–32mm (VVS-butik)</td><td class="mono">~50–100 kr</td><td>🔄 Köp lokalt</td></tr>
-      <tr><td>Rörklammer</td><td class="mono">10–15 st metallklammer (VVS-butik)</td><td class="mono">~20–50 kr</td><td>🔄 Köp lokalt</td></tr>
-      <tr><td>Alu-tejp / vattenfast tejp</td><td class="mono">1–2 rullar (VVS-butik)</td><td class="mono">~30–60 kr</td><td>🔄 Köp lokalt</td></tr>
-      <tr><td>Buntband</td><td class="mono">Plastband 100 st (byggvaruhus)</td><td class="mono">~20 kr</td><td>🔄 Köp lokalt</td></tr>
-      <tr><td colspan="4" style="background:#e0e0e0; font-weight:600; border-top:2px solid #999;">TOTALT FASE 1</td></tr>
-      <tr><td colspan="2"><strong>Totalkostnad</strong></td><td class="mono"><strong>~1 475–1 850 kr</strong></td><td><strong>Budgetera ~1 900 kr</strong></td></tr>
+      <tr><td colspan="5" style="background:var(--surface2); font-weight:600;">RASPBERRY PI-HUBB (Pannrum)</td></tr>
+      <tr><td><strong>Raspberry Pi 5 Starter Kit</strong></td><td class="mono">db-tronic: Pi 5 (4 GB), SD 64 GB, USB-C 27W, hölje, HDMI</td><td class="mono">~800–1 000 kr</td><td class="mono"><strong>2 000 kr</strong></td><td>✅ Beställd, levereras 2026-07-02</td></tr>
+      <tr><td colspan="5" style="background:var(--surface2); font-weight:600;">MODBUS RTU (Danfoss ECL Comfort 110)</td></tr>
+      <tr><td>USB–RS485-adapter</td><td class="mono">Waveshare Industrial USB-RS485 (Amazon.se)</td><td class="mono">~150 kr</td><td class="mono"><strong>219,99 kr</strong></td><td>✅ Beställd, levereras 2026-07-02</td></tr>
+      <tr><td>RS485-kabel</td><td class="mono">3-ledare telefonkabel hemma</td><td class="mono">0 kr</td><td class="mono">0 kr</td><td>✅ Hemma</td></tr>
+      <tr><td colspan="5" style="background:var(--surface2); font-weight:600;">1-WIRE TEMPERATURGIVARE (10 st DS18B20)</td></tr>
+      <tr><td>DS18B20 sensorer</td><td class="mono">Fasizi Waterproof (10 st, Amazon.se B09Z29TKCV)</td><td class="mono">~250–300 kr</td><td class="mono"><strong>275 kr</strong></td><td>✅ Beställda, levereras 2026-07-02</td></tr>
+      <tr><td>Pull-up resistor</td><td class="mono">4,7 kΩ (Electrokit)</td><td class="mono">~5 kr</td><td class="mono"><strong>45 kr</strong></td><td>✅ Beställd, levereras 2026-06-30</td></tr>
+      <tr><td>1-Wire kabel</td><td class="mono">3-ledare telefonkabel hemma</td><td class="mono">0 kr</td><td class="mono">0 kr</td><td>✅ Hemma</td></tr>
+      <tr><td colspan="5" style="background:var(--surface2); font-weight:600;">GIVARMONTAGE (hemma)</td></tr>
+      <tr><td>Rörisolering</td><td class="mono">Skumgummi/mineralull 24–32mm</td><td class="mono">~30–50 kr</td><td class="mono">0 kr</td><td>✅ Finns hemma</td></tr>
+      <tr><td>Rörklammer</td><td class="mono">10–15 st metallklammer</td><td class="mono">~15–25 kr</td><td class="mono">0 kr</td><td>✅ Finns hemma</td></tr>
+      <tr><td>Alu-tejp / vattenfast tejp</td><td class="mono">1–2 rullar</td><td class="mono">~30–40 kr</td><td class="mono">0 kr</td><td>✅ Finns hemma</td></tr>
+      <tr><td>Buntband</td><td class="mono">Plastband 100 st</td><td class="mono">~15–20 kr</td><td class="mono">0 kr</td><td>✅ Finns hemma</td></tr>
+      <tr><td colspan="5" style="background:#e0e0e0; font-weight:600; border-top:2px solid #999;">TOTALT FAS 1 — VÄRMESYSTEM + KALLVATTEN + JORDTEMP</td></tr>
+      <tr><td colspan="2"><strong>Fasinfrastruktur (Pi + Modbus + 1-Wire)</strong></td><td class="mono"><strong>~1 475–1 850 kr</strong></td><td class="mono"><strong>2 539,99 kr</strong></td><td><strong>✅ ALLA BESTÄLLDA</strong></td></tr>
     </tbody>
   </table>
-  <div class="next-step">✅ Raspberry Pi, SD-kort, strömadapter &amp; 10 st DS18B20 BESTÄLLDA 2026-06-27 · Levereras 2026-07-02 · Väntar på: Waveshare USB-RS485, Plasthölje, montage-material · Se INKOEPSLISTA_JULI2026.md för status</div>
+  <div class="next-step">✅ Fas 1 slutgiltig: Raspberry Pi, Modbus, DS18B20 (10 st) + resistor BESTÄLLDA · Levereras 2026-06-30 (resistor) &amp; 2026-07-02 (resten) · Monteringsmaterial finns hemma (sparade 200–350 kr) · Nästa: SCD41 CO₂-sensor (HÖGSTA PRIORITET Fas 1B) + INMP441 ljud-sensor (senare)</div>
 </div>
 
 <footer>
