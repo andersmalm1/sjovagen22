@@ -57,15 +57,28 @@
 
 ---
 
-## Utökat givarsystem (10 sensorer)
+## Givarsystem — 10 st DS18B20 (värmesystem 8 st + bonus 2 st)
 
-| T-nr | Placering | System | Typ | Status |
-|------|-----------|--------|-----|--------|
-| T1–T2 | Fram/retur panna | Pelletspanna | — | Ingår i paket |
-| T3–T6 | Tank 4 höjder | Ackumulatortank | Givare | Ingår i paket |
-| T7–T8 | Fram/retur sol | Solvärmekrets | Givare | Ingår i paket |
-| T9–T10 | Värmekrets returer | Radiatorvärmekrets | Givare | Ingår i paket |
-| *T11–T12* | *Pannrummet/framtid* | *Reserv* | *Extra givare* | Ingår i paket |
+| T-nr | Placering | Delsystem | Syfte | Montering | Status |
+|------|-----------|-----------|-------|-----------|--------|
+| **T1** | Radiatorkretsens fram | Värmesystem | Radiatorkretsens framledningstemp, ΔT värmesystem | Samtidigt som T2–T8 | ✅ Beställd |
+| **T2** | Radiatorkretsens retur | Värmesystem | Radiatorkretsens returtemp, ΔT värmesystem | Samtidigt som T1,T3–T8 | ✅ Beställd |
+| **T3** | Tank — topp | Ackumulatortank | Acktankens laddningsprofil | Samtidigt som T1–T2, T4–T8 | ✅ Beställd |
+| **T4** | Tank — övre mitt | Ackumulatortank | Acktankens laddningsprofil | Samtidigt som T1–T3, T5–T8 | ✅ Beställd |
+| **T5** | Tank — nedre mitt | Ackumulatortank | Acktankens laddningsprofil | Samtidigt som T1–T4, T6–T8 | ✅ Beställd |
+| **T6** | Tank — botten | Ackumulatortank | Acktankens laddningsprofil, ΔT för start/stopp solladdning | Samtidigt som T1–T5, T7–T8 | ✅ Beställd |
+| **T7** | Fram solvärme | Solvärmekrets | ΔT Sol (fram från solfångare), start/stopp solladdning | Samtidigt som T1–T6, T8–T10 | ✅ Beställd |
+| **T8** | Retur solvärme | Solvärmekrets | ΔT Sol (retur från acktank) | Samtidigt som T1–T7, T9–T10 | ✅ Beställd |
+| **T9** | Kallvattenmätare inlopp | Kallvattensystem | Energiberäkning kallvatten→varmvatten, tjälövervakning | **Samtidigt som T1–T8** | ✅ Beställd |
+| **T10** | Jordtempsensor 8–10 cm | Trädgård | Frostövervakning mark, växtplanering | **Samtidigt som T1–T8** | ✅ Beställd |
+
+## ΔT-beräkningar för värmedashboard
+
+| ΔT-namn | Beräkning | Användning |
+|---------|-----------|-----------|
+| **ΔT radiatorsystem** | T1 − T2 | Värmeavgivning radiatorkretsens effektivitet |
+| **ΔT solsystem** | T7 − T8 | Värmeavgivning solvärmekretsens effektivitet |
+| **ΔT för start/stopp solladdning** | T7 − T6 | Styrsignal för solladdningspumpens start/stopp-logik |
 
 ---
 
