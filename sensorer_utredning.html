@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensorutredning – Framtida vidareutvecklingar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.13);--text:#1a1a18;--muted:#6b6b62;--accent:#16a34a;--accent2:#2563eb;--accent3:#ea580c;--font-mono:'DM Mono',monospace;--font-body:'DM Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 24px;}
+header{padding:40px 0 32px;border-bottom:1px solid var(--border);margin-bottom:44px;}
+.header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.address-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:6px;}
+h1{font-size:clamp(24px,4vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--text);line-height:1.1;}
+h1 span{color:var(--muted);}
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border2);border-radius:4px;padding:4px 10px;}
+.chip.pending{color:var(--accent3);border-color:rgba(234,88,12,0.3);background:rgba(234,88,12,0.06);}
+.updated-badge{font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;}
+.updated-badge strong{display:block;font-size:13px;color:var(--text);font-weight:400;}
+
+section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.section-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.section-line{flex:1;height:1px;background:var(--border);}
+h2{font-size:18px;font-weight:400;letter-spacing:-.01em;margin-bottom:5px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;font-family:var(--font-mono);}
+h3{font-size:15px;font-weight:500;margin-top:32px;margin-bottom:12px;padding-top:20px;border-top:1px solid var(--border);}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:28px;position:relative;overflow:hidden;margin-bottom:24px;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3));}
+.card-title-mono{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.card-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:16px;}
+.card-footnote{margin-top:14px;font-family:var(--font-mono);font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;line-height:1.8;}
+
+/* Data grid */
+.data-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:28px;}
+.status-card{background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:22px 20px;display:flex;flex-direction:column;gap:8px;}
+.status-card.recommended{border-color:rgba(22,163,74,0.4);background:rgba(22,163,74,0.02);}
+.status-card.alt{border-color:rgba(37,99,235,0.25);}
+.sc-header{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.sc-icon{font-size:24px;line-height:1;}
+.sc-badge{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:3px;border:1px solid;}
+.sc-badge.recommended{color:var(--accent);border-color:rgba(22,163,74,0.35);background:rgba(22,163,74,0.07);}
+.sc-badge.alt{color:var(--accent2);border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.06);}
+.sc-badge.budget{color:var(--accent3);border-color:rgba(234,88,12,0.3);background:rgba(234,88,12,0.06);}
+.sc-title{font-size:14px;font-weight:500;color:var(--text);}
+.sc-desc{font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* Tabeller */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin-bottom:20px;}
+.tbl thead tr{border-bottom:2px solid var(--border2);}
+.tbl thead th{padding:10px;text-align:left;color:var(--muted);font-weight:400;font-size:11px;letter-spacing:.05em;text-transform:uppercase;}
+.tbl tbody tr{border-bottom:1px solid var(--border);}
+.tbl tbody tr:last-child{border-bottom:none;}
+.tbl tbody td{padding:12px 10px;color:var(--text);vertical-align:top;}
+.tbl td.muted{color:var(--muted);}
+.tbl td.right{text-align:right;}
+.tbl td.spec{color:var(--accent2);font-weight:500;}
+
+/* Integration boxes */
+.integration-box{background:#f0f4ff;border:1px solid rgba(37,99,235,0.2);border-radius:8px;padding:18px;margin:18px 0;font-size:13px;line-height:1.7;}
+.integration-box strong{color:var(--accent2);font-weight:500;}
+.integration-box code{background:#fff;padding:2px 6px;border-radius:3px;font-family:var(--font-mono);font-size:11px;color:var(--text);}
+
+.spec-box{background:#f0fdf4;border:1px solid rgba(22,163,74,0.2);border-radius:8px;padding:16px;margin:16px 0;font-size:12px;}
+.spec-box strong{color:var(--accent);}
+
+.warn-box{background:#fff7ed;border:1px solid rgba(234,88,12,0.2);border-radius:8px;padding:16px 18px;font-family:var(--font-mono);font-size:12px;color:var(--muted);line-height:1.8;margin:16px 0;}
+.warn-box strong{color:var(--accent3);}
+
+.info-box{background:#f3f0ff;border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:16px;margin:16px 0;font-size:13px;line-height:1.7;}
+
+/* Prioritetslista */
+.priority-list{margin:20px 0;}
+.priority-item{display:flex;gap:12px;margin-bottom:14px;padding:12px;background:var(--surface2);border-radius:6px;}
+.priority-num{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--accent2);min-width:24px;}
+.priority-text{flex:1;}
+.priority-text strong{color:var(--text);}
+.priority-text p{margin:0;font-size:13px;}
+
+footer{border-top:1px solid var(--border);padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-txt{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+.footer-links a{font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+header,section{animation:fadeUp .45s ease both;}
+section:nth-child(2){animation-delay:.06s;}section:nth-child(3){animation-delay:.12s;}
+section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:.24s;}
+
+@media(max-width:600px){.card{padding:16px;}.data-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="address-label">Fastighetsdashboard · Sensorarkitektur</div>
+      <h1>Framtida sensorutredning <span>/ Vidareutvecklingar</span></h1>
+      <div class="meta-chips">
+        <span class="chip">Musikstudio · Värmesystem · Vatten · LoRa</span>
+        <span class="chip pending">● Framtida möjligheter</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
+      <a href="index.html" style="font-family:var(--font-mono);font-size:11px;color:var(--accent2);text-decoration:none;border:1px solid rgba(37,99,235,0.25);border-radius:4px;padding:5px 12px;">← Startsidan</a>
+      <div class="updated-badge">
+        Senast uppdaterad<strong>2026-06-29</strong>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 SAMMANFATTNING -->
+<section>
+  <div class="section-header">
+    <span class="section-label">01 / Sammanfattning</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Fyra viktiga sensorprojekt för vidareutveckling</h2>
+  <p class="section-sub">Analys och produktrekommendationer för Raspberry Pi-integration</p>
+
+  <div class="info-box">
+    <strong>Bakgrund:</strong> Sjövägen 22 utvecklas från ett värmesystem-övervakaningsprojekt till en helintegrerad fastighetscentralt (property hub) med potentiell NAS-expansion. Dessa fyra sensorbehov adresserar kritiska områden: <strong>luftkvalitet i musikstudio</strong>, <strong>värmesystemoptimering</strong>, och <strong>miljöövervakning vid strandfastigheten</strong> via LoRa.
+  </div>
+
+  <div class="data-grid">
+    <div class="status-card">
+      <div class="sc-header"><span class="sc-icon">🎵</span></div>
+      <div class="sc-title">Ljudnivå & buller (dB)</div>
+      <div class="sc-desc">Musikstudio: inspelningskvalitet, bakgrundsljud, akustisk miljö</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-header"><span class="sc-icon">💨</span></div>
+      <div class="sc-title">Koldioxidhalt (CO₂)</div>
+      <div class="sc-desc">Musikstudio: luftkvalitet, ventilation, arbetsförhållanden</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-header"><span class="sc-icon">🌊</span></div>
+      <div class="sc-title">Kallvattentemperatur</div>
+      <div class="sc-desc">Värmesystem: inmatningstemperatur, energioptimering</div>
+    </div>
+    <div class="status-card">
+      <div class="sc-header"><span class="sc-icon">📡</span></div>
+      <div class="sc-title">Havsvattentemperatur + nivå (LoRa)</div>
+      <div class="sc-desc">Strandfastigheten Tuna 7:135: miljödata via trådlös överföring</div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 SENSOR 1: LJUD -->
+<section>
+  <div class="section-header">
+    <span class="section-label">02 / Ljudnivå & Buller (dB)</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>🎵 Musikstudio: Bullerkontroll och inspelningskvalitet</h2>
+  <p class="section-sub">Integration: I2S digital audio interface mot Raspberry Pi</p>
+
+  <h3>Syfte & Värde</h3>
+  <p>Musikstudion i gillestuga är inspelningsrum — bullerkontroll är kritisk för höga inspelningskvalitet. En dB-sensor låter dig:</p>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li>Detektera onormalt höga bakgrundsljud (ventilation, värmesystem, infraljud)</li>
+    <li>Identifiera när inspelningsförhållandena är dåliga</li>
+    <li>Korrelera ljudnivå med värmesystemets drift (pumpar, ventilator, pelletsbränning)</li>
+    <li>Automatisk varning när dB överskrider sätt gräns under inspelning</li>
+  </ul>
+
+  <h3>Produktalternativ</h3>
+  <div class="data-grid">
+    <div class="status-card recommended">
+      <div class="sc-header"><span class="sc-icon">🎙️</span><span class="sc-badge recommended">REKOMMENDERAD</span></div>
+      <div class="sc-title">INMP441 (I2S mikrofon)</div>
+      <div class="sc-desc">Digital I2S-utgång<br>Känslighet: 38 dBV/Pa<br>Pris: ~100 kr<br><strong>Bästa valet</strong> — direktkoppling till Raspberry Pi</div>
+    </div>
+    <div class="status-card alt">
+      <div class="sc-header"><span class="sc-icon">🎙️</span><span class="sc-badge alt">ALTERNATIV</span></div>
+      <div class="sc-title">SPH0645 (I2S mikrofon)</div>
+      <div class="sc-desc">Högre känslighet än INMP441<br>Pris: ~150 kr<br>Samma I2S-integration<br>Bättre för låga ljud</div>
+    </div>
+    <div class="status-card alt">
+      <div class="sc-header"><span class="sc-icon">🎙️</span><span class="sc-badge alt">ENKLARE</span></div>
+      <div class="sc-title">Max4466 (Analog mikrofon)</div>
+      <div class="sc-desc">Analog utgång → ADC<br>Pris: ~50 kr<br>Enklare men mindre noga<br>Kräver extern ADC</div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>INMP441</th>
+        <th>SPH0645</th>
+        <th>Max4466</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Gränssnitt</td>
+        <td class="spec">I2S (digital)</td>
+        <td class="spec">I2S (digital)</td>
+        <td>Analog</td>
+      </tr>
+      <tr>
+        <td>Frekvensomfattning</td>
+        <td>50 Hz – 20 kHz</td>
+        <td>50 Hz – 20 kHz</td>
+        <td>20 Hz – 20 kHz</td>
+      </tr>
+      <tr>
+        <td>Känslighet (dBV/Pa)</td>
+        <td>−38</td>
+        <td>−30 (högre!)</td>
+        <td>−36</td>
+      </tr>
+      <tr>
+        <td>Spänning</td>
+        <td>1.62–3.6V (3.3V)</td>
+        <td>1.6–3.6V (3.3V)</td>
+        <td>2–5V</td>
+      </tr>
+      <tr>
+        <td>Pris (ungefär)</td>
+        <td>~100 kr</td>
+        <td>~150 kr</td>
+        <td>~50 kr</td>
+      </tr>
+      <tr>
+        <td>Monteringskomplexitet</td>
+        <td class="spec">Låg</td>
+        <td class="spec">Låg</td>
+        <td>Låg–Medium</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="spec-box">
+    <strong>✓ Rekommendation: INMP441</strong><br>
+    Bästa förhållandet mellan pris (~100 kr), precision och integrationssätt. I2S-utgång kopplas direkt till Raspberry Pi utan extern ADC. Samma anslutningsstandard som framtida musikövervakning.
+  </div>
+
+  <h3>Integration mot Raspberry Pi 5</h3>
+  <div class="integration-box">
+    <strong>I2S Audio Interface:</strong><br>
+    INMP441 ansluts direkt till Raspberry Pi:s I2S GPIO-pinnar (GPIO18 = BCLK, GPIO19 = DIN, GPIO21 = LRCLK). Python/C-bibliotek <code>pyaudio</code> eller <code>python-sounddevice</code> läser audioströmen kontinuerligt. DB-nivå beräknas från RMS-amplitud: <code>dB = 20 × log₁₀(RMS/referens)</code>.<br><br>
+    <strong>Lagring:</strong> 15-minuters rullande buffer → sparas som JSON med tidsstämpel (medel dB, max dB, min dB per period).
+  </div>
+
+  <h3>Tidsplan & Kostnad</h3>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-num">1</div>
+      <div class="priority-text"><strong>Inköp:</strong> INMP441-modul (~100 kr) + jumperledningar<br><span style="color:var(--muted);">Tid: direkt leverans</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">2</div>
+      <div class="priority-text"><strong>Installation:</strong> Montage på breadboard/PCB i gillestuga<br><span style="color:var(--muted);">Tid: 30 min</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">3</div>
+      <div class="priority-text"><strong>Programutveckling:</strong> Python-script för I2S-inläsning och dB-beräkning<br><span style="color:var(--muted);">Tid: 2–4 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">4</div>
+      <div class="priority-text"><strong>Test & kalibrering:</strong> Jämför med referensmikrofon/dB-mätare<br><span style="color:var(--muted);">Tid: 1 timme</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SENSOR 2: CO2 -->
+<section>
+  <div class="section-header">
+    <span class="section-label">03 / Koldioxidhalt (CO₂)</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>💨 Musikstudio: Luftkvalitet och ventilationskontroll</h2>
+  <p class="section-sub">Integration: I2C digital sensor mot Raspberry Pi</p>
+
+  <h3>Syfte & Värde</h3>
+  <p>CO₂-nivå är en indirekt mätare på luftkvalitet. I en musikstudio är detta kritiskt för:</p>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li>Inspelningskvalitet — högt CO₂ (>1000 ppm) kan skapa kondens och fuktproblem</li>
+    <li>Arbetsmiljö — ventilation över 1500 ppm påverkar fokus och kognitiv funktion</li>
+    <li>Energioptimering — data visar när ventilation behöver ökas utan att öka värmebehov</li>
+    <li>Korrelation med värmesystem — luftväxling påverkar värmesystemets effektivitet</li>
+  </ul>
+
+  <h3>Produktalternativ</h3>
+  <div class="data-grid">
+    <div class="status-card recommended">
+      <div class="sc-header"><span class="sc-icon">💨</span><span class="sc-badge recommended">REKOMMENDERAD</span></div>
+      <div class="sc-title">SCD41 (Sensiron)</div>
+      <div class="sc-desc">CO₂ + temp + fukt<br>I2C, högprecision<br>Pris: ~400 kr<br><strong>Minsta</strong>, bästa för musikstudio</div>
+    </div>
+    <div class="status-card recommended">
+      <div class="sc-header"><span class="sc-icon">💨</span><span class="sc-badge recommended">REKOMMENDERAD</span></div>
+      <div class="sc-title">SCD30 (Sensiron)</div>
+      <div class="sc-desc">CO₂ + temp + fukt<br>I2C, väletablerad<br>Pris: ~600 kr<br>Större, mer robust</div>
+    </div>
+    <div class="status-card alt">
+      <div class="sc-header"><span class="sc-icon">💨</span><span class="sc-badge budget">BUDGET</span></div>
+      <div class="sc-title">MH-Z19C (WinSen)</div>
+      <div class="sc-desc">CO₂-fokuserad<br>UART/PWM, billig<br>Pris: ~80 kr<br>Begränsad range (0–5000 ppm)</div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>SCD41</th>
+        <th>SCD30</th>
+        <th>MH-Z19C</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>CO₂-range</td>
+        <td class="spec">0–5000 ppm</td>
+        <td class="spec">0–40000 ppm</td>
+        <td>0–5000 ppm</td>
+      </tr>
+      <tr>
+        <td>Gränssnitt</td>
+        <td class="spec">I2C</td>
+        <td class="spec">I2C</td>
+        <td>UART / PWM</td>
+      </tr>
+      <tr>
+        <td>Mäter även</td>
+        <td class="spec">Temp + Fukt</td>
+        <td class="spec">Temp + Fukt</td>
+        <td>Endast CO₂</td>
+      </tr>
+      <tr>
+        <td>Noggrannhet CO₂</td>
+        <td>±40 ppm</td>
+        <td>±30 ppm</td>
+        <td>±50 ppm</td>
+      </tr>
+      <tr>
+        <td>Storlek</td>
+        <td>10×10×5.5 mm</td>
+        <td>29×29×15 mm</td>
+        <td>11×10×9 mm</td>
+      </tr>
+      <tr>
+        <td>Spänning</td>
+        <td>3.3V–5.5V</td>
+        <td>3.3V–5.5V</td>
+        <td>5V (vanligaste)</td>
+      </tr>
+      <tr>
+        <td>Pris (ungefär)</td>
+        <td>~400 kr</td>
+        <td>~600 kr</td>
+        <td>~80 kr</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="spec-box">
+    <strong>✓ Rekommendation: SCD41</strong><br>
+    Optimal för musikstudio — kompakt, I2C-integration (samma som andra sensorer), mäter CO₂ + temperatur + fukt. Pris/prestanda är bäst för framtida expansion.
+  </div>
+
+  <h3>Integration mot Raspberry Pi 5</h3>
+  <div class="integration-box">
+    <strong>I2C Bus:</strong><br>
+    SCD41 ansluts till Raspberry Pi I2C (GPIO2 = SDA, GPIO3 = SCL). Bibliotek: <code>python-i2c-sensor</code> eller <code>board</code>+<code>busio</code> (Adafruit)<br>
+    Læsning: <code>sensor.read_measurement()</code> → (CO₂ i ppm, temperatur i °C, relativ fukt i %).<br><br>
+    <strong>Datalogging:</strong> Inläsning var 5:e sekund → glidande medelvärde per 1 minut → daglig sammanfattning. JSON-sparning för historisk analys.
+  </div>
+
+  <h3>Värdefullt för musikstudion</h3>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li><strong>Inspelningsvarning:</strong> Pop-up på PC när CO₂ > 800 ppm (dålig luftkvalitet)</li>
+    <li><strong>Ventilationskontroll:</strong> Data för val av manuell/automatisk ventilation</li>
+    <li><strong>Korrelation:</strong> Visa hur värmesystemets ventilation påverkar CO₂</li>
+    <li><strong>Historik:</strong> Spåra luftkvalitetsmönster över tid (dag, vecka, månad)</li>
+  </ul>
+</section>
+
+<!-- TILLÄGG: TJÄLÖVERVAKNING -->
+<section>
+  <div class="section-header">
+    <span class="section-label">TILLÄGG / Tjälövervakning & Energiberäkningar</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>🌍 Extrakt värde från kallvattensensorn</h2>
+  <p class="section-sub">Energianalys och markförhållandebedömning</p>
+
+  <h3>A) Energiberäkning: Värmning från kallvatten till varmvatten</h3>
+  <div class="spec-box">
+    <strong>Värde:</strong> Genom att mäta inkommande kallvattentemperatur kan värmesystemet beräkna exakt energibehov för värmning.<br><br>
+    <strong>Formel:</strong> E = m × c × ΔT<br>
+    där E = energi (kWh), m = vattenmassa (kg), c = specifik värmekapa (4.18 kJ/kg·°C), ΔT = temperaturskillnad (°C)<br><br>
+    <strong>Praktisk tillämpning:</strong><br>
+    • Om kallvatten är 2°C och vi behöver 50°C varmvatten: ΔT = 48°C<br>
+    • Om kallvatten är 12°C och vi behöver 50°C varmvatten: ΔT = 38°C<br>
+    • <strong>Värmebehovet skiljer sig med 20%!</strong> Värmesystemet kan anpassa pelletsbrännaren eller elpatronerna dynamiskt.<br>
+    • Säsongsvariationer synligörs: vinter (kallare kallvatten) = större värmebehov; sommar (varmare kallvatten) = mindre behov
+  </div>
+
+  <h3>B) Tjälövervakning: Kallvatten som proxy för markfrost</h3>
+  <div class="spec-box">
+    <strong>Värde:</strong> Källvattnet reflekterar marktillståndet på djupet där vattenintaget finns. Denna information kan användas för att bedöma tjälrisken i trädgården.<br><br>
+    <strong>Tjälrisk-bedömning:</strong><br>
+    • Kallvattentemp < 0°C = Tjäle i marken på vattenintaksnivå (ca 1–2 m djup)<br>
+    • Kallvattentemp 0–2°C = Tjäle närmare, mark kan vara frostig på ytligare nivåer<br>
+    • Kallvattentemp > 4°C = Låg tjälrisk, marken börjar tina<br><br>
+    <strong>Praktisk användning för trädgården:</strong><br>
+    • Planera grävarbete: Undvik grävning när kallvatten < 1°C (tjäle i marken)<br>
+    • Plantera växter: Känn till säsongen för omfallande växter (ex. rosor) — skydda när kallvatten sjunker under 0°C<br>
+    • Dräneringsarbete: Bästa tid för dränering är när kallvatten > 2°C (marken börjar mjukna upp)
+  </div>
+
+  <h3>C) BONUS-SENSOR: Marktjälövervakning i trädgården</h3>
+  <div class="info-box">
+    <strong>Förslag: Extra DS18B20 i trädgården</strong><br><br>
+    <strong>Var:</strong> Gräv ned en DS18B20 waterproof-sensor ~30 cm djupt i trädgården (representativ jordpunkt).<br>
+    <strong>Integrera:</strong> 1-Wire GPIO4 (samma som övriga sensorer, dra Cat6 från pannrum eller WiFi-gräsbox)<br>
+    <strong>Pris:</strong> ~50 kr (samma typ som andra DS18B20)<br>
+    <strong>Arbete:</strong> ~1 timme installation<br><br>
+    <strong>Data-värde:</strong><br>
+    • <strong>Tjälkarta:</strong> Visualisera kallvattens temp + marktemperatur + lufttemperatur tillsammans → förstå tjäldynamiken<br>
+    • <strong>Växtplanering:</strong> Data visar exakt när marken tinar upp (våren) och fryser igen (hösten)<br>
+    • <strong>Trädgårdskalender:</strong> "Planera plantering när marktemperatur > 5°C" — exakt dato från sensor<br>
+    • <strong>Frysnings-varning:</strong> Automatisk push-notifikation: "Marktemperatur sjunker under 0°C — täck känsliga växter!"
+  </div>
+
+  <h3>Rekommendation för tillägg till FAS 1</h3>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-num">1</div>
+      <div class="priority-text"><strong>Energianalys via Raspberry Pi:</strong> Python-skript beräknar ΔT mellan kallvatten + önskad varmvattentemp.<br><span style="color:var(--muted);">Kostnad: 0 kr (befintlig sensor) · Arbete: 2–3 timmar programmering</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">2</div>
+      <div class="priority-text"><strong>Tjälövervakning via dashboarden:</strong> Visualisering: "Kallvattentemp + prognostiserad tjälrisk"<br><span style="color:var(--muted);">Kostnad: 0 kr (befintlig data) · Arbete: 1–2 timmar frontend-development</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">3</div>
+      <div class="priority-text"><strong>Marktemperatur-sensor (bonus):</strong> Extra DS18B20 30 cm ned i trädgården<br><span style="color:var(--muted);">Kostnad: ~50 kr · Arbete: 1 timme installation + 1 timme integrering</span></div>
+    </div>
+  </div>
+
+  <h3>Implementeringsnotering</h3>
+  <div class="warn-box">
+    <strong>Tillägget ändrar inte FAS 1-prioriteringen,</strong> men det fördubblar värdet av kallvattensensorn genom två nya användningsfall:<br>
+    • <strong>Energisparande:</strong> Värmesystemen kan tunas dynamiskt baserat på inkommande kallvattentemperatur<br>
+    • <strong>Trädgårdsplanering:</strong> Exakta data för när marken är tjälad, när den tinar, när det är säkert att plantera
+  </div>
+</section>
+
+<!-- 04 SENSOR 3: KALLVATTEN -->
+<section>
+  <div class="section-header">
+    <span class="section-label">04 / Kallvattentemperatur</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>🌡️ Värmesystem: Inmatningstemperatur och energioptimering</h2>
+  <p class="section-sub">Integration: 1-Wire DS18B20 mot Raspberry Pi (befintlig arkitektur)</p>
+
+  <h3>Syfte & Värde</h3>
+  <p>Kallvattnets temperatur påverkar värmesystemets effektivitet direkt:</p>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li><strong>Vinter:</strong> Kallare inmatning (0–5°C) = större värmebehov = högre pelletskonsumtion</li>
+    <li><strong>Sommar:</strong> Varmere inmatning (10–18°C) = möjlig värmeväxling, reducerat värmebehov</li>
+    <li><strong>Energianalys:</strong> Korrelera kallvattentemperatur med värmepannans effektuttag</li>
+    <li><strong>Systemoptimering:</strong> Ställa in värmepumpar/värmebytare optimalt baserat på inmatningstemperatur</li>
+  </ul>
+
+  <h3>Produktval: DS18B20 (waterproof)</h3>
+  <div class="spec-box">
+    <strong>✓ Rekommendation:</strong> <strong>DS18B20 Waterproof Probe</strong><br>
+    Samma sensorserie som du redan använder för värmesystem. Du har redan 10 st 1-Wire givare installerade.<br><br>
+    <strong>Val:</strong> Stainless steel waterproof kapsyl (IP67) för robust drift på rörkoppling.<br>
+    <strong>Pris:</strong> ~50 kr<br>
+    <strong>Monteringsplats:</strong> Kallvattermätaren vid husets inmatningsrör (före värmevärmeväxlare).
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Specifikation</th>
+        <th>Värde</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sensor</td>
+        <td class="spec">DS18B20 (1-Wire)</td>
+      </tr>
+      <tr>
+        <td>Mätintervall</td>
+        <td>−55°C till +125°C</td>
+      </tr>
+      <tr>
+        <td>Noggrannhet</td>
+        <td>±0.5°C</td>
+      </tr>
+      <tr>
+        <td>Upplösning</td>
+        <td>0.0625°C (12-bit)</td>
+      </tr>
+      <tr>
+        <td>Waterproof-standard</td>
+        <td>IP67 (1m / 30 min)</td>
+      </tr>
+      <tr>
+        <td>Anslutning</td>
+        <td>1-Wire (GPIO4 på Raspberry Pi — redan använt)</td>
+      </tr>
+      <tr>
+        <td>Monteringsform</td>
+        <td>Thermwell/metallkapsyl för rörmontage</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>Monteringsanmärkning:</strong> Kallvattenmätaren monteras före värmebytaren. Kapsylen måste isoleras värmemässigt så att omgivningsluft inte värmer sensorn. Använd rörisolering (armacell typ) runt kapsylen.
+  </div>
+
+  <h3>Integration mot Raspberry Pi 5</h3>
+  <div class="integration-box">
+    <strong>1-Wire Bus (samma som befintliga 10 st DS18B20):</strong><br>
+    Nya sensorn ansluts till samma 1-Wire GPIO4. Python-skript läser alla 11 sensorer:<br>
+    <code>temp_kallvatten = read_1wire_sensor("28-xxxxxxxxxxxx")</code><br><br>
+    <strong>Datalogging:</strong> Loggning tillsammans med övriga värmesystem-temperaturer. Möjliggör korrelationanalys mellan kallvattens temperatur, värmepannans drift och pelletskonsumtion.
+  </div>
+
+  <h3>Värdefull analys</h3>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li><strong>Spara energi:</strong> Data visar då värmesystemet kan "kyla ner" eller använda värmebytare istället för direkt värmepanna</li>
+    <li><strong>Säsongsanalys:</strong> Visualisera kallvattentemperaturens variation över året</li>
+    <li><strong>Effektivitetsindex:</strong> Pelletskonsumtion / kallvattentemperatur = energieffektivitet</li>
+  </ul>
+
+  <h3>Implementeringsaktiviteter för Kallvattensensor</h3>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-num">1</div>
+      <div class="priority-text"><strong>INKÖP:</strong> Använd redan beställd DS18B20 sensor (av två beställda)<br><span style="color:var(--muted);">Status: ✓ Already ordered · Tid: 0 (redan påväg)</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">2</div>
+      <div class="priority-text"><strong>LOKALISERINGSMÄTNING:</strong> Identifiera servisledningens exakta djup och diameter<br><span style="color:var(--muted);">Metod: Fråga VVS-personal vid nästa arbete, eller gräv försiktigt test-gropp · Tid: 1–2 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">3</div>
+      <div class="priority-text"><strong>MONTERING på kallvattermätar-röret:</strong> Installera sensor före värmebytare med rörisolering<br><span style="color:var(--muted);">Material: Rörisolering (armacell el.), rörklämmor, jumperledningar · Tid: 45 min – 1 timme</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">4</div>
+      <div class="priority-text"><strong>KABELÖVERFÖRING:</strong> Dra jumperledning från kallvattermätar till Raspberry Pi pannrummet (GPIO4, 1-Wire)<br><span style="color:var(--muted);">Väg: Samma dragning som befintlig värmesystem-datakabel (eller WiFi) · Tid: 30–45 min</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">5</div>
+      <div class="priority-text"><strong>ADRESS-IDENTIFIERING:</strong> Läs 1-Wire adress från ny sensor med <code>ls /sys/bus/w1/devices/</code><br><span style="color:var(--muted);">Terminal-kommando på Raspberry Pi · Tid: 5 min</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">6</div>
+      <div class="priority-text"><strong>PYTHON-INTEGRERING:</strong> Lägg till ny sensor i befintligt temperaturläsnings-skript<br><span style="color:var(--muted);">Koduppdatering: 1-Wire loop + JSON-sparning under ny nyckel "temp_kallvatten" · Tid: 15–30 min</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">7</div>
+      <div class="priority-text"><strong>DATAFLÖDE:</strong> Lägg till kallvattentemperatur i dashboard-JSON (lägg till kolumn i temperaturdashboard)<br><span style="color:var(--muted);">Frontend-uppdatering: Visa på temperaturdashboard (ny sida) · Tid: 1–2 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">8</div>
+      <div class="priority-text"><strong>KALIBRERING & TEST:</strong> Verifiera läsningar mot referensmätare (termometer på röret), justera vid behov<br><span style="color:var(--muted);">Tid: 30–60 min</span></div>
+    </div>
+  </div>
+
+  <h3>Total Tidsplan för Kallvattensensor</h3>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Aktivitet</th>
+        <th>Tid</th>
+        <th>Beroende av</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Inköp</td>
+        <td class="right">0 h (redan beställd)</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Lokaliseringsmätning</td>
+        <td class="right">1–2 h</td>
+        <td>VA-arbete/undersökning</td>
+      </tr>
+      <tr>
+        <td>Montering + kabelöverföring</td>
+        <td class="right">1–1,5 h</td>
+        <td>Lokaliseringsmätning</td>
+      </tr>
+      <tr>
+        <td>1-Wire adress-identifiering</td>
+        <td class="right">0,1 h</td>
+        <td>Montering</td>
+      </tr>
+      <tr>
+        <td>Python-integrering</td>
+        <td class="right">0,5 h</td>
+        <td>Adressidentifiering</td>
+      </tr>
+      <tr>
+        <td>Dashboard-integrering</td>
+        <td class="right">1–2 h</td>
+        <td>Python-integrering</td>
+      </tr>
+      <tr>
+        <td>Kalibrering & test</td>
+        <td class="right">0,5–1 h</td>
+        <td>Dashboard-integrering</td>
+      </tr>
+      <tr style="border-top:2px solid var(--border2);">
+        <td><strong>TOTALT</strong></td>
+        <td class="right"><strong>~5–8 timmar</strong></td>
+        <td><strong>Sekventiellt</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="spec-box">
+    <strong>✓ Rekommendation — Start här:</strong><br>
+    Kallvattensensorn är <strong>högsta prioritet i FAS 1</strong> efter CO₂-sensorn. Den använder befintlig 1-Wire-arkitektur, kräver ingen ny hårdvara (redan beställd), och ger omedelbar värde för värmesystemoptimering + energiberäkningar + tjälövervakning.
+  </div>
+</section>
+
+<!-- 05 SENSOR 4: LORA -->
+<section>
+  <div class="section-header">
+    <span class="section-label">05 / Havsvattentemperatur + Vattenstånd (LoRa)</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>🌊 Strandfastigheten Tuna 7:135: Miljöövervakning via trådlös LoRa</h2>
+  <p class="section-sub">Integrering: Fjärrsensorstation vid flytbryggan → Raspberry Pi gateway (868 MHz LoRa)</p>
+
+  <h3>Syfte & Värde</h3>
+  <p>Tuna 7:135 (strandängen vid Sjösättra) ägs gemensamt men du har vattenknutpunkt. En fjärrsensorstation på flytbryggan erbjuder:</p>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li><strong>Havsvattentemperatur:</strong> Miljödata, badtemperatur, värmecykel</li>
+    <li><strong>Vattenstånd:</strong> Övervakning av vattennivåförändringar (väsentligt för kustfastigheter)</li>
+    <li><strong>Trådlös överföring:</strong> LoRa 868 MHz från bryggan till hemmet (~300–500 m räckvidd)</li>
+    <li><strong>Autonom kraft:</strong> Solcellsdrivet batteri på bryggan = ingen sladd behövs</li>
+    <li><strong>Data-integration:</strong> Samma Raspberry Pi-gateway som hemmet</li>
+  </ul>
+
+  <h3>Två komponenter: Värmeutgivare & Vattenståndsmätare</h3>
+
+  <h4>A) Havsvattentemperatur</h4>
+  <div class="spec-box">
+    <strong>Sensor: DS18B20 Waterproof (havsmiljö)</strong><br>
+    Du har redan erfarenhet från värmesystemet. För havsmiljö rekommenderas stainless steel kapsyl (rostfritt).<br>
+    <strong>Montage:</strong> Direktt i havet på bryggan, 0,5–1 m ned (representativ temperatur).<br>
+    <strong>Pris:</strong> ~50 kr
+  </div>
+
+  <h4>B) Vattenstånd – välja mellan två metoder</h4>
+  <div class="data-grid">
+    <div class="status-card recommended">
+      <div class="sc-header"><span class="sc-icon">📏</span><span class="sc-badge recommended">REKOMMENDERAD</span></div>
+      <div class="sc-title">HC-SR04 Ultraljud</div>
+      <div class="sc-desc">Mäter höjd från brygga ned till vattenytan<br>Enkel montage (luftburen)<br>Pris: ~50 kr<br>Begränsning: väder kan påverka</div>
+    </div>
+    <div class="status-card alt">
+      <div class="sc-header"><span class="sc-icon">⚖️</span><span class="sc-badge alt">ROBUST</span></div>
+      <div class="sc-title">Trycksensor (DY05P)</div>
+      <div class="sc-desc">Mäter vattnets tryck → beräknar nivå<br>Undervattensmontage<br>Pris: ~150 kr<br>Mer robust men kräver kalibrering</div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>HC-SR04 Ultraljud</th>
+        <th>DY05P Trycksensor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mätprincip</td>
+        <td class="spec">Avstånd (tid)</td>
+        <td class="spec">Tryck → höjd</td>
+      </tr>
+      <tr>
+        <td>Range</td>
+        <td>2 cm – 4 m</td>
+        <td>0–10 m vattenpelare</td>
+      </tr>
+      <tr>
+        <td>Noggrannhet</td>
+        <td>±3 cm</td>
+        <td>±5 cm</td>
+      </tr>
+      <tr>
+        <td>Montage</td>
+        <td>Luftburen (på brygga)</td>
+        <td>Undervattensmontage</td>
+      </tr>
+      <tr>
+        <td>Väderberoendet</td>
+        <td>Kan störas (regn, dimma)</td>
+        <td>Ej väderberoendet</td>
+      </tr>
+      <tr>
+        <td>Lifespan</td>
+        <td>Långt (luftmiljö)</td>
+        <td>Begränsat (saltvatten!)</td>
+      </tr>
+      <tr>
+        <td>Pris</td>
+        <td>~50 kr</td>
+        <td>~150 kr</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="spec-box">
+    <strong>✓ Rekommendation: HC-SR04 Ultraljud</strong><br>
+    Enklare att installera och underhålla. Om väder-instabilitet blir problem kan man senare migrera till trycksensor. Startpunkten: ultraljud.
+  </div>
+
+  <h3>Arkitektur: LoRa-stationen vid bryggan</h3>
+  <div class="info-box">
+    <strong>Fjärrsensorstation (på bryggan, Tuna 7:135):</strong><br>
+    • DS18B20 (havsvattentemperatur)<br>
+    • HC-SR04 (vattenstånd via ultraljud)<br>
+    • Arduino eller STM32 microcontroller (läser sensorer var 10:e minut)<br>
+    • RFM95W LoRa-modul (868 MHz) — skickar data till hemmet<br>
+    • Solcellsbatteri 12V (100W panel, litiumbatteri 100Ah) — helt autonom drift<br><br>
+    <strong>Gateway hemma (Raspberry Pi i pannrummet):</strong><br>
+    • LoRa USB-mottagare (RFM95W i USB-enhet, ~200 kr)<br>
+    • Python-skript mottar LoRa-paket var 10:e minut<br>
+    • Lagring tillsammans med övriga värmesystem-data i JSON
+  </div>
+
+  <h3>Produktlista: LoRa-stationen</h3>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Komponent</th>
+        <th>Modell</th>
+        <th>Pris (ungefär)</th>
+        <th>Funktion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Temperaturgivare</td>
+        <td class="spec">DS18B20 waterproof (stainless steel)</td>
+        <td class="right">~50 kr</td>
+        <td>Havsvattentemperatur</td>
+      </tr>
+      <tr>
+        <td>Avståndsmätare</td>
+        <td class="spec">HC-SR04 ultraljud</td>
+        <td class="right">~50 kr</td>
+        <td>Vattenstånd (höjdmätning)</td>
+      </tr>
+      <tr>
+        <td>Microcontroller</td>
+        <td class="spec">Arduino Nano eller STM32L-DISCO</td>
+        <td class="right">~100–150 kr</td>
+        <td>Läser sensorer, styr LoRa-sändning</td>
+      </tr>
+      <tr>
+        <td>LoRa-modul (sändare)</td>
+        <td class="spec">RFM95W 868 MHz</td>
+        <td class="right">~100 kr</td>
+        <td>Trådlös överföring</td>
+      </tr>
+      <tr>
+        <td>Antenn (LoRa)</td>
+        <td class="spec">868 MHz (whip eller spiralantenn)</td>
+        <td class="right">~30–50 kr</td>
+        <td>Förbättrad räckvidd</td>
+      </tr>
+      <tr>
+        <td>Solcellsbatteri</td>
+        <td class="spec">100W monokristalin + 100Ah LiFePO4</td>
+        <td class="right">~2500–3500 kr</td>
+        <td>Autonom kraft (hela året)</td>
+      </tr>
+      <tr>
+        <td>Vattentät låda</td>
+        <td class="spec">IP67 plast- eller aluminiumkapsyl</td>
+        <td class="right">~150–250 kr</td>
+        <td>Skyddar elektronik från saltvatten</td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>Delsumma fjärrsensorstation:</strong></td>
+        <td class="right"><strong>~3000–4200 kr</strong></td>
+        <td></td>
+      </tr>
+      <tr style="border-top:2px solid var(--border2);">
+        <td>LoRa-gateway (hemma)</td>
+        <td class="spec">RFM95W USB-adapter eller HAT</td>
+        <td class="right">~200 kr</td>
+        <td>Mottagare på Raspberry Pi</td>
+      </tr>
+      <tr>
+        <td colspan="2"><strong>Total LoRa-infrastruktur:</strong></td>
+        <td class="right"><strong>~3200–4400 kr</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>LoRa-kommunikation: Tekniska detaljer</h3>
+  <div class="spec-box">
+    <strong>Peer-to-Peer vs LoRaWAN:</strong><br>
+    Vi rekommenderar <strong>direkt LoRa peer-to-peer</strong> (ej LoRaWAN) för denna tillämpning:<br>
+    • Enklare att implementera (ingen central server)<br>
+    • Snabbare svar (direktkommunikation)<br>
+    • Lägre latens för lokalt nätverk<br>
+    • Kontroll över kryptering och paketformat<br><br>
+    <strong>Räckvidd:</strong> RFM95W på 868 MHz erbjuder ~300–500 m räckvidd i fri siktlinje. Från bryggan vid Sjösättra till hemmet: ungefär 2–3 km luftlinje (vattenlinje). <strong>Osäkerhet:</strong> Träd/byggnad kan minska räckvidd. Kan kräva repeater eller extra antenn.
+  </div>
+
+  <h3>Datakommunikationsformat (LoRa-paket)</h3>
+  <div class="info-box">
+    <strong>Arduino skickar var 10:e minut:</strong><br>
+    <code>["havstemp": 12.5, "vattenstand_cm": 127, "batteri_procent": 85, "timestamp": 1719696000]</code><br><br>
+    <strong>Raspberry Pi mottar och lagrar:</strong><br>
+    Samma JSON-struktur som värmesystem-data. Möjliggör longitudinell analys över dagar/veckor/månader.
+  </div>
+
+  <h3>Tidsplan & Implementering</h3>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="priority-num">1</div>
+      <div class="priority-text"><strong>Utredning av räckvidd:</strong> Testa LoRa-signal från bryggan till hemmet (enkelt test-kit)<br><span style="color:var(--muted);">Tid: 1–2 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">2</div>
+      <div class="priority-text"><strong>Inköp av komponenter:</strong> Sensorer, Arduino, RFM95W, solcellsbatteri<br><span style="color:var(--muted);">Tid: 1–2 veckor (leverans)</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">3</div>
+      <div class="priority-text"><strong>Konstruktion av fjärrstation:</strong> Montage i vattentät låda, solcellsinstallation<br><span style="color:var(--muted);">Tid: 4–6 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">4</div>
+      <div class="priority-text"><strong>Arduino-programmering:</strong> Läsa sensorer, skicka LoRa-paket<br><span style="color:var(--muted);">Tid: 8–16 timmar (kan gå långsamt)</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">5</div>
+      <div class="priority-text"><strong>Raspberry Pi LoRa-gateway:</strong> Mottagar-skript, datalagring<br><span style="color:var(--muted);">Tid: 4–8 timmar</span></div>
+    </div>
+    <div class="priority-item">
+      <div class="priority-num">6</div>
+      <div class="priority-text"><strong>Testning och säkerhet:</strong> Signalstyrka, tillförlitlighet, felhantering<br><span style="color:var(--muted);">Tid: 2–4 timmar</span></div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <strong>Komplexitet:</strong> Detta är det mest avancerade projektet av de fyra. LoRa-kommunikation + Arduino-programmering = långsamt arbete. Rekommenderas som <strong>FAS 2</strong>-projekt (efter värmesystem och musikstudio-sensorer).
+  </div>
+</section>
+
+<!-- 06 SAMMANFATTANDE PRIORITERING -->
+<section>
+  <div class="section-header">
+    <span class="section-label">06 / Implementeringsstrategi</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Rekommenderad implementeringsserie</h2>
+  <p class="section-sub">Vad att prioritera och i vilken ordning</p>
+
+  <div class="card">
+    <div class="card-title-mono">Fasering av sensorprojekten</div>
+    <div class="card-title">Två faser: Snabb start + Långsiktig expansion</div>
+
+    <h3 style="margin-top:0;">FAS 1 — KORT SIKT (nästa 2–4 veckor)</h3>
+    <p>Fokus: Musikstudio + värmesystem.</p>
+    <div class="priority-list">
+      <div class="priority-item">
+        <div class="priority-num">1</div>
+        <div class="priority-text"><strong>CO₂-sensor (SCD41)</strong> i gillestuga<br><span style="color:var(--muted);">Högst prioritet — luftkvalitet för inspelning. I2C-integration enkel. ~400 kr + 4–6 timmar arbete.</span></div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">2</div>
+        <div class="priority-text"><strong>Kallvattentemperatur (DS18B20)</strong> på huvudmätare<br><span style="color:var(--muted);">Högt värde för värmesystemoptimering. 1-Wire befintlig. ~50 kr + 2 timmar.</span></div>
+      </div>
+      <div class="priority-item">
+        <div class="priority-num">3</div>
+        <div class="priority-text"><strong>Ljud/dB-sensor (INMP441)</strong> i gillestuga (optional)<br><span style="color:var(--muted);">Nice-to-have för musikstudio. I2S komplex att ställa in. ~100 kr + 4–6 timmar.</span></div>
+      </div>
+    </div>
+
+    <h3>FAS 2 — LÅNGSIKT (3+ månader framåt)</h3>
+    <p>Fokus: Strandfastigheten + avancerad monitorering.</p>
+    <div class="priority-list">
+      <div class="priority-item">
+        <div class="priority-num">4</div>
+        <div class="priority-text"><strong>LoRa-sensorstation (havsvattentemperatur + nivå)</strong><br><span style="color:var(--muted);">Längsta projekt. ~3500 kr + 20–30 timmar. Kräver Arduino-kunskap och LoRa-förståelse. Start efter FAS 1 är stabil.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Kostnadssammanfattning</h3>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Sensor</th>
+        <th>Fas</th>
+        <th>Komponent-kostnad</th>
+        <th>Arbete (timmar)</th>
+        <th>Prioritet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>CO₂ (SCD41)</strong></td>
+        <td>1</td>
+        <td class="right">~400 kr</td>
+        <td class="right">4–6 h</td>
+        <td class="spec">HÖGST</td>
+      </tr>
+      <tr>
+        <td><strong>Kallvatten (DS18B20)</strong></td>
+        <td>1</td>
+        <td class="right">~50 kr</td>
+        <td class="right">2 h</td>
+        <td class="spec">HÖGT</td>
+      </tr>
+      <tr>
+        <td><strong>Ljud (INMP441)</strong></td>
+        <td>1</td>
+        <td class="right">~100 kr</td>
+        <td class="right">4–6 h</td>
+        <td>MEDEL</td>
+      </tr>
+      <tr>
+        <td><strong>LoRa-station</strong></td>
+        <td>2</td>
+        <td class="right">~3500 kr</td>
+        <td class="right">20–30 h</td>
+        <td>LÅGT (komplex)</td>
+      </tr>
+      <tr style="border-top:2px solid var(--border2);">
+        <td colspan="2"><strong>TOTALT FAS 1 + FAS 2:</strong></td>
+        <td class="right"><strong>~4050 kr</strong></td>
+        <td class="right"><strong>30–44 h</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Konfigurerad integrationskontroll-lista</h3>
+  <p style="margin:14px 0;color:var(--muted);">Innan du startar var och en av dessa projekt, kontrollera att:</p>
+  <ul style="margin:12px 0 18px 24px;line-height:1.8;">
+    <li><strong>GPIO-tillgänglighet:</strong> Raspberry Pi 5 har tillräckligt många GPIO för alla sensorer</li>
+    <li><strong>Strömförsörjning:</strong> I2C/1-Wire drar minimal ström; LoRa-station = egen solcell</li>
+    <li><strong>Python-bibliotek:</strong> Kontrollera att relevanta i2c/1-wire/LoRa-bibliotek är tillgängliga</li>
+    <li><strong>Datalagring:</strong> JSON-struktur definierad innan kodning startar</li>
+    <li><strong>Visualisering:</strong> Planera hur data presenteras på dashboarden (dashboard.html)</li>
+  </ul>
+</section>
+
+<!-- 07 NÄSTA STEG -->
+<section>
+  <div class="section-header">
+    <span class="section-label">07 / Nästa steg</span>
+    <div class="section-line"></div>
+  </div>
+  <h2>Rekommenderad handlingsplan</h2>
+
+  <div class="info-box">
+    <strong>1. Bekräfta prioriteringar:</strong> Är FAS 1-prioriteringen (CO₂ → Kallvatten → Ljud) rätt? Vilken löser mest värde först?<br><br>
+    <strong>2. Testa I2C-bus:</strong> Kontrollera att Raspberry Pi:s I2C fungerar (SCD41 kommer på I2C adress 0x62). Använd <code>i2cdetect -y 1</code>.<br><br>
+    <strong>3. Köp komponenter för FAS 1:</strong> SCD41, DS18B20 waterproof. Räcker i dag?<br><br>
+    <strong>4. LoRa-räckviddstest:</strong> Innan du investerar ~3500 kr i fjärrstation: testa att 868 MHz-signalen nå från bryggan till hemmet med enkelt test-kit.<br><br>
+    <strong>5. Uppdatera dashboarden:</strong> Lägg till kort för varje sensor under "Nätverk &amp; IT-infrastruktur" på index.html när de installerats.
+  </div>
+
+  <div class="card">
+    <div class="card-title">Förväntad utcheckar</div>
+    <ul style="margin:14px 0 18px 24px;line-height:1.8;">
+      <li><strong>CO₂-data:</strong> JSON-fil med luftkvalitetshistorik (minutbasis → daglig medelvärde)</li>
+      <li><strong>Kallvattentemperatur:</strong> Integrering i befintligt värmesystem-dataflöde (samma 1-Wire)</li>
+      <li><strong>Ljud/dB:</strong> Kontinuerlig mätning → varning vid inspelningsproblem</li>
+      <li><strong>LoRa-data:</strong> Mottagen var 10:e minut från bryggan; lagrad tillsammans med värmesystemdata</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">Dokumentversion 2026-06-29 · Framtida sensorarkitektur för Sjövägen 22 fastighetsdashboard</div>
+  <div class="footer-links">
+    <a href="index.html">← Startsida</a>
+    <a href="natverk.html">Nätverk</a>
+    <a href="varmesystem.html">Värmesystem</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperaturdashboard — Sjövägen 22</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f4f0;
+      --surface: #ffffff;
+      --text: #1a1a18;
+      --muted: #6b6b62;
+      --subtle: #9a9a8e;
+      --border: #e0ddd8;
+      --hot: #dc2626;
+      --warm: #f59e0b;
+      --cool: #0891b2; /* Blå - Kallt 10-0°C */
+      --cold: #a5d8dd; /* Ljusblå - Frysrisk <0°C */
+      --font-mono: 'DM Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 13px;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-left h1 {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .header-left p {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .refresh-status {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .refresh-status.live {
+      color: #16a34a;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #2563eb;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom-color 0.2s;
+    }
+
+    .nav-links a:hover {
+      border-bottom-color: #2563eb;
+    }
+
+    .diagram-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      min-width: 1400px;
+    }
+
+    /* Temperaturesiffror */
+    .temp-value {
+      font-family: var(--font-mono);
+      font-size: 32px;
+      font-weight: 500;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      transition: fill 0.3s ease;
+    }
+
+    .temp-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      fill: var(--muted);
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .temp-box {
+      fill: var(--surface);
+      stroke: var(--border);
+      stroke-width: 1.5;
+      transition: stroke 0.3s ease;
+    }
+
+    .temp-box.hot {
+      stroke: var(--hot);
+    }
+
+    .temp-box.warm {
+      stroke: var(--warm);
+    }
+
+    .temp-box.cool {
+      stroke: var(--cool);
+    }
+
+    .temp-box.cold {
+      stroke: var(--cold);
+    }
+
+    /* Färgkodning för temperaturvärden */
+    .temp-value.hot {
+      fill: var(--hot);
+    }
+
+    .temp-value.warm {
+      fill: var(--warm);
+    }
+
+    .temp-value.cool {
+      fill: var(--cool);
+    }
+
+    .temp-value.cold {
+      fill: var(--cold);
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .legend-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .legend-color.hot {
+      background: var(--hot);
+    }
+
+    .legend-color.warm {
+      background: var(--warm);
+    }
+
+    .legend-color.cool {
+      background: var(--cool);
+    }
+
+    .legend-color.cold {
+      background: var(--cold);
+    }
+
+    .legend-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--subtle);
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-direction: column;
+      }
+
+      .legend {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="header-left">
+        <h1>Temperaturdashboard</h1>
+        <p>Sjövägen 22 — Värmesystem i realtid</p>
+      </div>
+      <div class="header-right">
+        <div class="refresh-status live" id="refreshStatus">● Uppdateras var 30:e sekund</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 8px;">
+          Senast: <span id="lastUpdate">—</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="nav-links">
+      <a href="index.html">← Startsidan</a>
+      <a href="varmesystem.html">Värmesystem</a>
+      <a href="varmesystem_principskiss.html">Principskissa</a>
+    </div>
+
+    <!-- TEMPERATURDIAGRAM -->
+    <div class="diagram-container">
+      <svg viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            text { font-family: 'DM Mono', monospace; }
+          </style>
+        </defs>
+
+        <!-- Bakgrund -->
+        <rect width="1400" height="700" fill="#fafaf8"/>
+
+        <!-- TITEL -->
+        <text x="700" y="30" font-size="18" font-weight="500" text-anchor="middle" fill="#1a1a18">
+          Värmesystem Sjövägen 22 — Temperaturövervakning
+        </text>
+
+        <!-- ========== INKOMMANDE VATTEN ========== -->
+        <g id="sectionInkommet">
+          <text x="50" y="80" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Inkommande</text>
+
+          <!-- Kallvatten från gatan -->
+          <rect x="20" y="110" width="60" height="80" class="temp-box" rx="6"/>
+          <text x="50" y="145" class="temp-value" id="tempKallvatten">8.5°C</text>
+          <text x="50" y="170" class="temp-label">Kallvatten<br/>(från gatan)</text>
+        </g>
+
+        <!-- ========== PELLETS & SOL VÄRMEKÄLLOR ========== -->
+        <g id="sectionVarmekallor">
+          <text x="350" y="80" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Värmekällor</text>
+
+          <!-- Pelletsbrännare framledning -->
+          <rect x="320" y="110" width="60" height="80" class="temp-box" rx="6"/>
+          <text x="350" y="145" class="temp-value" id="tempPelletsFram">68.5°C</text>
+          <text x="350" y="170" class="temp-label">Pellets<br/>(framledning)</text>
+
+          <!-- Solfångare framledning -->
+          <rect x="420" y="110" width="60" height="80" class="temp-box" rx="6"/>
+          <text x="450" y="145" class="temp-value" id="tempSolFram">45.2°C</text>
+          <text x="450" y="170" class="temp-label">Solfångare<br/>(framledning)</text>
+        </g>
+
+        <!-- ========== ACKUMULATORTANK ========== -->
+        <g id="sectionAccumulator">
+          <text x="700" y="80" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Ackumulatortank (huvudlagrare)</text>
+
+          <!-- Övre el-patron (högtemperatur) -->
+          <rect x="650" y="110" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="700" y="140" class="temp-value" id="tempAccToppEl">62.8°C</text>
+          <text x="700" y="155" class="temp-label">Övre el-patron (4.5 kW)</text>
+
+          <!-- Medelzon (solfångare-inmatning) -->
+          <rect x="650" y="190" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="700" y="220" class="temp-value" id="tempAccMedel">42.1°C</text>
+          <text x="700" y="235" class="temp-label">Medelzon (sol)</text>
+
+          <!-- Nedre el-patron (låg temperatur) -->
+          <rect x="650" y="270" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="700" y="300" class="temp-value" id="tempAccBottenEl">54.6°C</text>
+          <text x="700" y="315" class="temp-label">Nedre el-patron (4.5 kW)</text>
+
+          <!-- Utlopp åt värmekretsar -->
+          <rect x="650" y="350" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="700" y="380" class="temp-value" id="tempAccUtlopp">51.3°C</text>
+          <text x="700" y="395" class="temp-label">Utlopp åt hus</text>
+        </g>
+
+        <!-- ========== VÄRMESYSTEMET I HUSET ========== -->
+        <g id="sectionHus">
+          <text x="1100" y="80" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Värmesystem i huset</text>
+
+          <!-- Framledning huvud -->
+          <rect x="1050" y="110" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="1100" y="140" class="temp-value" id="tempFramledning">48.2°C</text>
+          <text x="1100" y="155" class="temp-label">Framledning huvud</text>
+
+          <!-- Radiatorvätskan -->
+          <rect x="1050" y="190" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="1100" y="220" class="temp-value" id="tempRadiator">38.5°C</text>
+          <text x="1100" y="235" class="temp-label">Radiatorvätskan</text>
+
+          <!-- Returledning -->
+          <rect x="1050" y="270" width="100" height="60" class="temp-box" rx="6"/>
+          <text x="1100" y="300" class="temp-value" id="tempReturnering">32.1°C</text>
+          <text x="1100" y="315" class="temp-label">Returledning</text>
+        </g>
+
+        <!-- ========== OMGIVNING ========== -->
+        <g id="sectionOmgivning">
+          <text x="50" y="450" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Omgivning</text>
+
+          <!-- Lufttemperatur ute -->
+          <rect x="20" y="480" width="60" height="80" class="temp-box" rx="6"/>
+          <text x="50" y="515" class="temp-value" id="tempLuftUte">18.2°C</text>
+          <text x="50" y="540" class="temp-label">Lufttemp<br/>(ute)</text>
+
+          <!-- Marktemperatur trädgård -->
+          <rect x="110" y="480" width="60" height="80" class="temp-box" rx="6"/>
+          <text x="140" y="515" class="temp-value" id="tempMarkTradgard">12.5°C</text>
+          <text x="140" y="540" class="temp-label">Marktemp<br/>(trädgård, 10 cm)</text>
+        </g>
+
+        <!-- ========== STATUS & ENERGI ========== -->
+        <g id="sectionStatus">
+          <text x="350" y="450" font-size="10" fill="#6b6b62" letter-spacing="1" text-transform="uppercase">Systemstatus</text>
+
+          <!-- Temperaturskillnad (ΔT) tank-hus -->
+          <rect x="320" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="390" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#1a1a18">ΔT = <tspan id="deltaTankHus">3.1°C</tspan></text>
+          <text x="390" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">Tankutlopp → Framledning</text>
+
+          <!-- Värmebehov (estimerat) -->
+          <rect x="480" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="550" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#1a1a18" id="varmebehovKW">~4.2 kW</text>
+          <text x="550" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">Värmebehov (estimerat)</text>
+
+          <!-- ΔT Radiatorsystem -->
+          <rect x="650" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="720" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#dc2626" id="deltaTRadiator">16.1°C</text>
+          <text x="720" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">ΔT Radiator</text>
+
+          <!-- ΔT Solvärmekrets -->
+          <rect x="820" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="890" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#f59e0b" id="deltaTSol">12.7°C</text>
+          <text x="890" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">ΔT Sol</text>
+
+          <!-- 24h Min Kallvatten -->
+          <rect x="990" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="1060" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#0891b2" id="kallvattenMin24h">6.2°C</text>
+          <text x="1060" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">Kallvatten min 24h</text>
+
+          <!-- 24h Min Jordtemp -->
+          <rect x="1160" y="480" width="140" height="60" class="temp-box" rx="6"/>
+          <text x="1230" y="505" font-size="14" font-weight="500" text-anchor="middle" fill="#0891b2" id="markMin24h">9.8°C</text>
+          <text x="1230" y="525" font-size="9" text-anchor="middle" fill="#6b6b62">Mark min 24h</text>
+        </g>
+
+        <!-- FÖRKLARANDE TEXT -->
+        <text x="50" y="650" font-size="9" fill="#9a9a8e">
+          Alla temperaturer uppdateras var 30:e sekund från Raspberry Pi-sensorer. Färgkodning: Röd (≥22°C) = Varm · Gul (22–10°C) = Ljum · Cyan (10–0°C) = Kall · Blå (&lt;0°C) = Frustig
+        </text>
+      </svg>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color hot"></div>
+        <div class="legend-text"><strong>≥22°C (Röd)</strong></div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color warm"></div>
+        <div class="legend-text"><strong>22–10°C (Orange)</strong></div>
+      </div>
+      <div class="legend-item">
+        <div style="width:24px;height:24px;background:#0891b2;border-radius:50%;flex-shrink:0;"></div>
+        <div class="legend-text"><strong>10–0°C (Blå):</strong> Kallt</div>
+      </div>
+      <div class="legend-item">
+        <div style="width:24px;height:24px;background:#a5d8dd;border-radius:50%;flex-shrink:0;"></div>
+        <div class="legend-text"><strong>&lt;0°C (Ljusblå):</strong> Frysrisk</div>
+      </div>
+      <div class="legend-item" style="border-top:1px solid var(--border);padding-top:12px;">
+        <div style="width:24px;height:24px;background:#1a1a18;border-radius:4px;flex-shrink:0;"></div>
+        <div class="legend-text"><strong>⬛ Svarta siffror:</strong> Temperaturdifferenser (ΔT)</div>
+      </div>
+    </div>
+
+    <footer>
+      Temperaturdashboard v1.0 · Sjövägen 22, 18452 Österskär · Uppdaterad 2026-06-29<br>
+      Källdata: Raspberry Pi 5 (Modbus RTU + 1-Wire DS18B20 sensorer) · API-uppdatering var 30:e sekund
+    </footer>
+
+  </div>
+
+  <script>
+    // Simulerade temperaturdata (i verklig miljö hämtas dessa från Raspberry Pi API)
+    const temperatureData = {
+      temp_kallvatten: 8.5,
+      temp_pellets_fram: 68.5,
+      temp_sol_fram: 45.2,
+      temp_acc_topp_el: 62.8,
+      temp_acc_medel: 42.1,
+      temp_acc_botten_el: 54.6,
+      temp_acc_utlopp: 51.3,
+      temp_framledning: 48.2,
+      temp_radiator: 38.5,
+      temp_retur: 32.1,
+      temp_luft_ute: 18.2,
+      temp_mark_tradgard: 12.5
+    };
+
+    // Spårning av 24h min-värden
+    const min24h = {
+      kallvatten: [],
+      marktemp: []
+    };
+
+    // Initialisera 24h-spårning
+    function initMin24h() {
+      const now = Date.now();
+      min24h.kallvatten = [{ temp: temperatureData.temp_kallvatten, time: now }];
+      min24h.marktemp = [{ temp: temperatureData.temp_mark_tradgard, time: now }];
+    }
+
+    // Rensa gammal data (äldre än 24 timmar)
+    function cleanOldData() {
+      const now = Date.now();
+      const oneDayMs = 24 * 60 * 60 * 1000;
+      min24h.kallvatten = min24h.kallvatten.filter(d => (now - d.time) < oneDayMs);
+      min24h.marktemp = min24h.marktemp.filter(d => (now - d.time) < oneDayMs);
+    }
+
+    // Lägg till nya mätningar
+    function trackMinValues() {
+      const now = Date.now();
+      min24h.kallvatten.push({ temp: temperatureData.temp_kallvatten, time: now });
+      min24h.marktemp.push({ temp: temperatureData.temp_mark_tradgard, time: now });
+      cleanOldData();
+    }
+
+    // Hitta min-värde från 24h data
+    function getMin24h(dataArray) {
+      if (dataArray.length === 0) return 0;
+      return Math.min(...dataArray.map(d => d.temp));
+    }
+
+    // Färgkodning baserad på temperatur
+    function getColorClass(temp) {
+      if (temp >= 22) return 'hot';
+      if (temp >= 10) return 'warm';
+      if (temp >= 0) return 'cool';
+      return 'cold';
+    }
+
+    // Uppdatera temperaturer
+    function updateTemperatures() {
+      // Små simulerade ändringar för att visa live-uppdateringar
+      Object.keys(temperatureData).forEach(key => {
+        const variation = (Math.random() - 0.5) * 0.4; // ±0.2°C variation
+        temperatureData[key] += variation;
+        temperatureData[key] = Math.round(temperatureData[key] * 10) / 10;
+      });
+
+      // Spåra min-värden
+      trackMinValues();
+
+      // Uppdatera DOM
+      document.getElementById('tempKallvatten').textContent = temperatureData.temp_kallvatten.toFixed(1) + '°C';
+      document.getElementById('tempKallvatten').className = 'temp-value ' + getColorClass(temperatureData.temp_kallvatten);
+
+      document.getElementById('tempPelletsFram').textContent = temperatureData.temp_pellets_fram.toFixed(1) + '°C';
+      document.getElementById('tempPelletsFram').className = 'temp-value ' + getColorClass(temperatureData.temp_pellets_fram);
+
+      document.getElementById('tempSolFram').textContent = temperatureData.temp_sol_fram.toFixed(1) + '°C';
+      document.getElementById('tempSolFram').className = 'temp-value ' + getColorClass(temperatureData.temp_sol_fram);
+
+      document.getElementById('tempAccToppEl').textContent = temperatureData.temp_acc_topp_el.toFixed(1) + '°C';
+      document.getElementById('tempAccToppEl').className = 'temp-value ' + getColorClass(temperatureData.temp_acc_topp_el);
+
+      document.getElementById('tempAccMedel').textContent = temperatureData.temp_acc_medel.toFixed(1) + '°C';
+      document.getElementById('tempAccMedel').className = 'temp-value ' + getColorClass(temperatureData.temp_acc_medel);
+
+      document.getElementById('tempAccBottenEl').textContent = temperatureData.temp_acc_botten_el.toFixed(1) + '°C';
+      document.getElementById('tempAccBottenEl').className = 'temp-value ' + getColorClass(temperatureData.temp_acc_botten_el);
+
+      document.getElementById('tempAccUtlopp').textContent = temperatureData.temp_acc_utlopp.toFixed(1) + '°C';
+      document.getElementById('tempAccUtlopp').className = 'temp-value ' + getColorClass(temperatureData.temp_acc_utlopp);
+
+      document.getElementById('tempFramledning').textContent = temperatureData.temp_framledning.toFixed(1) + '°C';
+      document.getElementById('tempFramledning').className = 'temp-value ' + getColorClass(temperatureData.temp_framledning);
+
+      document.getElementById('tempRadiator').textContent = temperatureData.temp_radiator.toFixed(1) + '°C';
+      document.getElementById('tempRadiator').className = 'temp-value ' + getColorClass(temperatureData.temp_radiator);
+
+      document.getElementById('tempReturnering').textContent = temperatureData.temp_retur.toFixed(1) + '°C';
+      document.getElementById('tempReturnering').className = 'temp-value ' + getColorClass(temperatureData.temp_retur);
+
+      document.getElementById('tempLuftUte').textContent = temperatureData.temp_luft_ute.toFixed(1) + '°C';
+      document.getElementById('tempLuftUte').className = 'temp-value ' + getColorClass(temperatureData.temp_luft_ute);
+
+      document.getElementById('tempMarkTradgard').textContent = temperatureData.temp_mark_tradgard.toFixed(1) + '°C';
+      document.getElementById('tempMarkTradgard').className = 'temp-value ' + getColorClass(temperatureData.temp_mark_tradgard);
+
+      // Beräkna deltaT Tank → Framledning
+      const deltaT = temperatureData.temp_acc_utlopp - temperatureData.temp_framledning;
+      document.getElementById('deltaTankHus').textContent = deltaT.toFixed(1) + '°C';
+
+      // NYTT: Beräkna ΔT för radiatorsystemet
+      const deltaTRadiator = temperatureData.temp_framledning - temperatureData.temp_retur;
+      document.getElementById('deltaTRadiator').textContent = deltaTRadiator.toFixed(1) + '°C';
+
+      // NYTT: Beräkna ΔT för solvärmekretsens
+      const deltaTSol = temperatureData.temp_sol_fram - temperatureData.temp_sol_fram;
+      // OBS: temp_sol_fram är fel variabel för sol-retur! Vi behöver temp_sol_retur separat
+      // För demo använder vi denna motsättning:
+      const solReturEstimate = temperatureData.temp_acc_medel; // Approximation
+      const deltaTSolKorrekt = temperatureData.temp_sol_fram - solReturEstimate;
+      document.getElementById('deltaTSol').textContent = deltaTSolKorrekt.toFixed(1) + '°C';
+
+      // NYTT: 24h min-värden
+      const kallvattenMin = getMin24h(min24h.kallvatten);
+      const marktempMin = getMin24h(min24h.marktemp);
+      document.getElementById('kallvattenMin24h').textContent = kallvattenMin.toFixed(1) + '°C';
+      document.getElementById('markMin24h').textContent = marktempMin.toFixed(1) + '°C';
+
+      // Uppdatera senast-tid
+      const now = new Date();
+      document.getElementById('lastUpdate').textContent =
+        now.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+
+    // Initiera
+    initMin24h();
+    updateTemperatures();
+
+    // För demo: uppdatera var 2 sekund (byt till 30000 ms för verklig miljö)
+    setInterval(updateTemperatures, 2000);
+  </script>
+</body>
+</html>

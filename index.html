@@ -124,14 +124,39 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
   <div class="status-pill ok"><div class="status-dot"></div>El — 34 mån data inläst</div>
 </div>
 
-<!-- ENERGI & DRIFT -->
+<!-- ÖVERBLICK -->
 <div class="section-row">
-  <span class="section-label">Energi &amp; Drift</span>
+  <span class="section-label">Fastighetsdrift</span>
   <div class="section-line"></div>
 </div>
 <div class="card-grid">
 
-  <a href="el.html" class="card span-4 c-amber">
+  <a href="sjovagen22.html" class="card span-12 c-blue">
+    <div class="card-icon">📊</div>
+    <div class="card-category">Samlad Översikt</div>
+    <div class="card-title">Sjövägen 22 — Fastighetsdrift &amp; Energioptimering</div>
+    <div class="card-desc">Elförbrukning · pellets · värmesystem · väderstation · solfångare · IT-miljö · prisjämförelse el/SVEF/pellets · sensorarkitektur · Raspberry Pi-infrastruktur · historisk data 2005–2026</div>
+    <div class="card-status live">● live · 2026-06-29 uppdaterad</div>
+  </a>
+
+</div>
+
+<!-- ENERGI & DRIFT -->
+<div class="section-row">
+  <span class="section-label">Värmesystem &amp; Förbrukning</span>
+  <div class="section-line"></div>
+</div>
+<div class="card-grid">
+
+  <a href="varmesystem.html" class="card span-6 c-red">
+    <div class="card-icon">🌡</div>
+    <div class="card-category">Värmesystem</div>
+    <div class="card-title">Värmesystem — Ackumulatortank &amp; Värmekrets</div>
+    <div class="card-desc">Danfoss ECL Comfort 110 · Modbus RTU · DS18B20 sensorer (10 st) · värmebärare-flödesschema · principskissa · inköpslista datainfrastruktur · Raspberry Pi-integration</div>
+    <div class="card-status live">● dokumenterad · principskissa länkad</div>
+  </a>
+
+  <a href="el.html" class="card span-3 c-amber">
     <div class="card-icon">⚡</div>
     <div class="card-category">El</div>
     <div class="card-title">Elförbrukning</div>
@@ -157,99 +182,74 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
 
   <a href="solfangare.html" class="card span-4 c-teal disabled">
     <div class="card-icon">☀️</div>
-    <div class="card-category">Solfångare</div>
-    <div class="card-title">Solfångarstatistik</div>
-    <div class="card-desc">Watts LCD+ · insamlad energi kWh · kollektortemperatur · drifttimmar · väntar på SD-kort</div>
-    <div class="card-status soon">○ väntar på SD-kort</div>
-  </a>
-
-  <a href="varmesystem.html" class="card span-4 c-red">
-    <div class="card-icon">🌡</div>
     <div class="card-category">Värmesystem</div>
-    <div class="card-title">Ackumulatortank &amp; Värmekrets</div>
-    <div class="card-desc">Danfoss ECL Comfort 110 · Modbus RTU · DS18B20 sensorer · principschema + flödesdiagram · inköpslista datainfrastruktur</div>
-    <div class="card-status live">● dokumenterad · principskissa</div>
+    <div class="card-title">Solfångarstatistik</div>
+    <div class="card-desc">Watts LCD+ · energi kWh · kollektortemperatur · drifttimmar · väntar på SD-kort</div>
+    <div class="card-status soon">○ väntar på SD-kort</div>
   </a>
 
   <a href="vader.html" class="card span-4 c-purple">
     <div class="card-icon">🌤</div>
-    <div class="card-category">Väder &amp; Klimat</div>
+    <div class="card-category">Väder</div>
     <div class="card-title">Lokal väderstation</div>
-    <div class="card-desc">Viking Sweden Art.02049 · 433 MHz trådlös · USB-dataloggning · mjukvaru-CD tillgänglig · ⚠ Anemometer trasig</div>
+    <div class="card-desc">Viking Sweden Art.02049 · 433 MHz · USB-dataloggning · mjukvaru-CD · ⚠ Anemometer trasig</div>
     <div class="card-status partial">● dokumenterad · 1 defekt</div>
   </a>
 
-  <a href="vatten.html" class="card span-4 c-teal">
-    <div class="card-icon">💧</div>
-    <div class="card-category">Vatten</div>
-    <div class="card-title">Kallvattenförbrukning</div>
-    <div class="card-desc">Roslagsvatten · abonnentnr 14569 · VA + sophämtning · sida klar, fakturor ej inlästa ännu</div>
-    <div class="card-status partial">● fakturor saknas</div>
+  <a href="varmesystem_temperaturskiss.html" class="card span-3 c-teal">
+    <div class="card-icon">🌡️</div>
+    <div class="card-category">Live Övervakning</div>
+    <div class="card-title">Temperaturskiss (Live)</div>
+    <div class="card-desc">Värmesystem i realtid · Temperaturer på sensorns exakta plats · Stiliserat principschema</div>
+    <div class="card-status soon">⊕ setup required</div>
   </a>
-
-  <a href="sjovagen22.html" class="card span-8 c-blue">
-    <div class="card-icon">📊</div>
-    <div class="card-category">Fastighet &amp; Energi</div>
-    <div class="card-title">Sjövägen 22 — Fastighetsdrift &amp; Energioptimering</div>
-    <div class="card-desc">Elförbrukning · pellets · värmesystem · väderstation · solfångare · IT-miljö · prisjämförelse el/SVEF/pellets · sensorarkitektur · Raspberry Pi-infrastruktur · historisk data 2005–2026</div>
-    <div class="card-status live">● live · 2026-06-29 uppdaterad</div>
-  </a>
-
-</div>
-
-<!-- IT & SYSTEM -->
-<div class="section-row">
-  <span class="section-label">IT &amp; System</span>
-  <div class="section-line"></div>
-</div>
-<div class="card-grid">
 
   <a href="natverk.html" class="card span-4 c-blue">
     <div class="card-icon">🌐</div>
-    <div class="card-category">IT-infrastruktur</div>
-    <div class="card-title">Nätverk &amp; IT</div>
-    <div class="card-desc">TP-Link Archer AX55 dokumenterad · nätverkstopologi · Cat6-dragning källare · switchar · WiFi-nod trapphall · Raspberry Pi-anslutning pannrum</div>
+    <div class="card-category">IT &amp; System</div>
+    <div class="card-title">Nätverk &amp; IT-infrastruktur</div>
+    <div class="card-desc">TP-Link Archer AX55 · nätverkstopologi · Cat6-dragning · WiFi-nod · Raspberry Pi 5 · sensorarkitektur</div>
     <div class="card-status live">● dokumenterad · router OK</div>
   </a>
 
-  <a href="arkitektur.html" class="card span-4 c-blue">
-    <div class="card-icon">🔬</div>
-    <div class="card-category">IoT &amp; Sensor</div>
-    <div class="card-title">Sensorarkitektur</div>
-    <div class="card-desc">Raspberry Pi 5 · DS18B20 1-Wire · Modbus RTU Danfoss ECL · dataflöde till dashboard · 10 temperaturgivare</div>
-    <div class="card-status partial">● dokumenterad · beställt</div>
+  <a href="sensorer_utredning.html" class="card span-3 c-purple">
+    <div class="card-icon">📡</div>
+    <div class="card-category">Framtida sensorprojekt</div>
+    <div class="card-title">Sensorarkitektur — Vidareutvecklingar</div>
+    <div class="card-desc">CO₂ · Ljudnivå · Kallvattentemp · LoRa havsövervakning · Raspberry Pi-integration · FAS 1 + FAS 2</div>
+    <div class="card-status soon">⊕ utredning · prioritering</div>
   </a>
 
 </div>
 
-<!-- FASTIGHET -->
+<!-- FASTIGHET TUNA 7:139 -->
 <div class="section-row">
-  <span class="section-label">Fastighet</span>
+  <span class="section-label">Fastighet — Tuna 7:139</span>
   <div class="section-line"></div>
 </div>
 <div class="card-grid">
 
-  <a href="fastighet.html" class="card span-4 c-blue">
+  <a href="fastighet.html" class="card span-3 c-blue">
     <div class="card-icon">🏠</div>
-    <div class="card-category">Fastighetsdata</div>
+    <div class="card-category">Fastighetsinformation</div>
     <div class="card-title">Taxering &amp; Avgifter</div>
-    <div class="card-desc">Tuna 7:139 · taxeringsvärde 7 316 000 kr (2023) · fastighetsavgift 10 425 kr/år (2026)</div>
+    <div class="card-desc">Taxeringsvärde 7 316 000 kr (2023) · fastighetsavgift 10 425 kr/år (2026)</div>
     <div class="card-status live">● live</div>
   </a>
 
-  <a href="sakerhet.html" class="card span-4 c-red">
+  <a href="sakerhet.html" class="card span-3 c-red">
     <div class="card-icon">🔒</div>
     <div class="card-category">Säkerhet</div>
     <div class="card-title">Larm &amp; Brandskydd</div>
-    <div class="card-desc">Inbrottslarm · Österåkers Lås &amp; Larm · Rapid Säkerhet larmcentral</div>
+    <div class="card-desc">Inbrottslarm · Österåkers Lås &amp; Larm · Rapid Säkerhet</div>
     <div class="card-status live">● live</div>
   </a>
 
   <a href="dokument.html" class="card span-3 c-muted disabled">
     <div class="card-icon">📁</div>
     <div class="card-category">Administration</div>
-    <div class="card-title">Dokument, ritningar &amp; kartor</div>
-    <div class="card-desc">Försäkringsbrev · besiktningsprotokoll · servicekvitton · garantihandlingar · planritningar · tomtkarta · VA-karta · el-schema</div>
+    <div class="card-title">Dokument &amp; Ritningar</div>
+    <div class="card-desc">Försäkringsbrev · besiktningsprotokoll · planritningar · VA-karta · el-schema</div>
     <div class="card-status planned">○ planerad</div>
   </a>
 
@@ -257,23 +257,32 @@ footer{border-top:1px solid var(--border);padding:24px 0 40px;display:flex;justi
     <div class="card-icon">📋</div>
     <div class="card-category">Administration</div>
     <div class="card-title">Underhållsplan</div>
-    <div class="card-desc">Planerat och genomfört underhåll · kostnadsspårning · 10-årsplan</div>
+    <div class="card-desc">Planerat och genomfört underhåll · kostnadsspårning</div>
     <div class="card-status planned">○ planerad</div>
   </a>
 
   <a href="kontakter.html" class="card span-3 c-muted disabled">
     <div class="card-icon">📞</div>
-    <div class="card-category">Kontakter</div>
-    <div class="card-title">Leverantörer &amp; Service</div>
-    <div class="card-desc">VVS · elektriker · sotare · försäkring · grannkontakter</div>
+    <div class="card-category">Administration</div>
+    <div class="card-title">Kontakter &amp; Service</div>
+    <div class="card-desc">VVS · elektriker · sotare · försäkring</div>
     <div class="card-status planned">○ planerad</div>
   </a>
 
+</div>
+
+<!-- FASTIGHET TUNA 7:135 -->
+<div class="section-row">
+  <span class="section-label">Fastighet — Tuna 7:135 (Sjösättra)</span>
+  <div class="section-line"></div>
+</div>
+<div class="card-grid">
+
   <a href="tomt.html" class="card span-8 c-green disabled">
     <div class="card-icon">🌿</div>
-    <div class="card-category">Sjösättra</div>
+    <div class="card-category">Strandäng</div>
     <div class="card-title">Strandäng, Vattenrätt &amp; Brygga</div>
-    <div class="card-desc">Tuna 7:135 (1/7 andel) · strandäng vid Sättravägen · vattenrätt · flytbrygga · föreningen Sjösättra</div>
+    <div class="card-desc">1/7 andel · strandäng vid Sättravägen · vattenrätt · flytbrygga · föreningen Sjösättra</div>
     <div class="card-status planned">○ planerad</div>
   </a>
 
