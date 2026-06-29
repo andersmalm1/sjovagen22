@@ -146,15 +146,23 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         <span class="sc-badge done">FINNS</span>
       </div>
       <div class="sc-title">Nätverkskabel till TV-uttag</div>
-      <div class="sc-desc">Cat5e/Cat6 (okänd spec)<br>Arbetsrum → vägguttag vid TV<br>Vardagsrum, övervåningen</div>
+      <div class="sc-desc"><strong>✓ BEFINTLIG Cat6</strong><br>Arbetsrum → vägguttag vid TV (vardagsrum)<br>Fortsätter sedan ner till gillestuga</div>
+    </div>
+    <div class="status-card done">
+      <div class="sc-header">
+        <span class="sc-icon">🔗</span>
+        <span class="sc-badge done">FINNS</span>
+      </div>
+      <div class="sc-title">Vägguttag i gillestuga</div>
+      <div class="sc-desc"><strong>✓ Befintligt vägguttag</strong><br>Källarplan, gillestuga<br>Nätverkskabel från vardagsrum redan ansluten</div>
     </div>
     <div class="status-card done">
       <div class="sc-header">
         <span class="sc-icon">📺</span>
         <span class="sc-badge done">FINNS</span>
       </div>
-      <div class="sc-title">TV-antennkabel</div>
-      <div class="sc-desc">Dragen från övervåning ner till källarens gillestuga<br>Kabelkanal/rör med utrymme för nätverkskabel</div>
+      <div class="sc-title">Kabelkanal/antennkabelrör</div>
+      <div class="sc-desc">Dragen från övervåning ner till källarens gillestuga<br>Redan innehåller nätverkskabel (befintlig)</div>
     </div>
     <div class="status-card open">
       <div class="sc-header">
@@ -218,31 +226,19 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         <!-- WiFi-signal från router -->
         <text x="95" y="152" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle">📶 WiFi (begränsad räckvidd)</text>
 
-        <!-- Kabel router → Switch① — BEFINTLIG Cat6 -->
-        <line x1="160" y1="87" x2="268" y2="87" stroke="#2563eb" stroke-width="2" marker-end="url(#arr-blue)"/>
-        <text x="214" y="78" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (befintlig)</text>
+        <!-- Kabel router → Vägguttag vardagsrum — BEFINTLIG Cat6 -->
+        <line x1="160" y1="87" x2="268" y2="87" stroke="#16a34a" stroke-width="2" marker-end="url(#arr-green)"/>
+        <text x="214" y="78" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">✓ Cat6 befintlig</text>
 
-        <!-- SWITCH ① — PLANERAD (streckad ram) -->
-        <rect x="268" y="55" width="148" height="64" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="342" y="74" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
-        <text x="342" y="90" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH ①</text>
-        <text x="342" y="106" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">5-port · Vardagsrum (vid TV)</text>
+        <!-- VÄGGUTTAG I VARDAGSRUM — BEFINTLIGT -->
+        <rect x="268" y="55" width="148" height="64" rx="8" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+        <text x="342" y="74" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">BEFINTLIGT</text>
+        <text x="342" y="90" font-family="DM Mono,monospace" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="500">Vägguttag</text>
+        <text x="342" y="106" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Vardagsrum (vid TV)</text>
 
-        <!-- TV vardagsrum — BEFINTLIG (Apple TV via kabel + Allente-box via WiFi) -->
-        <!-- AppleTV kabel från switch① (streckad pil eftersom switch ej finns) -->
-        <line x1="342" y1="55" x2="342" y2="28" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
-        <!-- Allente WiFi-signal (grön, prickad) -->
-        <line x1="308" y1="55" x2="240" y2="28" stroke="#16a34a" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-green)"/>
-        <!-- TV-ruta -->
-        <rect x="220" y="8" width="170" height="24" rx="5" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
-        <text x="305" y="24" font-family="DM Mono,monospace" font-size="9" fill="#6b6b62" text-anchor="middle">📺 TV Vardagsrum  |  AppleTV + Allente</text>
-        <!-- Liten etikett AppleTV / Allente -->
-        <text x="372" y="44" font-family="DM Mono,monospace" font-size="8" fill="#2563eb" text-anchor="middle">Cat6*</text>
-        <text x="258" y="44" font-family="DM Mono,monospace" font-size="8" fill="#16a34a" text-anchor="middle">📶 WiFi</text>
-
-        <!-- Switch① → WiFi-nod trapphall (streckad — switch finns ej) -->
+        <!-- Vägguttag vardagsrum → WiFi-nod trapphall (PLANERAD) -->
         <line x1="416" y1="87" x2="548" y2="87" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
-        <text x="482" y="78" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny)*</text>
+        <text x="482" y="78" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (planerad)*</text>
 
         <!-- WIFI-NOD trapphall — PLANERAD (streckad) -->
         <rect x="548" y="55" width="148" height="64" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
@@ -251,21 +247,22 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         <text x="622" y="106" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Accesspunkt · Trapphall</text>
         <text x="622" y="152" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">↓ täcker trappa + källare</text>
 
-        <!-- ══ VERTIKAL KABELDRAGNING ned (via antennkabelrör) — NY ══ -->
-        <line x1="342" y1="119" x2="342" y2="242" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr-blue)"/>
-        <rect x="356" y="155" width="128" height="30" rx="4" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.2)" stroke-width="1"/>
-        <text x="420" y="167" font-family="DM Mono,monospace" font-size="9" fill="#2563eb" text-anchor="middle">Cat6 (ny dragning)*</text>
+        <!-- ══ VERTIKAL KABELDRAGNING ned (via antennkabelrör) — BEFINTLIG ══ -->
+        <line x1="342" y1="119" x2="342" y2="242" stroke="#16a34a" stroke-width="2" marker-end="url(#arr-green)"/>
+        <rect x="356" y="155" width="128" height="30" rx="4" fill="rgba(22,163,74,0.07)" stroke="rgba(22,163,74,0.3)" stroke-width="1"/>
+        <text x="420" y="167" font-family="DM Mono,monospace" font-size="9" fill="#16a34a" text-anchor="middle">✓ Cat6 befintlig</text>
         <text x="420" y="179" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">via antennkabelrör</text>
 
         <!-- ══════════════════════════════
              KÄLLAREN
              ══════════════════════════════ -->
 
-        <!-- SWITCH ② gillestuga — PLANERAD (streckad) -->
-        <rect x="232" y="248" width="220" height="60" rx="8" fill="#fff" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3"/>
-        <text x="342" y="265" font-family="DM Mono,monospace" font-size="10" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">PLANERAD</text>
-        <text x="342" y="281" font-family="DM Mono,monospace" font-size="11" fill="#2563eb" text-anchor="middle" font-weight="500">SWITCH ②</text>
-        <text x="342" y="297" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">5–8 port · Gillestuga</text>
+        <!-- VÄGGUTTAG GILLESTUGA — BEFINTLIGT + PLANERAD SWITCH ② -->
+        <rect x="232" y="248" width="220" height="60" rx="8" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+        <text x="342" y="262" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle" letter-spacing="1">✓ BEFINTLIGT UTTAG</text>
+        <text x="342" y="278" font-family="DM Mono,monospace" font-size="10" fill="#16a34a" text-anchor="middle" font-weight="500">Vägguttag Gillestuga</text>
+        <text x="342" y="293" font-family="DM Mono,monospace" font-size="8" fill="#9a9a8e" text-anchor="middle">Källarplan · Nätverkskabel från vardagsrum ansluten</text>
+        <text x="342" y="306" font-family="DM Mono,monospace" font-size="8" fill="#2563eb" text-anchor="middle">→ Switch ② planeras här</text>
 
         <!-- TV källaren — BEFINTLIG, går idag DIREKT på antennkabel (ingen nätverkskoppling) -->
         <rect x="18" y="248" width="140" height="60" rx="8" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
@@ -273,7 +270,12 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
         <text x="88" y="285" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Idag: antennkabel</text>
         <text x="88" y="299" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">(ingen nätv.-koppling)</text>
 
-        <!-- TV källaren → Switch② — FRAMTIDA / streckad (grå, ingen koppling idag) -->
+        <!-- TV källaren — BEFINTLIG (framtida koppling till switch) -->
+        <rect x="18" y="248" width="140" height="60" rx="8" fill="#fff" stroke="#d1d5db" stroke-width="1"/>
+        <text x="88" y="270" font-family="DM Mono,monospace" font-size="10" fill="#6b6b62" text-anchor="middle">📺 TV Källaren</text>
+        <text x="88" y="285" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">Idag: antennkabel</text>
+        <text x="88" y="299" font-family="DM Mono,monospace" font-size="9" fill="#9a9a8e" text-anchor="middle">(nätv.-framtida)</text>
+        <!-- TV källaren → Switch② — FRAMTIDA / streckad (grå) -->
         <line x1="158" y1="278" x2="232" y2="278" stroke="#9a9a8e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-gray-dash)"/>
         <text x="195" y="271" font-family="DM Mono,monospace" font-size="8" fill="#9a9a8e" text-anchor="middle">framtida*</text>
 
@@ -349,7 +351,7 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
     <div class="section-line"></div>
   </div>
   <h2>Vad som ska göras</h2>
-  <p class="section-sub">Steg-för-steg · Utförs i samband med musikstudio-ombyggnaden</p>
+  <p class="section-sub">Prioriterat · Raspberry Pi-infrastruktur (värmesystem + framtida NAS) kräver trådlöst anslutning</p>
 
   <div class="data-grid">
     <div class="status-card planned">
@@ -372,10 +374,10 @@ section:nth-child(4){animation-delay:.18s;}section:nth-child(5){animation-delay:
       <div class="sc-title">Switch ② — gillestuga</div>
       <div class="sc-desc">5–8 port Gigabit i musikstudion.<br>Ansluter: TV/streaming, musikdator, NAS, och Cat6 vidare till pannrummet.</div>
     </div>
-    <div class="status-card planned">
-      <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge planned">PLANERAT</span></div>
+    <div class="status-card open">
+      <div class="sc-header"><span class="sc-icon">🔌</span><span class="sc-badge open">PRIORITERAT</span></div>
       <div class="sc-title">Cat6 — gillestuga till pannrum</div>
-      <div class="sc-desc">Kort dragning inom källarplanet.<br>Fast Gigabit-anslutning till Raspberry Pi 5.<br>Eliminerar WiFi-beroende för kritisk mätdatainsamling.</div>
+      <div class="sc-desc"><strong>Kritisk infrastruktur.</strong> Dragning ~15m inom källarplanet.<br>Raspberry Pi 5 blir fastighetscentralt (värmesystem + framtida NAS).<br>Gigabit Ethernet → stabil, högpresterande huvudnätverksnod.<br>WiFi (200 Mbps i pannrummet) räcker tekniskt men ej för framtida expansion.</div>
     </div>
     <div class="status-card open">
       <div class="sc-header"><span class="sc-icon">❓</span><span class="sc-badge open">OKÄNT</span></div>
